@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f1117" />
+
+  <title>{% block title %}FKECHAGIAS — Premium Web Design & Development{% endblock %}</title>
+  <meta name="description" content="{% block description %}Κατασκευή ιστοσελίδων που ξεχωρίζουν. Μινιμαλιστικό design, κορυφαίες αποδόσεις.{% endblock %}" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/logo.png' %}" />
+  <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="FKECHAGIAS — Premium Web Design" />
+  <meta property="og:description" content="Κατασκευή ιστοσελίδων που ξεχωρίζουν." />
+  <meta property="og:url" content="https://fkechagias.gr" />
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.svg' %}" />
+
+  <!-- Fonts: Newsreader (Display/Editorial) + Space Mono (UI/Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="dark-mode {% block body_class %}{% endblock %}" id="body">
+
+  <!-- Preloader -->
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader-inner">
+      <p class="preloader-welcome">Καλωσήρθατε στη σελίδα μου</p>
+      <p class="preloader-domain">fkechagias.gr</p>
+      <div class="preloader-bar-wrap">
+        <div class="preloader-bar" id="preloader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auto-scroll Progress Indicator -->
+  <div id="scroll-progress-bar"></div>
+
+  <!-- Custom cursor -->
+  <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Ambient background mesh (CSS-only, shows through transparent Three.js canvas) -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ab-blob ab-1"></div>
+    <div class="ab-blob ab-2"></div>
+    <div class="ab-blob ab-3"></div>
+  </div>
+
+  <!-- Three.js canvas -->
+  <canvas id="three-canvas" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav-glass" id="navbar" role="navigation" aria-label="Κύρια πλοήγηση">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="FKECHAGIAS αρχική">
+        FK<span class="nav-logo-dot">.</span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <button class="nav-link" data-slide="1">Όραμα</button>
+        <button class="nav-link" data-slide="2">Υπηρεσίες</button>
+        <button class="nav-link" data-slide="3">Έργα</button>
+        <button class="nav-cta" data-slide="4">Επικοινωνία <span class="nav-cta-arrow">↗</span></button>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span class="hb-line hb-top"></span>
+        <span class="hb-line hb-bottom"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <div class="mobile-menu-inner">
+      <nav class="mobile-nav">
+        <button class="mobile-nav-link" data-slide="1">Όραμα</button>
+        <button class="mobile-nav-link" data-slide="2">Υπηρεσίες</button>
+        <button class="mobile-nav-link" data-slide="3">Έργα</button>
+        <button class="mobile-nav-link mobile-nav-cta" data-slide="4">Επικοινωνία</button>
+      </nav>
+      <div class="mobile-menu-contacts">
+        <a href="tel:+306987530306">+30 6987 530 306</a>
+        <a href="mailto:fkechagias07@gmail.com">fkechagias07@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll hint indicator (visible on all slides except last) -->
+  <div class="scroll-hint" id="scroll-hint" aria-hidden="true">
+    <span class="sh-label">scroll</span>
+    <div class="sh-track"><div class="sh-dot"></div></div>
+  </div>
+
+  <!-- Slide counter (bottom-left) -->
+  <div class="slide-counter" id="slide-counter" aria-hidden="true">
+    <span class="sc-current">01</span>
+    <span class="sc-divider">/</span>
+    <span class="sc-total">05</span>
+  </div>
+
+  <!-- Dot navigation (right side) -->
+  <nav class="slide-dots" id="slide-dots" aria-label="Πλοήγηση slides"></nav>
+
+  <main class="slides-container">
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="site-footer story-section" id="site-footer">
+      <div class="footer-inner container">
+        <div class="footer-signature">
+          <span class="footer-sig-text reveal-up">FKECHAGIAS</span>
+        </div>
+        <div class="footer-grid">
+          <div class="footer-col reveal-up">
+            <p class="footer-tagline">Transforming Ideas Into<br />Premium Digital Experiences.</p>
+            <div class="footer-socials">
+              <a href="https://instagram.com/fkechagias" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </a>
+              <a href="mailto:fkechagias07@gmail.com" aria-label="Email">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </a>
+              <a href="https://wa.me/306987530306" target="_blank" rel="noopener" aria-label="WhatsApp">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-col reveal-up" data-delay="1">
+            <h4 class="footer-col-title">Υπηρεσίες</h4>
+            <ul class="footer-links">
+              <li>Custom Websites</li>
+              <li>E-Commerce Stores</li>
+              <li>Web Apps & AI</li>
+            </ul>
+          </div>
+          <div class="footer-col reveal-up" data-delay="2">
+            <h4 class="footer-col-title">Επικοινωνία</h4>
+            <ul class="footer-contacts">
+              <li>
+                <a href="tel:+306987530306">
+                  <span class="fc-label">Τηλέφωνο</span>
+                  <span>+30 6987 530 306</span>
+                </a>
+              </li>
+              <li>
+                <a href="mailto:fkechagias07@gmail.com">
+                  <span class="fc-label">Email</span>
+                  <span>fkechagias07@gmail.com</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom reveal-up" data-delay="3">
+          <p class="footer-copy">© 2026 FKECHAGIAS. Όλα τα δικαιώματα διατηρούνται.</p>
+          <p class="footer-made">Φτιαγμένο με ♥ στην Ελλάδα</p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.min.js"></script>
+  <script src="{% static 'js/three-scene.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

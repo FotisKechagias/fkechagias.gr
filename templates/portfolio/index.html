@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- Δίνουμε την class is-slider για να κλειδώσει το scroll MONO στην αρχική -->
+{% block body_class %}is-slider{% endblock %}
+
+{% block content %}
+
+<!-- 00: HERO (Slide 0) -->
+<section id="hero" class="story-section" aria-label="Hero">
+  <div class="container relative z-10">
+    <span class="story-overline reveal-up">FKECHAGIAS Web Studio</span>
+    <h1 class="story-title reveal-up">
+      Δημιουργία Ιστοσελίδων<br />που <strong>Ξεχωρίζουν.</strong>
+    </h1>
+    <p class="story-desc reveal-up" data-delay="1">
+      Κατασκευάζω ψηφιακές εμπειρίες από το μηδέν. Μινιμαλιστικός σχεδιασμός, 
+      ασύγκριτη ταχύτητα και απόλυτη εστίαση στους στόχους της επιχείρησής σας.
+    </p>
+    <div class="reveal-up" data-delay="2">
+      <button class="btn-primary" data-slide="1">Ξεκινήστε την Περιήγηση ↓</button>
+    </div>
+  </div>
+</section>
+
+<!-- 01: VISION (Slide 1) -->
+<section id="vision" class="story-section" aria-label="Vision">
+  <div class="container relative z-10">
+    <span class="story-overline reveal-up">Το Οραμα</span>
+    <h2 class="story-title reveal-up">
+      Η ιστοσελίδα σας είναι η<br /><strong>Ψηφιακή σας Βιτρίνα.</strong>
+    </h2>
+    <p class="story-desc reveal-up" data-delay="1">
+      Στο σύγχρονο διαδίκτυο, τα έτοιμα templates δεν αρκούν. Μια επιχείρηση χρειάζεται
+      μια ιστοσελίδα κομμένη και ραμμένη στα μέτρα της, η οποία εμπνέει εμπιστοσύνη,
+      μετατρέπει τους επισκέπτες σε πελάτες και λειτουργεί άψογα σε κάθε συσκευή.
+    </p>
+
+    <div class="vision-stats reveal-up" data-delay="2">
+      <div class="vs-stat">
+        <span class="vs-num">7+</span>
+        <span class="vs-label">Χρόνια εμπειρίας</span>
+      </div>
+      <div class="vs-stat">
+        <span class="vs-num">30+</span>
+        <span class="vs-label">Ολοκληρωμένα projects</span>
+      </div>
+      <div class="vs-stat">
+        <span class="vs-num">100%</span>
+        <span class="vs-label">Custom κώδικας</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02: SERVICES (Slide 2) -->
+<section id="services" class="story-section" aria-label="Services">
+  <div class="container relative z-10">
+    <span class="story-overline reveal-up">Εξειδικευση</span>
+    <h2 class="story-title reveal-up">Τι ακριβώς <strong>Φτιάχνω.</strong></h2>
+    
+    <div class="minimal-grid">
+      <div class="minimal-card reveal-up" data-delay="1">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        <h3>Κατασκευή Ιστοσελίδας</h3>
+        <p>Εταιρικά sites, landing pages και eshops. Πλήρως custom κώδικας, βελτιστοποιημένα για SEO, με κορυφαίες επιδόσεις φόρτωσης.</p>
+      </div>
+
+      <div class="minimal-card reveal-up" data-delay="2">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        <h3>Advanced Web Apps & AI</h3>
+        <p>Χρειάζεστε κάτι πιο περίπλοκο; Από πολύπλοκες web εφαρμογές (Django/React) μέχρι ενσωμάτωση AI chatbots, <strong>συζητούνται αποκλειστικά κατόπιν επικοινωνίας</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03: PROJECTS (Slide 3) -->
+<section id="projects" class="story-section" aria-label="Projects">
+  <div class="container relative z-10">
+    <span class="story-overline reveal-up">Portfolio</span>
+    <h2 class="story-title reveal-up">Επιλεγμένα <strong>Projects.</strong></h2>
+    
+    <div class="projects-minimal-grid">
+      {% if projects %}
+        {% for project in projects|slice:":2" %}
+        <div class="project-item reveal-up" data-delay="{{ forloop.counter0 }}">
+          {% if project.image %}
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
+          {% else %}
+            <div style="background:#1a1a2e; width:100%; height:100%;"></div>
+          {% endif %}
+          <div class="project-info-overlay">
+            <div class="pio-meta">
+              <h3>{{ project.title }}</h3>
+              <span class="pio-industry">{{ project.industry }}</span>
+            </div>
+            <div class="pio-links">
+              <a href="{% url 'project_detail' project.pk %}" class="pio-btn">Case Study →</a>
+              {% if project.live_url %}
+              <a href="{{ project.live_url }}" target="_blank" rel="noopener" class="pio-btn pio-btn-live">Live ↗</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="project-item reveal-up" data-delay="1">
+          <div style="background: linear-gradient(135deg, oklch(0.18 0.05 260), oklch(0.14 0.02 260)); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:var(--font-body); font-size:10px; letter-spacing:0.2em; color:oklch(0.35 0.02 260); text-transform:uppercase;">Projects σύντομα</span>
+          </div>
+          <div class="project-info-overlay">
+            <div class="pio-meta">
+              <h3>Έρχεται σύντομα</h3>
+              <span class="pio-industry">Portfolio</span>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="reveal-up projects-all-cta" data-delay="3">
+      <a href="{% url 'project_list' %}" class="btn-ghost" style="margin-top: 32px;">
+        Δες όλα τα projects μου →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 04: CONTACT (Slide 4) -->
+<section id="contact" class="story-section" aria-label="Contact">
+  <div class="container relative z-10 contact-wrap">
+    <div class="contact-text">
+      <span class="story-overline reveal-up">Επικοινωνια</span>
+      <h2 class="story-title reveal-up">Ας φτιάξουμε κάτι <strong>Μαζί.</strong></h2>
+      <p class="story-desc reveal-up" data-delay="1">
+        Είτε πρόκειται για μια κομψή εταιρική ιστοσελίδα, είτε για ένα απαιτητικό advanced project, η επικοινωνία είναι το πρώτο βήμα.
+      </p>
+      
+      <div class="reveal-up" data-delay="2" style="margin-top: 32px; display: flex; flex-direction: column; gap: 12px;">
+        <a href="mailto:fkechagias07@gmail.com" style="display:flex; align-items:center; gap:8px; color:var(--c-text); font-family:var(--font-display); font-size:18px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          fkechagias07@gmail.com
+        </a>
+        <a href="tel:+306987530306" style="display:flex; align-items:center; gap:8px; color:var(--c-text); font-family:var(--font-display); font-size:18px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6 6l1.06-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          +30 6987 530 306
+        </a>
+      </div>
+    </div>
+    
+    <div class="contact-form-minimal reveal-up" data-delay="3">
+      <form id="contact-form">
+        {% csrf_token %}
+        <input type="text" class="minimal-input" name="name" placeholder="Το όνομά σας" required />
+        <input type="email" class="minimal-input" name="email" placeholder="Το email σας" required />
+
+        <input type="text" class="minimal-input" name="service" placeholder="Τι ψάχνετε; (π.χ. Κατασκευή Ιστοσελίδας)" />
+
+        <button type="submit" class="btn-primary" style="margin-top:0; width:100%; justify-content:center;">Αποστολή →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- (Το Footer Slide 5 βρίσκεται στο base.html για να υπάρχει σε όλες τις σελίδες) -->
+
+{% endblock %}

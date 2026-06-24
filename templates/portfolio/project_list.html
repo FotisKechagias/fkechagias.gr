@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Όλα τα Projects — FKECHAGIAS{% endblock %}
+{% block description %}Δείτε όλα τα web design projects του FKECHAGIAS. Custom websites, e-commerce, web applications.{% endblock %}
+
+{% block content %}
+<div class="pl-page">
+
+  <!-- Header -->
+  <header class="pl-header">
+    <div class="container">
+      <a href="/" class="pl-back reveal-up">← Αρχική</a>
+      <div class="pl-header-text">
+        <span class="story-overline reveal-up">Portfolio</span>
+        <h1 class="pl-title reveal-up">
+          Όλα τα<br /><em>Projects.</em>
+        </h1>
+        {% if projects %}
+        <p class="pl-count reveal-up">{{ projects.count }} projects</p>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- Grid -->
+  <section class="pl-grid-section">
+    <div class="container">
+      {% if projects %}
+      <div class="pl-grid">
+        {% for project in projects %}
+        <article class="pl-card reveal-up" data-delay="{{ forloop.counter0|add:'1' }}">
+          <a href="{% url 'project_detail' project.pk %}" class="pl-card-link">
+            <div class="pl-card-image">
+              {% if project.image %}
+              <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
+              {% else %}
+              <div class="pl-card-placeholder" style="--n:{{ forloop.counter }};"></div>
+              {% endif %}
+              <div class="pl-card-hover">
+                <span class="pl-card-cta">Δες το project ↗</span>
+              </div>
+            </div>
+            <div class="pl-card-body">
+              <div class="pl-card-meta">
+                <span class="pl-card-industry">{{ project.industry }}</span>
+                <span class="pl-card-client">{{ project.client_name }}</span>
+              </div>
+              <h2 class="pl-card-title">{{ project.title }}</h2>
+              <p class="pl-card-desc">{{ project.description|truncatewords:18 }}</p>
+              <div class="pl-card-tags">
+                {% for tech in project.get_technologies_list %}
+                <span class="project-tag">{{ tech }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          </a>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="pl-empty reveal-up">
+        <p class="pl-empty-text"><em>Projects σύντομα.</em></p>
+        <a href="/#contact" class="btn-primary" style="margin-top: 32px;">Θέλω να ξεκινήσω ένα project →</a>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- CTA strip -->
+  <section class="pl-cta">
+    <div class="container pl-cta-inner reveal-up">
+      <p class="pl-cta-label">Επόμενο;</p>
+      <h2 class="pl-cta-title">Το δικό σας<br /><em>project.</em></h2>
+      <a href="/#contact" class="btn-primary">Ξεκινήστε σήμερα →</a>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ── Project List Page ──────────────────────────────────────── */
+  .pl-page {
+    min-height: 100vh;
+    padding-top: 100px;
+  }
+
+  .pl-header {
+    padding: 60px 0 80px;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .pl-back {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-text-dim);
+    margin-bottom: 48px;
+    transition: color var(--transition);
+  }
+  .pl-back:hover { color: var(--c-white); }
+
+  .pl-title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(52px, 9vw, 120px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--c-white);
+    margin-bottom: 20px;
+  }
+
+  .pl-title em {
+    font-style: italic;
+    font-weight: 700;
+    color: var(--c-blue-light);
+  }
+
+  .pl-count {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--c-text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Grid ───────────────────────────────────────────────────── */
+  .pl-grid-section { padding: 80px 0; }
+
+  .pl-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+  }
+  @media (max-width: 768px) { .pl-grid { grid-template-columns: 1fr; } }
+
+  .pl-card-link {
+    display: block;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    overflow: hidden;
+    transition: border-color 0.4s ease;
+  }
+  .pl-card-link:hover { border-color: var(--c-blue-dim); }
+
+  .pl-card-image {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--c-surface);
+  }
+
+  .pl-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    display: block;
+  }
+  .pl-card-link:hover .pl-card-image img { transform: scale(1.04); }
+
+  /* Placeholder με gradient berdasarkan index */
+  .pl-card-placeholder {
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(
+        ellipse at calc(30% + var(--n, 1) * 7%) 40%,
+        oklch(0.30 0.08 calc(240 + var(--n, 1) * 15)) 0%,
+        transparent 60%
+      ),
+      var(--c-surface);
+  }
+
+  .pl-card-hover {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, oklch(0 0 0 / 0.75) 0%, transparent 55%);
+    display: flex;
+    align-items: flex-end;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .pl-card-link:hover .pl-card-hover { opacity: 1; }
+
+  .pl-card-cta {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-white);
+    background: var(--c-blue);
+    padding: 8px 16px;
+    border-radius: 2px;
+  }
+
+  .pl-card-body { padding: 28px 32px 36px; }
+
+  .pl-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .pl-card-industry {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-blue);
+  }
+
+  .pl-card-client {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--c-text-dim);
+  }
+
+  .pl-card-title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 24;
+    font-size: clamp(22px, 2.5vw, 30px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--c-white);
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .pl-card-desc {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--c-text-muted);
+    line-height: 1.7;
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+  }
+
+  .pl-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* ── Empty state ─────────────────────────────────────────────── */
+  .pl-empty {
+    text-align: center;
+    padding: 120px 0;
+  }
+  .pl-empty-text {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 36;
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 300;
+    color: var(--c-text-dim);
+  }
+
+  /* ── CTA strip ───────────────────────────────────────────────── */
+  .pl-cta {
+    border-top: 1px solid var(--c-border);
+    padding: 100px 0;
+  }
+  .pl-cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .pl-cta-label {
+    font-family: var(--font-body);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-blue);
+    margin-bottom: 20px;
+  }
+  .pl-cta-title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(48px, 8vw, 100px);
+    font-weight: 300;
+    line-height: 0.97;
+    letter-spacing: -0.025em;
+    color: var(--c-white);
+    margin-bottom: 0;
+  }
+  .pl-cta-title em {
+    font-style: italic;
+    font-weight: 700;
+    color: var(--c-blue-light);
+  }
+</style>
+{% endblock %}
