@@ -482,21 +482,11 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
   .footer-sig-text       { font-size: clamp(48px, 9vw, 100px); }
 }
 
-/* Mobile: stack, full mockup visible */
+/* Mobile (≤640px): hide terminal entirely */
 @media (max-width: 640px) {
-  .hero-split { grid-template-columns: 1fr; gap: 18px; }
+  .hero-split  { grid-template-columns: 1fr; gap: 0; }
+  .hero-device { display: none !important; }
   .hero-text .story-title { font-size: clamp(28px, 7.5vw, 44px); }
-  .browser-frame { max-width: 100%; box-shadow: 0 8px 24px oklch(0 0 0 / 0.4); }
-  .terminal-section { font-size: 10.5px; padding: 11px 13px; line-height: 1.85; }
-  .term-path { font-size: 9px; }
-  .bpp-wrap { padding: 10px 12px 12px; }
-  .bpp-nav { height: 11px; margin-bottom: 11px; }
-  .bpp-line { height: 6px; margin-bottom: 5px; }
-  .bpp-btn { height: 11px; width: 44px; }
-  .bpp-cards { gap: 6px; margin-top: 9px; }
-  .bpp-card { height: 30px; }
-  .browser-bar { padding: 7px 12px; }
-  .ce-cursor { height: 11px; }
 }
 
 /* ── Services Grid ──────────────────────────────────────────── */
@@ -1174,12 +1164,12 @@ body:not(.is-slider) .slide-dots { display: none; }
 @media (max-width: 768px) {
 
   /* Homepage sections on mobile */
-  body:not(.is-slider) .story-section { padding: 100px 20px; }
-  body:not(.is-slider) #hero { min-height: 100svh; padding-top: 90px; padding-bottom: 60px; }
+  body:not(.is-slider) .story-section { padding: 90px 20px; }
+  body:not(.is-slider) #hero { min-height: 100svh; padding-top: 90px; padding-bottom: 80px; }
 
   /* Hero: stack, hide terminal on mobile */
   .hero-split  { grid-template-columns: 1fr; gap: 0; }
-  .hero-device { display: none; }
+  .hero-device { display: none !important; }
   .hero-text   { text-align: center; }
   .hero-text .story-overline,
   .hero-text .story-title,
