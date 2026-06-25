@@ -262,13 +262,10 @@
   /* ── Background Video ───────────────────────────────────────── */
   if (bgVideo) {
     bgVideo.muted = true;
-    bgVideo.load();
-    bgVideo.play().catch(function () {});
-    [500, 1500].forEach(function (ms) {
-      setTimeout(function () {
-        if (bgVideo.paused) bgVideo.play().catch(function () {});
-      }, ms);
-    });
+    if (bgVideo.paused) bgVideo.play().catch(function () {});
+    setTimeout(function () {
+      if (bgVideo.paused) bgVideo.play().catch(function () {});
+    }, 800);
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden && bgVideo.paused) bgVideo.play().catch(function () {});
     });
