@@ -17,33 +17,32 @@
       if (preloaderBar) preloaderBar.style.width = progress + '%';
     }, 120);
 
-    /* Capture first touch on preloader as the iOS gesture trigger */
-    if (bgVideo) {
-      preloader.addEventListener('touchstart', function () {
-        bgVideo.muted = true;
-        bgVideo.play().catch(function () {});
-      }, { passive: true });
-    }
-
     window.addEventListener('load', function () {
       clearInterval(barInterval);
       if (preloaderBar) preloaderBar.style.width = '100%';
 
+      var dismissed = false;
       function dismiss() {
+        if (dismissed) return;
+        dismissed = true;
         preloader.classList.add('hidden');
         if (isSlider) setTimeout(initSlider, 50);
       }
 
       if (bgVideo) {
-        bgVideo.muted = true;
-        bgVideo.play().then(function () {
+        /* Dismiss 100ms after video actually renders its first frame */
+        bgVideo.addEventListener('playing', function handler() {
+          bgVideo.removeEventListener('playing', handler);
           setTimeout(dismiss, 100);
-        }).catch(function () {
-          /* iOS blocked autoplay — dismiss anyway, video will play on first touch */
-          setTimeout(dismiss, 400);
         });
+
+        bgVideo.muted = true;
+        bgVideo.play().catch(function () {});
+
+        /* Safety fallback: never wait more than 6s */
+        setTimeout(dismiss, 6000);
       } else {
-        setTimeout(dismiss, 400);
+        setTimeout(dismiss, 500);
       }
     });
   } else {
@@ -283,12 +282,8 @@
   /* ── Background Video (resume on tab switch) ────────────────── */
   if (bgVideo) {
     document.addEventListener('visibilitychange', function () {
-      if (!document.hidden && bgVideo.paused) bgVideo.play();
+      if (!document.hidden && bgVideo.paused) bgVideo.play().catch(function () {});
     });
-    document.addEventListener('touchstart', function handler() {
-      if (bgVideo.paused) bgVideo.play();
-      document.removeEventListener('touchstart', handler);
-    }, { once: true, passive: true });
   }
 
   /* ── Cookie Banner ──────────────────────────────────────────── */
