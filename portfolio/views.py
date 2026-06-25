@@ -59,16 +59,13 @@ Email: {email}
 Μήνυμα:
 {message}
 """
-        try:
-            send_mail(
-                subject,
-                body,
-                settings.DEFAULT_FROM_EMAIL,
-                [settings.CONTACT_RECIPIENT_EMAIL],
-                fail_silently=True,
-            )
-        except Exception:
-            pass
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.CONTACT_RECIPIENT_EMAIL],
+            fail_silently=False,
+        )
 
         return JsonResponse({'success': True, 'message': 'Το μήνυμά σας εστάλη επιτυχώς!'})
 
