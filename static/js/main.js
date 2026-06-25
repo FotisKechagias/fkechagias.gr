@@ -3,6 +3,12 @@
 
   var isSlider = document.body.classList.contains('is-slider');
 
+  /* Lock html scroll on slider pages (fallback for older browsers) */
+  if (isSlider) {
+    document.documentElement.style.overflow = 'hidden';
+    document.documentElement.style.height   = '100%';
+  }
+
   /* ── Preloader ───────────────────────────────────────────────── */
   var preloader = document.getElementById('preloader');
   var preloaderBar = document.getElementById('preloader-bar');
@@ -172,13 +178,24 @@
 
     /* ── Touch swipe ─────────────────────────────────────────── */
     var touchStartY = 0;
+    var touchStartX = 0;
     window.addEventListener('touchstart', function (e) {
       touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
     }, { passive: true });
+
+    /* Prevent native scroll on vertical swipes (non-passive) */
+    window.addEventListener('touchmove', function (e) {
+      var target = e.target;
+      if (target.closest('input, textarea, select')) return;
+      var dy = Math.abs(e.touches[0].clientY - touchStartY);
+      var dx = Math.abs(e.touches[0].clientX - touchStartX);
+      if (dy > dx) e.preventDefault();
+    }, { passive: false });
 
     window.addEventListener('touchend', function (e) {
       var diff = touchStartY - e.changedTouches[0].clientY;
-      if (Math.abs(diff) < 50) return;
+      if (Math.abs(diff) < 30) return;
       if (diff > 0 && currentSlide < totalSlides - 1) activateSlide(currentSlide + 1, false);
       else if (diff < 0 && currentSlide > 0) activateSlide(currentSlide - 1, false);
     }, { passive: true });
