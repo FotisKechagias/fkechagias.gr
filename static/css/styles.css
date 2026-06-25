@@ -561,6 +561,16 @@ body:not(.is-slider) .reveal-up.visible {
 
 /* ── UI Elements ────────────────────────────────────────────── */
 /* ── Background Video ───────────────────────────────────────── */
+.bg-video::-webkit-media-controls,
+.bg-video::-webkit-media-controls-enclosure,
+.bg-video::-webkit-media-controls-panel,
+.bg-video::-webkit-media-controls-play-button,
+.bg-video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+}
+
 .bg-video {
   position: fixed;
   inset: 0;
