@@ -769,7 +769,7 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
 /* ── Footer / Project Details additions ─────────────────────── */
 .site-footer { padding: 80px 0 40px; border-top: 1px solid var(--c-border); }
 body.is-slider .site-footer { border-top: none; }
-.footer-signature { margin-bottom: 60px; line-height: 0.9; }
+.footer-signature { margin-bottom: 60px; line-height: 1.1; text-align: center; overflow: visible; padding-top: 8px; }
 .footer-sig-text {
   font-family: var(--font-display);
   font-variation-settings: 'opsz' 72;
