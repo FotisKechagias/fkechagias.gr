@@ -27,27 +27,12 @@
       }
 
       if (bgVideo) {
-        var fallback = setTimeout(dismiss, 4000);
-
-        function startAndDismiss() {
-          bgVideo.muted = true;
-          bgVideo.play().then(function () {
-            clearTimeout(fallback);
-            setTimeout(dismiss, 100);
-          }).catch(function () {
-            clearTimeout(fallback);
-            setTimeout(dismiss, 400);
-          });
-        }
-
-        if (bgVideo.readyState >= 3) {
-          startAndDismiss();
-        } else {
-          bgVideo.addEventListener('canplay', function handler() {
-            bgVideo.removeEventListener('canplay', handler);
-            startAndDismiss();
-          });
-        }
+        bgVideo.muted = true;
+        bgVideo.play().then(function () {
+          setTimeout(dismiss, 100);
+        }).catch(function () {
+          dismiss();
+        });
       } else {
         setTimeout(dismiss, 400);
       }
