@@ -264,10 +264,11 @@
     bgVideo.muted = true;
     bgVideo.load();
     bgVideo.play().catch(function () {});
-    /* Retry once after 1s in case browser wasn't ready */
-    setTimeout(function () {
-      if (bgVideo.paused) bgVideo.play().catch(function () {});
-    }, 1000);
+    [500, 1500].forEach(function (ms) {
+      setTimeout(function () {
+        if (bgVideo.paused) bgVideo.play().catch(function () {});
+      }, ms);
+    });
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden && bgVideo.paused) bgVideo.play().catch(function () {});
     });
