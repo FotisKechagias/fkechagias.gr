@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.conf import settings
 from .models import Project, Testimonial, ContactMessage
 
@@ -51,21 +51,22 @@ def contact_submit(request):
         subject = f'Νέο μήνυμα από {name} — FKECHAGIAS'
         body = f"""Νέο μήνυμα επικοινωνίας:
 
-Όνομα: {name}
-Email: {email}
+Όνομα:     {name}
+Email:     {email}
 Τηλέφωνο: {phone or '—'}
 Υπηρεσία: {service or '—'}
 
 Μήνυμα:
 {message}
 """
-        send_mail(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.CONTACT_RECIPIENT_EMAIL],
-            fail_silently=False,
+        msg = EmailMessage(
+            subject=subject,
+            body=body,
+            from_email='noreply@fkechagias.gr',
+            to=[settings.CONTACT_RECIPIENT_EMAIL],
+            reply_to=[email],
         )
+        msg.send(fail_silently=False)
 
         return JsonResponse({'success': True, 'message': 'Το μήνυμά σας εστάλη επιτυχώς!'})
 
