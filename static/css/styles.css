@@ -378,18 +378,37 @@ body:not(.is-slider) .reveal-up.visible {
   50%       { opacity: 1; }
 }
 
-/* Tablet: smaller 2-column */
+/* Tablet: slightly smaller gap */
 @media (max-width: 960px) and (min-width: 640px) {
   .hero-split { gap: 32px; }
   .browser-frame { transform: perspective(900px) rotateY(-6deg) rotateX(2deg); }
 }
 
-/* Mobile: single column, hide mockup */
+/* Mobile: stack vertically, mockup truncated below text */
 @media (max-width: 640px) {
-  .hero-split { grid-template-columns: 1fr; gap: 0; }
-  .hero-device { display: none; }
-  .hero-text { width: 100%; }
-  .hero-text .story-title { font-size: clamp(34px, 8.5vw, 60px); }
+  .hero-split {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .hero-text .story-title { font-size: clamp(32px, 8vw, 52px); }
+  .hero-device {
+    display: flex;
+    max-height: 160px;
+    overflow: hidden;
+    border-radius: 10px;
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+  .browser-frame {
+    transform: none;
+    max-width: 100%;
+    border-radius: 10px;
+  }
+  .browser-frame:hover { transform: none; }
+  .browser-content { min-height: 120px; padding: 10px; }
+  .bc-hero-area { margin-bottom: 10px; }
+  .bc-cards { gap: 6px; }
+  .bc-card { height: 40px; }
 }
 
 /* ── Services Grid ──────────────────────────────────────────── */
