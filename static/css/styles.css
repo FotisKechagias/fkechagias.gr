@@ -569,7 +569,7 @@ body:not(.is-slider) .reveal-up.visible {
   object-fit: cover;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.55;
+  opacity: 0.08;
   filter: brightness(0.5) saturate(0.9);
 }
 
