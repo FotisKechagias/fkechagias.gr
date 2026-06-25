@@ -255,7 +255,12 @@ body:not(.is-slider) .reveal-up.visible {
   align-items: center;
 }
 
-.hero-text { max-width: 520px; }
+.hero-text { width: 100%; }
+
+/* Hero title smaller since it only has half the viewport width */
+.hero-text .story-title {
+  font-size: clamp(36px, 4.5vw, 68px);
+}
 
 .hero-device {
   display: flex;
@@ -376,6 +381,8 @@ body:not(.is-slider) .reveal-up.visible {
 @media (max-width: 960px) {
   .hero-split { grid-template-columns: 1fr; gap: 0; }
   .hero-device { display: none; }
+  .hero-text { width: 100%; }
+  .hero-text .story-title { font-size: clamp(36px, 8.5vw, 72px); }
 }
 
 /* ── Services Grid ──────────────────────────────────────────── */
