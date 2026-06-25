@@ -89,11 +89,12 @@ button { background: none; border: none; cursor: pointer; font: inherit; outline
   overflow: hidden; /* Επιπλέον ασφάλεια */
 }
 
-/* ── Fallback Container για άλλες σελίδες (π.χ. project_detail) ──────────────── */
+/* ── Normal page container ─────────────────────────────────── */
 body:not(.is-slider) .slides-container {
   height: auto;
   overflow: visible;
   position: static;
+  width: 100%;
 }
 
 /* ── Story Sections (Τα slides) ─────────────────────────────── */
@@ -126,14 +127,33 @@ body.is-slider .story-section.active {
   transition: opacity 1s var(--ease-out), transform 1s var(--ease-out), filter 1s var(--ease-out), visibility 0s linear 0s;
 }
 
-/* Για σελίδες που ΔΕΝ είναι το slider, τα sections είναι κανονικά */
+/* ── Homepage sections (normal scroll) ─────────────────────── */
 body:not(.is-slider) .story-section {
   position: static;
   visibility: visible;
   opacity: 1;
   height: auto;
   min-height: auto;
+  pointer-events: auto;
+  transform: none;
+  filter: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120px 24px;
+  width: 100%;
 }
+
+/* Hero: full-viewport height */
+body:not(.is-slider) #hero {
+  min-height: 100vh;
+  justify-content: center;
+}
+
+/* Hide slider-only UI on normal pages */
+body:not(.is-slider) .slide-dots,
+body:not(.is-slider) .slide-counter,
+body:not(.is-slider) .scroll-hint { display: none !important; }
 
 .container { width: 100%; max-width: 1200px; margin: 0 auto; }
 .relative { position: relative; }
@@ -269,8 +289,22 @@ body:not(.is-slider) .reveal-up.visible {
 
 .hero-text { width: 100%; text-align: left; }
 .hero-text .story-overline { text-align: left; }
-.hero-text .story-title { text-align: left; }
-.hero-text .story-desc { text-align: left; margin-left: 0; }
+.hero-text .story-title    { text-align: left; }
+.hero-text .story-desc     { text-align: left; margin-left: 0; }
+
+/* Vision, Services, Projects — centered full-width */
+body:not(.is-slider) #vision .story-overline,
+body:not(.is-slider) #vision .story-title,
+body:not(.is-slider) #vision .story-desc,
+body:not(.is-slider) #services .story-overline,
+body:not(.is-slider) #services .story-title,
+body:not(.is-slider) #projects .story-overline,
+body:not(.is-slider) #projects .story-title { text-align: center; margin-left: auto; margin-right: auto; }
+
+/* Contact left column stays left-aligned */
+.contact-text .story-overline { text-align: left; }
+.contact-text .story-title    { text-align: left; }
+.contact-text .story-desc     { text-align: left; margin-left: 0; }
 
 /* Hero title smaller since it only has half the viewport width */
 .hero-text .story-title {
@@ -399,51 +433,30 @@ body:not(.is-slider) .reveal-up.visible {
 .bpp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 12px; }
 .bpp-card { height: 38px; background: oklch(0.13 0.016 260); border-radius: 6px; }
 
-/* ── Tablet (641px – 1199px) ────────────────────────────────── */
-@media (max-width: 1199px) and (min-width: 641px) {
-  body.is-slider .story-section {
-    padding: 88px 36px 52px;
-    justify-content: center;
-    overflow: visible;
-  }
+/* ── Tablet (768px – 1199px) ────────────────────────────────── */
+@media (max-width: 1199px) and (min-width: 769px) {
+  body:not(.is-slider) .story-section { padding: 100px 40px; }
 
-  /* Hero: stack, hide device mockup */
-  .hero-split        { grid-template-columns: 1fr; gap: 0; }
-  .hero-device       { display: none; }
-  .hero-text         { text-align: center; }
+  /* Hero: stack on tablet */
+  .hero-split { grid-template-columns: 1fr; gap: 40px; }
+  .hero-device { justify-content: center; }
+  .hero-text { text-align: center; }
   .hero-text .story-overline,
   .hero-text .story-title,
   .hero-text .story-desc { text-align: center; margin-left: auto; margin-right: auto; }
-  .hero-text .story-title { font-size: clamp(36px, 6.5vw, 72px); }
+  .hero-text .story-title { font-size: clamp(36px, 6vw, 64px); }
+  .browser-frame { max-width: 500px; }
 
-  /* Contact: stack, hide non-essential */
-  .contact-wrap { grid-template-columns: 1fr; gap: 24px; }
+  /* Contact: stack */
+  .contact-wrap { grid-template-columns: 1fr; gap: 32px; }
   .contact-text .story-overline,
   .contact-text .story-title,
   .contact-text .story-desc { text-align: center; margin-left: auto; margin-right: auto; }
-  .contact-links-mobile-hide { display: none; }
 
-  /* Typography */
-  .story-overline { margin-bottom: 12px; }
-  .story-title    { font-size: clamp(32px, 5.5vw, 60px); margin-bottom: 16px; }
-  .story-desc     { font-size: 15px; margin-bottom: 16px; }
-
-  /* Vision stats */
-  .vision-stats { gap: 32px; margin-top: 28px; padding-top: 24px; }
-  .vs-num       { font-size: clamp(28px, 5vw, 44px); }
-
-  /* Services */
-  .minimal-grid { gap: 16px; margin-top: 28px; }
-  .minimal-card { padding: 24px; }
-
-  /* Projects */
-  .projects-minimal-grid { gap: 16px; margin-top: 28px; }
-  .project-item          { aspect-ratio: 16/9; }
-
-  /* Footer — never clip the big FKECHAGIAS text */
-  .site-footer.story-section { overflow: visible; }
+  .story-title { font-size: clamp(32px, 5.5vw, 56px); }
+  .minimal-grid { gap: 20px; }
+  .projects-minimal-grid { gap: 20px; }
   .footer-sig-text { font-size: clamp(52px, 10vw, 120px); }
-  .footer-grid     { gap: 32px; }
 }
 
 /* Mobile: stack, full mockup visible */
@@ -1129,11 +1142,24 @@ body:not(.is-slider) .slide-dots { display: none; }
 
 @media (max-width: 768px) {
 
-  /* Slider sections — compact padding */
-  body.is-slider .story-section {
-    padding: 80px 20px 48px;
-    justify-content: flex-start;
-  }
+  /* Homepage sections on mobile */
+  body:not(.is-slider) .story-section { padding: 80px 20px; }
+  body:not(.is-slider) #hero { min-height: 100svh; }
+
+  /* Stack hero */
+  .hero-split { grid-template-columns: 1fr; gap: 32px; }
+  .hero-device { display: none; }
+  .hero-text { text-align: center; }
+  .hero-text .story-overline,
+  .hero-text .story-title,
+  .hero-text .story-desc { text-align: center; margin-left: auto; margin-right: auto; }
+
+  /* Stack contact */
+  .contact-wrap { grid-template-columns: 1fr; gap: 24px; }
+  .contact-text .story-overline,
+  .contact-text .story-title,
+  .contact-text .story-desc { text-align: center; margin-left: auto; margin-right: auto; }
+  .contact-links-mobile-hide { display: none; }
 
   /* Contact: strip non-essential content so form fits without scroll */
   #contact .story-desc { display: none; }
