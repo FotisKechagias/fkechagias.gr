@@ -10,8 +10,8 @@
   --c-surface:     oklch(0.16 0.02 260);
   --c-border:      oklch(0.28 0.03 260);
   --c-text:        oklch(0.92 0.01 260);
-  --c-text-muted:  oklch(0.65 0.02 260);
-  --c-text-dim:    oklch(0.40 0.02 260);
+  --c-text-muted:  oklch(0.82 0.02 260);
+  --c-text-dim:    oklch(0.65 0.02 260);
   --c-white:       oklch(0.98 0.01 260);
   --font-display:  'Newsreader', Georgia, serif;
   --font-body:     'Space Mono', 'Courier New', monospace;
@@ -327,7 +327,7 @@ body:not(.is-slider) .reveal-up.visible {
 .term-path { color: oklch(0.60 0.18 142); font-size: 10px; }
 .term-dollar { color: oklch(0.50 0.03 260); }
 .term-cmd { color: oklch(0.85 0.04 260); }
-.term-output { padding-left: 2px; color: oklch(0.48 0.03 260); display: flex; align-items: center; gap: 6px; }
+.term-output { padding-left: 2px; color: oklch(0.70 0.03 260); display: flex; align-items: center; gap: 6px; }
 .term-ok { color: oklch(0.72 0.18 142); }
 .term-link { color: var(--c-blue); }
 
@@ -664,8 +664,8 @@ body.is-slider .site-footer { border-top: none; }
   font-weight: 300;
   font-style: normal;
   color: transparent;
-  -webkit-text-stroke: 1.5px oklch(0.42 0.06 260);
-  text-stroke: 1.5px oklch(0.42 0.06 260);
+  -webkit-text-stroke: 1.5px oklch(0.62 0.06 260);
+  text-stroke: 1.5px oklch(0.62 0.06 260);
   white-space: nowrap;
   letter-spacing: -0.02em;
 }
@@ -856,7 +856,7 @@ body:not(.is-slider) .scroll-hint { display: none; }
   font-size: 8px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: oklch(0.45 0.02 260);
+  color: oklch(0.68 0.02 260);
 }
 
 .sh-track {
@@ -912,7 +912,7 @@ body:not(.is-slider) .slide-counter { display: none; }
 .sc-divider, .sc-total {
   font-family: var(--font-body);
   font-size: 10px;
-  color: oklch(0.38 0.02 260);
+  color: oklch(0.65 0.02 260);
   letter-spacing: 0.05em;
 }
 
@@ -934,7 +934,7 @@ body:not(.is-slider) .slide-dots { display: none; }
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: oklch(0.35 0.02 260);
+  background: oklch(0.52 0.02 260);
   border: none;
   padding: 0;
   cursor: pointer;
@@ -973,7 +973,7 @@ body:not(.is-slider) .slide-dots { display: none; }
   font-size: 9px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: oklch(0.42 0.02 260);
+  color: oklch(0.68 0.02 260);
 }
 
 /* ── Service Picker (contact form pills) ────────────────────── */
@@ -983,7 +983,7 @@ body:not(.is-slider) .slide-dots { display: none; }
   font-size: 9px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: oklch(0.42 0.02 260);
+  color: oklch(0.68 0.02 260);
   margin-bottom: 12px;
 }
 .sp-pills { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -991,8 +991,8 @@ body:not(.is-slider) .slide-dots { display: none; }
   font-family: var(--font-body);
   font-size: 11px;
   letter-spacing: 0.05em;
-  color: oklch(0.60 0.01 260);
-  border: 0.5px solid oklch(0.32 0.02 260);
+  color: oklch(0.78 0.01 260);
+  border: 0.5px solid oklch(0.42 0.02 260);
   border-radius: 100px;
   padding: 8px 18px;
   cursor: pointer;
