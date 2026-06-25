@@ -773,7 +773,7 @@ body.is-slider .site-footer { border-top: none; }
 .footer-sig-text {
   font-family: var(--font-display);
   font-variation-settings: 'opsz' 72;
-  font-size: clamp(64px, 13vw, 200px);
+  font-size: clamp(32px, 7vw, 110px);
   font-weight: 300;
   font-style: normal;
   color: var(--c-blue);
