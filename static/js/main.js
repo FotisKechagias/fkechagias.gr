@@ -20,30 +20,10 @@
     window.addEventListener('load', function () {
       clearInterval(barInterval);
       if (preloaderBar) preloaderBar.style.width = '100%';
-
-      var dismissed = false;
-      function dismiss() {
-        if (dismissed) return;
-        dismissed = true;
+      setTimeout(function () {
         preloader.classList.add('hidden');
         if (isSlider) setTimeout(initSlider, 50);
-      }
-
-      if (bgVideo) {
-        /* Dismiss 100ms after video actually renders its first frame */
-        bgVideo.addEventListener('playing', function handler() {
-          bgVideo.removeEventListener('playing', handler);
-          setTimeout(dismiss, 100);
-        });
-
-        bgVideo.muted = true;
-        bgVideo.play().catch(function () {});
-
-        /* Safety fallback: never wait more than 6s */
-        setTimeout(dismiss, 6000);
-      } else {
-        setTimeout(dismiss, 500);
-      }
+      }, 500);
     });
   } else {
     if (isSlider) initSlider();
@@ -279,8 +259,10 @@
     });
   }
 
-  /* ── Background Video (resume on tab switch) ────────────────── */
+  /* ── Background Video ───────────────────────────────────────── */
   if (bgVideo) {
+    bgVideo.muted = true;
+    bgVideo.play().catch(function () {});
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden && bgVideo.paused) bgVideo.play().catch(function () {});
     });
