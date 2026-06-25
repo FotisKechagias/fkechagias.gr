@@ -663,9 +663,11 @@ body.is-slider .site-footer { border-top: none; }
   font-size: clamp(64px, 13vw, 200px);
   font-weight: 300;
   font-style: normal;
+  background: linear-gradient(100deg, var(--c-blue) 0%, oklch(0.88 0.03 260) 55%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 1.5px oklch(0.62 0.06 260);
-  text-stroke: 1.5px oklch(0.62 0.06 260);
   white-space: nowrap;
   letter-spacing: -0.02em;
 }
