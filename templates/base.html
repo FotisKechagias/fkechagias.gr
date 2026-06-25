@@ -11,8 +11,8 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}" />
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/logo.png' %}" />
-  <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%230D1017'/><line x1='11' y1='13' x2='11' y2='51' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='11' y1='13' x2='27' y2='13' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='11' y1='31' x2='23' y2='31' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='34' y1='13' x2='34' y2='51' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='34' y1='31' x2='50' y2='13' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='34' y1='31' x2='50' y2='51' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><circle cx='54' cy='51' r='3.5' fill='%234D85EE'/></svg>" />
+  <link rel="apple-touch-icon" href="{% static 'images/logo.svg' %}" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -50,6 +50,11 @@
   <!-- Custom cursor -->
   <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
   <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Background video -->
+  <video class="bg-video" autoplay muted loop playsinline aria-hidden="true">
+    <source src="{% static 'videos/bg.mp4' %}" type="video/mp4" />
+  </video>
 
   <!-- Ambient background mesh (CSS-only, shows through transparent Three.js canvas) -->
   <div class="ambient-bg" aria-hidden="true">
