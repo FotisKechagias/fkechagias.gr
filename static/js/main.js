@@ -7,6 +7,8 @@
   var preloader = document.getElementById('preloader');
   var preloaderBar = document.getElementById('preloader-bar');
 
+  var bgVideo = document.querySelector('.bg-video');
+
   if (preloader) {
     var progress = 0;
     var barInterval = setInterval(function () {
@@ -18,10 +20,37 @@
     window.addEventListener('load', function () {
       clearInterval(barInterval);
       if (preloaderBar) preloaderBar.style.width = '100%';
-      setTimeout(function () {
+
+      function dismiss() {
         preloader.classList.add('hidden');
         if (isSlider) setTimeout(initSlider, 50);
-      }, 400);
+      }
+
+      if (bgVideo) {
+        var fallback = setTimeout(dismiss, 4000);
+
+        function startAndDismiss() {
+          bgVideo.muted = true;
+          bgVideo.play().then(function () {
+            clearTimeout(fallback);
+            setTimeout(dismiss, 100);
+          }).catch(function () {
+            clearTimeout(fallback);
+            setTimeout(dismiss, 400);
+          });
+        }
+
+        if (bgVideo.readyState >= 3) {
+          startAndDismiss();
+        } else {
+          bgVideo.addEventListener('canplay', function handler() {
+            bgVideo.removeEventListener('canplay', handler);
+            startAndDismiss();
+          });
+        }
+      } else {
+        setTimeout(dismiss, 400);
+      }
     });
   } else {
     if (isSlider) initSlider();
@@ -257,22 +286,15 @@
     });
   }
 
-  /* ── Background Video (force play on mobile) ────────────────── */
-  var bgVideo = document.querySelector('.bg-video');
+  /* ── Background Video (resume on tab switch) ────────────────── */
   if (bgVideo) {
-    bgVideo.muted = true;
-    var playPromise = bgVideo.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(function () {
-        document.addEventListener('touchstart', function handler() {
-          bgVideo.play();
-          document.removeEventListener('touchstart', handler);
-        }, { once: true, passive: true });
-      });
-    }
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden && bgVideo.paused) bgVideo.play();
     });
+    document.addEventListener('touchstart', function handler() {
+      if (bgVideo.paused) bgVideo.play();
+      document.removeEventListener('touchstart', handler);
+    }, { once: true, passive: true });
   }
 
   /* ── Cookie Banner ──────────────────────────────────────────── */

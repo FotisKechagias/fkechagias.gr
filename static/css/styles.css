@@ -854,7 +854,8 @@ body.is-slider .site-footer { border-top: none; }
 .project-tag { font-size: 11px; border: 1px solid var(--c-border); color: var(--c-text-muted); padding: 4px 10px; border-radius: 100px; display: inline-block; margin-right: 4px; margin-bottom: 4px; }
 
 /* ── Scroll Hint Indicator ──────────────────────────────────── */
-.scroll-hint {
+.scroll-hint { display: none !important; }
+.scroll-hint-hidden {
   position: fixed;
   bottom: 14px;
   left: 50%;
