@@ -680,7 +680,7 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
 /* ── UI Elements ────────────────────────────────────────────── */
 
 
-#three-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+/* three-canvas removed */
 
 /* ── Navigation — Apple glass pill ──────────────────────────── */
 .nav-glass {
@@ -1149,6 +1149,12 @@ body:not(.is-slider) .slide-dots { display: none; }
   color: var(--c-white);
 }
 
+/* ── Mobile blob optimization (performance) ─────────────────── */
+@media (max-width: 768px) {
+  .ab-blob { filter: blur(60px); animation: none; }
+  .ab-3, .ab-4, .ab-5 { display: none; }
+}
+
 /* ── Misc ───────────────────────────────────────────────────── */
 ::selection { background: oklch(0.68 0.20 250 / 0.25); color: var(--c-white); }
 ::-webkit-scrollbar { width: 5px; }
@@ -1165,7 +1171,7 @@ body:not(.is-slider) .slide-dots { display: none; }
 
   /* Homepage sections on mobile */
   body:not(.is-slider) .story-section { padding: 90px 20px; }
-  body:not(.is-slider) #hero { min-height: 100svh; padding-top: 90px; padding-bottom: 80px; }
+  body:not(.is-slider) #hero { min-height: auto; padding-top: 90px; padding-bottom: 80px; }
 
   /* Hero: stack, hide terminal on mobile */
   .hero-split  { grid-template-columns: 1fr; gap: 0; }
