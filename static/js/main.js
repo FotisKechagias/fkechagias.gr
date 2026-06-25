@@ -257,6 +257,24 @@
     });
   }
 
+  /* ── Background Video (force play on mobile) ────────────────── */
+  var bgVideo = document.querySelector('.bg-video');
+  if (bgVideo) {
+    bgVideo.muted = true;
+    var playPromise = bgVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(function () {
+        document.addEventListener('touchstart', function handler() {
+          bgVideo.play();
+          document.removeEventListener('touchstart', handler);
+        }, { once: true, passive: true });
+      });
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && bgVideo.paused) bgVideo.play();
+    });
+  }
+
   /* ── Cookie Banner ──────────────────────────────────────────── */
   var cookieBanner = document.getElementById('cookie-banner');
   if (cookieBanner) {
