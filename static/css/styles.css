@@ -25,6 +25,8 @@
 /* ── Global Reset ───────────────────────────────────────────── */
 html, body {
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: var(--c-bg);
   color: var(--c-text);
   font-family: var(--font-body);
