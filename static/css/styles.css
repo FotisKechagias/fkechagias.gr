@@ -569,8 +569,8 @@ body:not(.is-slider) .reveal-up.visible {
   object-fit: cover;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.18;
-  filter: brightness(0.6) saturate(1.4);
+  opacity: 0.35;
+  filter: brightness(0.5) saturate(1.4);
 }
 
 #three-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
