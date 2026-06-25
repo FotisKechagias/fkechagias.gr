@@ -399,39 +399,41 @@ body:not(.is-slider) .reveal-up.visible {
 .bpp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 12px; }
 .bpp-card { height: 38px; background: oklch(0.13 0.016 260); border-radius: 6px; }
 
-/* ── Tablet (769px – 1024px) ────────────────────────────────── */
-@media (max-width: 1024px) and (min-width: 769px) {
+/* ── Tablet (641px – 1199px) ────────────────────────────────── */
+@media (max-width: 1199px) and (min-width: 641px) {
   body.is-slider .story-section {
-    padding: 90px 32px 60px;
+    padding: 88px 28px 56px;
     justify-content: flex-start;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  /* Hero: stack vertically on tablet */
-  .hero-split {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
+  /* Hero: stack vertically */
+  .hero-split { grid-template-columns: 1fr; gap: 28px; }
   .hero-text { text-align: center; }
   .hero-text .story-overline,
   .hero-text .story-title,
   .hero-text .story-desc { text-align: center; margin-left: auto; margin-right: auto; }
-  .hero-text .story-title { font-size: clamp(32px, 5vw, 56px); }
+  .hero-text .story-title { font-size: clamp(30px, 5.5vw, 54px); }
   .hero-device { justify-content: center; }
-  .browser-frame { max-width: 520px; }
+  .browser-frame { max-width: 480px; }
 
-  /* Contact: stack vertically on tablet */
-  .contact-wrap { grid-template-columns: 1fr; gap: 32px; }
+  /* Contact: stack vertically */
+  .contact-wrap { grid-template-columns: 1fr; gap: 28px; }
   .contact-text .story-overline,
   .contact-text .story-title,
   .contact-text .story-desc { text-align: center; margin-left: auto; margin-right: auto; }
 
   /* Typography */
-  .story-title { font-size: clamp(32px, 5.5vw, 56px); }
+  .story-title { font-size: clamp(30px, 5.5vw, 52px); }
+  .story-desc  { font-size: clamp(14px, 2vw, 17px); }
 
   /* Services & Projects */
-  .minimal-grid { gap: 24px; margin-top: 36px; }
-  .projects-minimal-grid { gap: 20px; margin-top: 36px; }
+  .minimal-grid          { gap: 20px; margin-top: 32px; }
+  .projects-minimal-grid { gap: 20px; margin-top: 32px; }
+
+  /* Vision stats */
+  .vision-stats { gap: 32px; margin-top: 32px; }
 }
 
 /* Mobile: stack, full mockup visible */
