@@ -351,6 +351,8 @@ body:not(.is-slider) .reveal-up.visible {
 .ce-b { color: oklch(0.70 0.18 25); }   /* red — boolean */
 .ce-f { color: oklch(0.74 0.16 250); }  /* blue — function */
 
+.ce-comment { color: oklch(0.45 0.03 260); font-style: normal; }
+
 /* Blinking cursor */
 .ce-cursor {
   display: inline-block;
@@ -368,19 +370,21 @@ body:not(.is-slider) .reveal-up.visible {
   .hero-split { gap: 28px; }
 }
 
-/* Mobile: stack, code editor truncated with fade */
+/* Mobile: stack, code editor compact */
 @media (max-width: 640px) {
-  .hero-split { grid-template-columns: 1fr; gap: 20px; }
-  .hero-text .story-title { font-size: clamp(30px, 8vw, 48px); }
+  .hero-split { grid-template-columns: 1fr; gap: 16px; }
+  .hero-text .story-title { font-size: clamp(28px, 7.5vw, 44px); }
   .hero-device {
-    max-height: 180px;
+    max-height: 148px;
     overflow: hidden;
-    mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   }
-  .browser-frame { max-width: 100%; }
-  .code-editor { min-height: 160px; font-size: 11px; }
-  .ce-sidebar, .ce-content { padding: 10px 8px; }
+  .browser-frame { max-width: 100%; box-shadow: 0 8px 24px oklch(0 0 0 / 0.4); }
+  .code-editor { min-height: auto; font-size: 11px; }
+  .ce-sidebar { padding: 10px 8px; }
+  .ce-content { padding: 10px 12px; }
+  .browser-bar { padding: 7px 12px; }
 }
 
 /* ── Services Grid ──────────────────────────────────────────── */
@@ -1016,21 +1020,21 @@ body:not(.is-slider) .slide-dots { display: none; }
   .contact-wrap { gap: 16px; }
 
   /* Typography */
-  .story-overline { margin-bottom: 14px; }
+  .story-overline { margin-bottom: 10px; font-size: 9px; }
 
   .story-title {
-    font-size: clamp(32px, 8vw, 52px);
+    font-size: clamp(30px, 7.5vw, 48px);
     line-height: 1.02;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
 
   .story-desc {
-    font-size: 12px;
-    line-height: 1.7;
+    font-size: 13px;
+    line-height: 1.65;
   }
 
   /* Buttons */
-  .btn-primary, .btn-ghost { margin-top: 22px; }
+  .btn-primary, .btn-ghost { margin-top: 16px; padding: 11px 22px; }
 
   /* Vision stats — horizontal row with smaller numbers */
   .vision-stats {
