@@ -84,7 +84,7 @@
     <div class="projects-minimal-grid">
       {% if projects %}
         {% for project in projects|slice:":2" %}
-        <div class="project-item reveal-up" data-delay="{{ forloop.counter0 }}">
+        <a {% if project.live_url %}href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer"{% else %}href="#"{% endif %} class="project-item reveal-up" data-delay="{{ forloop.counter0 }}">
           {% if project.image %}
             <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
           {% else %}
@@ -95,14 +95,9 @@
               <h3>{{ project.title }}</h3>
               <span class="pio-industry">{{ project.industry }}</span>
             </div>
-            <div class="pio-links">
-              <a href="{% url 'project_detail' project.pk %}" class="pio-btn">Case Study →</a>
-              {% if project.live_url %}
-              <a href="{{ project.live_url }}" target="_blank" rel="noopener" class="pio-btn pio-btn-live">Live ↗</a>
-              {% endif %}
-            </div>
+            {% if project.live_url %}<div class="pio-links"><span class="pio-btn pio-btn-live">Επίσκεψη ↗</span></div>{% endif %}
           </div>
-        </div>
+        </a>
         {% endfor %}
       {% else %}
         <div class="project-item reveal-up" data-delay="1">
@@ -150,14 +145,14 @@
     </div>
     
     <div class="contact-form-minimal reveal-up" data-delay="3">
+      <span class="contact-form-title">Στείλτε μήνυμα</span>
       <form id="contact-form">
         {% csrf_token %}
-        <input type="text" class="minimal-input" name="name" placeholder="Το όνομά σας" required />
-        <input type="email" class="minimal-input" name="email" placeholder="Το email σας" required />
-
+        <input type="text" class="minimal-input" name="name" placeholder="Το όνομά σας *" required />
+        <input type="email" class="minimal-input" name="email" placeholder="Το email σας *" required />
         <input type="text" class="minimal-input" name="service" placeholder="Τι ψάχνετε; (π.χ. Κατασκευή Ιστοσελίδας)" />
-
-        <button type="submit" class="btn-primary" style="margin-top:0; width:100%; justify-content:center;">Αποστολή →</button>
+        <textarea class="minimal-textarea" name="message" placeholder="Πείτε μου λίγα λόγια για το project σας *" required></textarea>
+        <button type="submit" class="btn-primary">Αποστολή →</button>
       </form>
     </div>
   </div>

@@ -257,6 +257,22 @@
     });
   }
 
+  /* ── Cookie Banner ──────────────────────────────────────────── */
+  var cookieBanner = document.getElementById('cookie-banner');
+  if (cookieBanner) {
+    if (localStorage.getItem('cookie-consent')) {
+      cookieBanner.classList.add('hidden');
+    }
+    document.getElementById('cookie-accept').addEventListener('click', function () {
+      localStorage.setItem('cookie-consent', 'accepted');
+      cookieBanner.classList.add('hidden');
+    });
+    document.getElementById('cookie-decline').addEventListener('click', function () {
+      localStorage.setItem('cookie-consent', 'declined');
+      cookieBanner.classList.add('hidden');
+    });
+  }
+
   /* ── Service Pill Selection ──────────────────────────────────── */
   var serviceHidden = document.getElementById('service-hidden');
   document.querySelectorAll('.sp-pill').forEach(function (pill) {
