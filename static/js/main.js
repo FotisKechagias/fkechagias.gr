@@ -305,14 +305,21 @@
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var btn = form.querySelector('[type="submit"]');
-      if (btn) { btn.disabled = true; btn.textContent = 'Αποστολή...'; }
 
       var data = {};
       Array.from(form.elements).forEach(function (el) {
-        if (el.name && el.name !== 'csrfmiddlewaretoken') data[el.name] = el.value;
+        if (el.name && el.name !== 'csrfmiddlewaretoken') data[el.name] = el.value.trim();
       });
       if (!data.message && data.service) data.message = data.service;
+
+      /* JS validation — αποφεύγουμε browser required σε hidden πεδία */
+      if (!data.name || !data.email || !data.message) {
+        alert('Συμπληρώστε: όνομα, email και μήνυμα.');
+        return;
+      }
+
+      var btn = form.querySelector('[type="submit"]');
+      if (btn) { btn.disabled = true; btn.textContent = 'Αποστολή...'; }
 
       var csrf = (form.querySelector('[name="csrfmiddlewaretoken"]') || {}).value || '';
 

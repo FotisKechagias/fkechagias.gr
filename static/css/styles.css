@@ -1180,10 +1180,10 @@ body:not(.is-slider) .slide-dots { display: none; }
   .contact-text .story-desc { text-align: center; margin-left: auto; margin-right: auto; }
   .contact-links-mobile-hide { display: none; }
 
-  /* Contact: strip non-essential content so form fits without scroll */
+  /* Contact mobile */
   #contact .story-desc { display: none; }
   #contact .contact-links-mobile-hide { display: none; }
-  #contact .minimal-textarea { display: none; }
+  #contact .minimal-textarea { min-height: 72px; }
   .contact-form-minimal { padding: 20px; border-radius: 14px; }
   .contact-wrap { gap: 16px; }
 
