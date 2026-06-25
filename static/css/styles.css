@@ -129,34 +129,24 @@ body.is-slider .story-section.active {
   transition: opacity 1s var(--ease-out), transform 1s var(--ease-out), filter 1s var(--ease-out), visibility 0s linear 0s;
 }
 
-/* ── Homepage sections (normal scroll) ─────────────────────── */
+/* ── Homepage sections — one section = one screen ───────────── */
 body:not(.is-slider) .story-section {
   position: static;
   visibility: visible;
   opacity: 1;
-  height: auto;
-  min-height: auto;
   pointer-events: auto;
   transform: none;
   filter: none;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 160px 24px;
-  width: 100%;
-}
-
-/* Subtle divider between sections */
-body:not(.is-slider) .story-section + .story-section {
-  border-top: 1px solid oklch(0.22 0.02 260 / 0.5);
-}
-
-/* Hero: full-viewport height, clear fixed navbar */
-body:not(.is-slider) #hero {
-  min-height: 100vh;
   justify-content: center;
-  padding-top: 120px;
-  padding-bottom: 120px;
+  padding: 88px 24px 60px;
+  box-sizing: border-box;
+  border-top: 1px solid oklch(0.22 0.02 260 / 0.4);
 }
 
 /* Hide slider-only UI on normal pages */
@@ -444,8 +434,7 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
 
 /* ── Tablet large (1000px – 1199px): 2 columns, terminal visible ─ */
 @media (max-width: 1199px) and (min-width: 1000px) {
-  body:not(.is-slider) .story-section { padding: 120px 40px; }
-  body:not(.is-slider) #hero { padding-top: 100px; padding-bottom: 100px; }
+  body:not(.is-slider) .story-section { padding: 88px 40px 60px; }
 
   .hero-split { gap: 40px; }
   .browser-frame { max-width: 420px; }
@@ -458,8 +447,7 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
 
 /* ── Tablet small (769px – 999px): 1 column, terminal below text ─ */
 @media (max-width: 999px) and (min-width: 769px) {
-  body:not(.is-slider) .story-section { padding: 110px 32px; }
-  body:not(.is-slider) #hero { padding-top: 100px; padding-bottom: 80px; }
+  body:not(.is-slider) .story-section { padding: 80px 32px 48px; }
 
   /* Hero: stack, terminal visible below */
   .hero-split  { grid-template-columns: 1fr; gap: 48px; }
@@ -1171,9 +1159,8 @@ body:not(.is-slider) .slide-dots { display: none; }
 
 @media (max-width: 768px) {
 
-  /* Homepage sections on mobile */
-  body:not(.is-slider) .story-section { padding: 90px 20px; }
-  body:not(.is-slider) #hero { min-height: auto; padding-top: 90px; padding-bottom: 80px; }
+  /* Homepage sections on mobile — full screen each */
+  body:not(.is-slider) .story-section { padding: 80px 20px 48px; }
 
   /* Hero: stack, hide terminal on mobile */
   .hero-split  { grid-template-columns: 1fr; gap: 0; }
