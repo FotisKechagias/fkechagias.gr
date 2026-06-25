@@ -7,8 +7,6 @@
   var preloader = document.getElementById('preloader');
   var preloaderBar = document.getElementById('preloader-bar');
 
-  var bgVideo = document.querySelector('.bg-video');
-
   if (preloader) {
     var progress = 0;
     var barInterval = setInterval(function () {
@@ -256,18 +254,6 @@
         mobileMenu.classList.remove('open');
         hamburger.setAttribute('aria-expanded', 'false');
       });
-    });
-  }
-
-  /* ── Background Video ───────────────────────────────────────── */
-  if (bgVideo) {
-    bgVideo.muted = true;
-    if (bgVideo.paused) bgVideo.play().catch(function () {});
-    setTimeout(function () {
-      if (bgVideo.paused) bgVideo.play().catch(function () {});
-    }, 800);
-    document.addEventListener('visibilitychange', function () {
-      if (!document.hidden && bgVideo.paused) bgVideo.play().catch(function () {});
     });
   }
 

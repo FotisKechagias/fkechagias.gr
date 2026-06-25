@@ -517,77 +517,91 @@ body:not(.is-slider) .reveal-up.visible {
 .minimal-input:focus { border-color: var(--c-blue); }
 .minimal-input::placeholder { color: var(--c-text-dim); font-style: normal; letter-spacing: 0.04em; }
 
-/* ── Ambient Background (CSS mesh blobs — Apple-inspired) ────── */
+/* ── Animated CSS Background ────────────────────────────────── */
 .ambient-bg {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+  background: oklch(0.09 0.02 260);
 }
 .ab-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
-  animation: ab-drift ease-in-out infinite alternate;
+  filter: blur(100px);
 }
 .ab-1 {
-  width: 70vmax;
-  height: 70vmax;
-  background: oklch(0.45 0.22 250);
-  opacity: 0.18;
-  top: -30%;
-  left: -15%;
-  animation-duration: 22s;
+  width: 75vmax;
+  height: 75vmax;
+  background: oklch(0.45 0.28 250);
+  opacity: 0.30;
+  top: -25%;
+  left: -10%;
+  animation: ab-drift1 26s ease-in-out infinite alternate;
 }
 .ab-2 {
-  width: 50vmax;
-  height: 50vmax;
-  background: oklch(0.38 0.18 280);
-  opacity: 0.14;
-  bottom: -15%;
+  width: 60vmax;
+  height: 60vmax;
+  background: oklch(0.42 0.24 290);
+  opacity: 0.25;
+  bottom: -20%;
   right: -10%;
-  animation-duration: 30s;
-  animation-delay: -8s;
+  animation: ab-drift2 34s ease-in-out infinite alternate;
+  animation-delay: -10s;
 }
 .ab-3 {
+  width: 45vmax;
+  height: 45vmax;
+  background: oklch(0.58 0.22 195);
+  opacity: 0.20;
+  top: 30%;
+  left: 35%;
+  animation: ab-drift3 20s ease-in-out infinite alternate;
+  animation-delay: -5s;
+}
+.ab-4 {
+  width: 40vmax;
+  height: 40vmax;
+  background: oklch(0.50 0.26 320);
+  opacity: 0.18;
+  top: -10%;
+  right: 10%;
+  animation: ab-drift4 28s ease-in-out infinite alternate;
+  animation-delay: -14s;
+}
+.ab-5 {
   width: 35vmax;
   height: 35vmax;
-  background: oklch(0.55 0.20 210);
-  opacity: 0.10;
-  top: 35%;
-  left: 38%;
-  animation-duration: 18s;
-  animation-delay: -4s;
+  background: oklch(0.52 0.20 170);
+  opacity: 0.16;
+  bottom: 5%;
+  left: 5%;
+  animation: ab-drift5 22s ease-in-out infinite alternate;
+  animation-delay: -7s;
 }
-@keyframes ab-drift {
-  from { transform: translate(0, 0) scale(1);      }
-  to   { transform: translate(4%, 3%) scale(1.07); }
+@keyframes ab-drift1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(6%, 8%) scale(1.12); }
+}
+@keyframes ab-drift2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-7%, -5%) scale(1.10); }
+}
+@keyframes ab-drift3 {
+  from { transform: translate(0, 0) scale(1) rotate(0deg); }
+  to   { transform: translate(-5%, 6%) scale(1.08) rotate(15deg); }
+}
+@keyframes ab-drift4 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-8%, 10%) scale(1.15); }
+}
+@keyframes ab-drift5 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(9%, -7%) scale(1.10); }
 }
 
 /* ── UI Elements ────────────────────────────────────────────── */
-/* ── Background Video ───────────────────────────────────────── */
-.bg-video::-webkit-media-controls,
-.bg-video::-webkit-media-controls-enclosure,
-.bg-video::-webkit-media-controls-panel,
-.bg-video::-webkit-media-controls-play-button,
-.bg-video::-webkit-media-controls-start-playback-button {
-  display: none !important;
-  -webkit-appearance: none !important;
-  opacity: 0 !important;
-}
-
-.bg-video {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.75;
-  filter: brightness(0.5) saturate(0.9);
-}
 
 
 #three-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 2; }

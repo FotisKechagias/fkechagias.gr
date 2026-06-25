@@ -51,17 +51,14 @@
   <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
   <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
 
-  <!-- Ambient background mesh (CSS-only, shows through transparent Three.js canvas) -->
+  <!-- Animated CSS background -->
   <div class="ambient-bg" aria-hidden="true">
     <div class="ab-blob ab-1"></div>
     <div class="ab-blob ab-2"></div>
     <div class="ab-blob ab-3"></div>
+    <div class="ab-blob ab-4"></div>
+    <div class="ab-blob ab-5"></div>
   </div>
-
-  <!-- Background video (hardcoded path to bypass manifest hashing) -->
-  <video class="bg-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-    <source src="/vid/bg.mp4" type="video/mp4" />
-  </video>
 
   <!-- Three.js canvas -->
   <canvas id="three-canvas" aria-hidden="true"></canvas>
