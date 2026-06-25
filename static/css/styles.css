@@ -267,12 +267,20 @@ body:not(.is-slider) .reveal-up.visible {
   align-items: center;
 }
 
-.hero-text { width: 100%; text-align: center; }
+.hero-text { width: 100%; text-align: left; }
+.hero-text .story-overline { text-align: left; }
+.hero-text .story-title { text-align: left; }
+.hero-text .story-desc { text-align: left; margin-left: 0; }
 
 /* Hero title smaller since it only has half the viewport width */
 .hero-text .story-title {
   font-size: clamp(36px, 4.5vw, 68px);
 }
+
+/* Contact left column — left-aligned in 2-col grid */
+.contact-text .story-overline { text-align: left; }
+.contact-text .story-title    { text-align: left; }
+.contact-text .story-desc     { text-align: left; margin-left: 0; }
 
 .hero-device {
   display: flex;
