@@ -17,6 +17,14 @@
       if (preloaderBar) preloaderBar.style.width = progress + '%';
     }, 120);
 
+    /* Capture first touch on preloader as the iOS gesture trigger */
+    if (bgVideo) {
+      preloader.addEventListener('touchstart', function () {
+        bgVideo.muted = true;
+        bgVideo.play().catch(function () {});
+      }, { passive: true });
+    }
+
     window.addEventListener('load', function () {
       clearInterval(barInterval);
       if (preloaderBar) preloaderBar.style.width = '100%';
@@ -31,7 +39,8 @@
         bgVideo.play().then(function () {
           setTimeout(dismiss, 100);
         }).catch(function () {
-          dismiss();
+          /* iOS blocked autoplay — dismiss anyway, video will play on first touch */
+          setTimeout(dismiss, 400);
         });
       } else {
         setTimeout(dismiss, 400);
