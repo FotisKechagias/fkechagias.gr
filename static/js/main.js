@@ -262,7 +262,12 @@
   /* ── Background Video ───────────────────────────────────────── */
   if (bgVideo) {
     bgVideo.muted = true;
+    bgVideo.load();
     bgVideo.play().catch(function () {});
+    /* Retry once after 1s in case browser wasn't ready */
+    setTimeout(function () {
+      if (bgVideo.paused) bgVideo.play().catch(function () {});
+    }, 1000);
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden && bgVideo.paused) bgVideo.play().catch(function () {});
     });
