@@ -141,10 +141,22 @@ body:not(.is-slider) .story-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 88px 24px 60px;
+  /* justify-content: center προκαλεί overflow και "overlap" όταν το content
+     ξεπερνά το min-height — αντί αυτού χρησιμοποιούμε auto margin */
+  justify-content: flex-start;
+  padding: 0 24px;
   box-sizing: border-box;
   border-top: 1px solid oklch(0.22 0.02 260 / 0.4);
+}
+
+/* Κεντράρισμα περιεχομένου χωρίς overflow risk */
+body:not(.is-slider) .story-section > .container,
+body:not(.is-slider) .story-section > .contact-wrap {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 88px;
+  padding-bottom: 60px;
+  width: 100%;
 }
 
 /* Hide slider-only UI on normal pages */
@@ -427,7 +439,7 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
 
 /* ── Tablet large (1000px – 1199px): 2 columns, terminal visible ─ */
 @media (max-width: 1199px) and (min-width: 1000px) {
-  body:not(.is-slider) .story-section { padding: 88px 40px 60px; }
+  body:not(.is-slider) .story-section { padding: 0 40px; }
 
   .hero-split { gap: 40px; }
   .browser-frame { max-width: 420px; }
@@ -441,7 +453,7 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
 
 /* ── Tablet small (769px – 999px): 1 column, terminal below text ─ */
 @media (max-width: 999px) and (min-width: 769px) {
-  body:not(.is-slider) .story-section { padding: 80px 32px 48px; }
+  body:not(.is-slider) .story-section { padding: 0 32px; }
 
   /* Hero: stack, terminal visible below */
   .hero-split  { grid-template-columns: 1fr; gap: 48px; }
@@ -1116,7 +1128,7 @@ body:not(.is-slider) .slide-dots { display: none; }
 @media (max-width: 768px) {
 
   /* Homepage sections on mobile — full screen each */
-  body:not(.is-slider) .story-section { padding: 80px 20px 48px; }
+  body:not(.is-slider) .story-section { padding: 0 20px; }
 
   /* Hero: stack, hide terminal on mobile */
   .hero-split  { grid-template-columns: 1fr; gap: 0; }
