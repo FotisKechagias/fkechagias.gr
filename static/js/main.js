@@ -228,6 +228,16 @@
       }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
       revealEls.forEach(function (el) { obs.observe(el); });
     }
+
+    /* ── Scroll Progress Bar ─────────────────────────────────── */
+    var progressBar = document.getElementById('scroll-progress-bar');
+    if (progressBar) {
+      window.addEventListener('scroll', function () {
+        var scrollTop  = window.scrollY || document.documentElement.scrollTop;
+        var docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight > 0) progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+      }, { passive: true });
+    }
   }
 
   /* ── Custom Cursor ───────────────────────────────────────────── */
@@ -280,25 +290,21 @@
     if (localStorage.getItem('cookie-consent')) {
       cookieBanner.classList.add('hidden');
     }
-    document.getElementById('cookie-accept').addEventListener('click', function () {
-      localStorage.setItem('cookie-consent', 'accepted');
-      cookieBanner.classList.add('hidden');
-    });
-    document.getElementById('cookie-decline').addEventListener('click', function () {
-      localStorage.setItem('cookie-consent', 'declined');
-      cookieBanner.classList.add('hidden');
-    });
+    var cookieAccept  = document.getElementById('cookie-accept');
+    var cookieDecline = document.getElementById('cookie-decline');
+    if (cookieAccept) {
+      cookieAccept.addEventListener('click', function () {
+        localStorage.setItem('cookie-consent', 'accepted');
+        cookieBanner.classList.add('hidden');
+      });
+    }
+    if (cookieDecline) {
+      cookieDecline.addEventListener('click', function () {
+        localStorage.setItem('cookie-consent', 'declined');
+        cookieBanner.classList.add('hidden');
+      });
+    }
   }
-
-  /* ── Service Pill Selection ──────────────────────────────────── */
-  var serviceHidden = document.getElementById('service-hidden');
-  document.querySelectorAll('.sp-pill').forEach(function (pill) {
-    pill.addEventListener('click', function () {
-      document.querySelectorAll('.sp-pill').forEach(function (p) { p.classList.remove('selected'); });
-      pill.classList.add('selected');
-      if (serviceHidden) serviceHidden.value = pill.dataset.service;
-    });
-  });
 
   /* ── Contact Form AJAX ───────────────────────────────────────── */
   var form = document.getElementById('contact-form');

@@ -8,7 +8,7 @@
 <section class="project-detail-hero section-pad">
   <div class="container">
     <!-- Χρήση του btn-ghost για πιο καθαρό look -->
-    <a href="/" class="btn-ghost back-link reveal-up">← Πίσω στο Portfolio</a>
+    <a href="{% url 'project_list' %}" class="btn-ghost back-link reveal-up">← Πίσω στο Portfolio</a>
     
     <div class="pd-header">
       <span class="project-industry reveal-up">{{ project.industry }}</span>
