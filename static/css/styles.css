@@ -814,6 +814,7 @@ body:not(.is-slider) .site-footer.story-section {
 @media (max-width: 900px) {
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
   .footer-grid > .footer-col:first-child { grid-column: 1 / -1; }
+  .footer-email-hide { display: none; }
 }
 @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; gap: 40px; } }
 .footer-tagline {
