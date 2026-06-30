@@ -240,31 +240,6 @@
     }
   }
 
-  /* ── Custom Cursor ───────────────────────────────────────────── */
-  var cursorDot = document.getElementById('cursor-dot');
-  var cursorRing = document.getElementById('cursor-ring');
-
-  if (cursorDot && cursorRing && window.matchMedia('(hover: hover)').matches) {
-    var cx = 0, cy = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', function (e) {
-      cx = e.clientX;
-      cy = e.clientY;
-      cursorDot.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0) translate(-50%,-50%)';
-    }, { passive: true });
-
-    (function updateRing() {
-      rx += (cx - rx) * 0.15;
-      ry += (cy - ry) * 0.15;
-      cursorRing.style.transform = 'translate3d(' + rx + 'px,' + ry + 'px,0) translate(-50%,-50%)';
-      requestAnimationFrame(updateRing);
-    })();
-
-    document.querySelectorAll('a, button, [role="button"]').forEach(function (el) {
-      el.addEventListener('mouseenter', function () { cursorRing.classList.add('hover'); });
-      el.addEventListener('mouseleave', function () { cursorRing.classList.remove('hover'); });
-    });
-  }
-
   /* ── Mobile Menu ─────────────────────────────────────────────── */
   var hamburger = document.getElementById('nav-hamburger');
   var mobileMenu = document.getElementById('mobile-menu');

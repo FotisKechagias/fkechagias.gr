@@ -760,7 +760,6 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
   opacity: 0.30;
   top: -25%;
   left: -10%;
-  animation: ab-drift1 26s ease-in-out infinite alternate;
 }
 .ab-2 {
   width: 60vmax;
@@ -769,8 +768,6 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
   opacity: 0.25;
   bottom: -20%;
   right: -10%;
-  animation: ab-drift2 34s ease-in-out infinite alternate;
-  animation-delay: -10s;
 }
 .ab-3 {
   width: 45vmax;
@@ -779,8 +776,6 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
   opacity: 0.20;
   top: 30%;
   left: 35%;
-  animation: ab-drift3 20s ease-in-out infinite alternate;
-  animation-delay: -5s;
 }
 .ab-4 {
   width: 40vmax;
@@ -789,8 +784,6 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
   opacity: 0.18;
   top: -10%;
   right: 10%;
-  animation: ab-drift4 28s ease-in-out infinite alternate;
-  animation-delay: -14s;
 }
 .ab-5 {
   width: 35vmax;
@@ -799,30 +792,7 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
   opacity: 0.16;
   bottom: 5%;
   left: 5%;
-  animation: ab-drift5 22s ease-in-out infinite alternate;
-  animation-delay: -7s;
 }
-@keyframes ab-drift1 {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(6%, 8%) scale(1.12); }
-}
-@keyframes ab-drift2 {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(-7%, -5%) scale(1.10); }
-}
-@keyframes ab-drift3 {
-  from { transform: translate(0, 0) scale(1) rotate(0deg); }
-  to   { transform: translate(-5%, 6%) scale(1.08) rotate(15deg); }
-}
-@keyframes ab-drift4 {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(-8%, 10%) scale(1.15); }
-}
-@keyframes ab-drift5 {
-  from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(9%, -7%) scale(1.10); }
-}
-
 /* ── UI Elements ────────────────────────────────────────────── */
 
 
@@ -918,13 +888,6 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
 .mobile-nav-link:hover { color: var(--c-white); }
 .mobile-nav-cta { color: var(--c-blue) !important; border-bottom: none; }
 .mobile-menu-contacts { margin-top: 48px; display: flex; flex-direction: column; gap: 8px; }
-
-/* ── Cursor ─────────────────────────────────────────────────── */
-.cursor-dot, .cursor-ring { position: fixed; pointer-events: none; z-index: 9998; border-radius: 50%; top: 0; left: 0; will-change: transform; }
-.cursor-dot { width: 6px; height: 6px; background: var(--c-blue); }
-.cursor-ring { width: 36px; height: 36px; border: 1px solid var(--c-blue); opacity: 0.6; transition: width 0.3s, height 0.3s, opacity 0.3s, background 0.3s; }
-.cursor-ring.hover { width: 56px; height: 56px; opacity: 0.3; background: var(--c-blue); }
-@media (hover: none) { .cursor-dot, .cursor-ring { display: none; } }
 
 /* ── Footer / Project Details additions ─────────────────────── */
 .site-footer {
@@ -1334,7 +1297,7 @@ body:not(.is-slider) .slide-dots { display: none; }
 
 /* ── Mobile blob optimization (performance) ─────────────────── */
 @media (max-width: 768px) {
-  .ab-blob { filter: blur(60px); animation: none; }
+  .ab-blob { filter: blur(60px); }
   .ab-3, .ab-4, .ab-5 { display: none; }
 }
 
