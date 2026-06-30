@@ -36,8 +36,12 @@
 
 /* ── Global Reset ───────────────────────────────────────────── */
 html {
-  overflow-x: clip;
+  overflow-x: hidden; /* fallback για iOS Safari < 16 (δεν ξέρει το clip) */
   scroll-padding-top: 80px;
+}
+@supports (overflow-x: clip) {
+  /* clip δεν δημιουργεί scroll container όπως το hidden — ασφαλέστερο σε iOS 16+ */
+  html { overflow-x: clip; }
 }
 
 html, body {
@@ -97,7 +101,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; outline
   position: relative;
   width: 100vw;
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   overflow: hidden; /* Επιπλέον ασφάλεια */
 }
 
@@ -149,7 +153,10 @@ body:not(.is-slider) .story-section {
   filter: none;
   width: 100%;
   min-height: 100vh;
-  min-height: 100dvh;
+  /* svh (όχι dvh): το dvh αλλάζει ζωντανά καθώς κρύβεται/εμφανίζεται η μπάρα του
+     iOS Safari ΕΝ ΩΡΑ scroll, προκαλώντας απότομα "πηδήματα" περιεχομένου.
+     Το svh είναι σταθερό (μέγεθος με ορατή τη μπάρα) — καμία αναδιάταξη στο scroll. */
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -736,6 +743,11 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
   z-index: 0;
   overflow: hidden;
   background: oklch(0.09 0.02 260);
+  /* Προωθεί το fixed+blurred background στο δικό του compositor layer ώστε
+     το iOS Safari να μην το ξαναζωγραφίζει σε κάθε frame του scroll (jank fix) */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
 }
 /* Διακριτικό dot-grid texture — premium "engineered" feel (Linear/Vercel style) */
 .ambient-bg::before {
