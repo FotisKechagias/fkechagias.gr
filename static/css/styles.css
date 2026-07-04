@@ -2028,12 +2028,8 @@ body:not(.is-slider) #projects .story-overline {
 }
 
 /* ── Section decorative background index numbers ──────────────── */
-body:not(.is-slider) #vision,
-body:not(.is-slider) #services,
-body:not(.is-slider) #projects,
-body:not(.is-slider) #contact {
-  overflow: hidden;
-}
+/* ΠΡΟΣΟΧΗ: ποτέ overflow:hidden σε αυτά τα sections — σκοτώνει το
+   position:sticky των παιδιών τους (manifesto/cards/gallery pinning) */
 body:not(.is-slider) #vision::after,
 body:not(.is-slider) #services::after,
 body:not(.is-slider) #projects::after,

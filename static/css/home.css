@@ -21,6 +21,20 @@ body:not(.is-slider) #services::after,
 body:not(.is-slider) #projects::after,
 body:not(.is-slider) #contact::after { content: none; }
 
+/* ΚΡΙΣΙΜΟ: overflow visible στα sections με sticky παιδιά.
+   Οποιοδήποτε overflow:hidden σε γονέα απενεργοποιεί το
+   position:sticky → τα sections δεν "κλειδώνουν" στο scroll. */
+body:not(.is-slider) #vision,
+body:not(.is-slider) #services,
+body:not(.is-slider) #projects,
+body:not(.is-slider) #contact,
+.xp-manifesto,
+.xp-services,
+.xp-projects,
+.xp-stats {
+  overflow: visible;
+}
+
 /* ── Layout primitives ────────────────────────────────────────── */
 .xp-container {
   width: 100%;
