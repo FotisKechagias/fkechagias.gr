@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
    HOME EXPERIENCE ENGINE
-   - Hero entrance (masked lines μετά το preloader)
-   - Manifesto: αποκάλυψη λέξη-λέξη στο scroll
-   - Services: βάθος στις sticky κάρτες
-   - Projects: οριζόντιο ταξίδι (desktop μόνο)
-   - Stats: ζωντανοί μετρητές
+   - JS-driven pinning (ΔΕΝ βασίζεται σε position:sticky — δουλεύει
+     παντού): το section είναι ψηλός "διάδρομος", το stage καρφώνεται
+     με position:fixed όσο το section διασχίζει το viewport.
+   - Manifesto: αποκάλυψη λέξη-λέξη · Services: pinned deck καρτών
+   - Projects: οριζόντιο ταξίδι · Stats: pinned μετρητές
    ═══════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -12,13 +12,69 @@
   var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var desktopH = window.matchMedia('(min-width: 900px)');
 
-  /* ── Hero entrance: συγχρονισμένο με το preloader (~500ms after load) ── */
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function smooth(t)  { t = clamp01(t); return t * t * (3 - 2 * t); }
+
+  /* ── Hero entrance: συγχρονισμένο με το preloader ────────────── */
   function heroIn() { document.body.classList.add('xp-loaded'); }
   if (document.readyState === 'complete') {
     setTimeout(heroIn, 250);
   } else {
     window.addEventListener('load', function () { setTimeout(heroIn, 650); });
   }
+
+  /* ═══ PIN ENGINE ═══════════════════════════════════════════════
+     Κρατάει το stage καρφωμένο στο viewport όσο το section
+     (ο "διάδρομος") το διασχίζει:
+       πριν   → absolute top:0      (κυλάει μαζί με το section)
+       μέσα   → fixed top:0         (ΚΛΕΙΔΩΜΕΝΟ στην οθόνη)
+       μετά   → absolute bottom:0   (ξεκολλάει και συνεχίζει)      */
+  function Pin(section, stage, isOn) {
+    this.sec   = section;
+    this.stage = stage;
+    this.isOn  = isOn || function () { return true; };
+    this.state = null;
+  }
+  Pin.prototype.setState = function (s) {
+    if (s === this.state) return;
+    this.state = s;
+    var st = this.stage.style;
+    if (s === 'pinned') {
+      st.position = 'fixed';    st.top = '0'; st.bottom = '';
+    } else if (s === 'after') {
+      st.position = 'absolute'; st.top = 'auto'; st.bottom = '0';
+    } else if (s === 'before') {
+      st.position = 'absolute'; st.top = '0'; st.bottom = '';
+    } else {
+      st.position = ''; st.top = ''; st.bottom = '';
+    }
+  };
+  /* Επιστρέφει το rect του section και progress 0..1 του pin */
+  Pin.prototype.update = function (vh) {
+    if (!this.sec || !this.stage) return null;
+    var r = this.sec.getBoundingClientRect();
+    var runway = r.height - vh;
+    if (!this.isOn() || runway <= 1) {
+      this.setState(null);
+      return { rect: r, p: 1 };
+    }
+    if (r.top > 0)          this.setState('before');
+    else if (r.bottom < vh) this.setState('after');
+    else                    this.setState('pinned');
+    return { rect: r, p: clamp01(-r.top / runway) };
+  };
+  Pin.prototype.reset = function () { this.state = null; };
+
+  function makePin(secSel, isOn) {
+    var sec = document.querySelector(secSel);
+    if (!sec) return null;
+    var stage = sec.querySelector('.xp-pin-stage');
+    if (!stage) return null;
+    return new Pin(sec, stage, isOn);
+  }
+
+  var pinsEnabled = !reduced;
+  function pinsOn() { return pinsEnabled; }
 
   /* ── Manifesto: σπάσιμο σε λέξεις (κρατάει τα <em>) ──────────── */
   function splitWords(root) {
@@ -43,7 +99,6 @@
     });
   }
 
-  var manifestoSec = document.getElementById('vision');
   var mEl = document.querySelector('.xp-manifesto-text');
   var mWords = [];
   if (mEl && !reduced) {
@@ -51,17 +106,15 @@
     mWords = Array.prototype.slice.call(mEl.querySelectorAll('.xp-w'));
   }
 
-  /* ── Services stack ──────────────────────────────────────────── */
-  var cards = Array.prototype.slice.call(document.querySelectorAll('.xp-card'));
-  var CARD_TOP = 104; /* ίδιο με το CSS sticky top */
+  /* ── Services deck ───────────────────────────────────────────── */
+  var deckCards = Array.prototype.slice.call(document.querySelectorAll('.xp-deck .xp-card'));
 
   /* ── Horizontal projects ─────────────────────────────────────── */
   var hSec   = document.querySelector('.xp-projects');
   var hTrack = document.querySelector('.xp-htrack');
   var hMax   = 0;
 
-  /* Dwell ζώνες: η οθόνη μένει "κλειδωμένη" πριν ξεκινήσει
-     και αφού τελειώσει η οριζόντια κίνηση */
+  function hOn() { return !!hSec && hSec.classList.contains('xp-h-on'); }
   function hStartDwell() { return Math.round(window.innerHeight * 0.25); }
   function hEndDwell()   { return Math.round(window.innerHeight * 0.5); }
 
@@ -79,6 +132,13 @@
       hTrack.style.transform = '';
     }
   }
+
+  /* ── Pins ────────────────────────────────────────────────────── */
+  var manifestoPin = makePin('#vision', pinsOn);
+  var servicesPin  = makePin('#services', pinsOn);
+  var statsPin     = makePin('.xp-stats', pinsOn);
+  var projPin      = makePin('#projects', function () { return pinsEnabled && hOn(); });
+  var allPins = [manifestoPin, servicesPin, statsPin, projPin];
 
   /* ── Counters ────────────────────────────────────────────────── */
   function runCount(el) {
@@ -107,12 +167,10 @@
     }, { threshold: 0.6 });
     counters.forEach(function (c) { cio.observe(c); });
   } else {
-    counters.forEach(function (c) { runCount(c); });
+    Array.prototype.forEach.call(counters, function (c) { runCount(c); });
   }
 
   /* ── Ενιαίο rAF scroll loop ──────────────────────────────────── */
-  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
-
   var ticking = false;
   function onScroll() {
     if (ticking) return;
@@ -124,51 +182,71 @@
     ticking = false;
     var vh = window.innerHeight;
 
-    /* Manifesto: πόσες λέξεις είναι ενεργές.
-       Συντελεστής 1.3 → ολοκλήρωση στο ~77% του section,
-       το υπόλοιπο 23% είναι pinned dwell (κρατάει την οθόνη) */
-    if (manifestoSec && mWords.length) {
-      var r = manifestoSec.getBoundingClientRect();
-      var total = r.height - vh;
-      var p = total > 0 ? clamp01(-r.top / total) : 1;
-      var active = Math.floor(p * mWords.length * 1.3);
-      for (var i = 0; i < mWords.length; i++) {
-        if (i < active) mWords[i].classList.add('on');
-        else mWords[i].classList.remove('on');
+    /* 1 · Manifesto: λέξεις ανάβουν όσο το stage είναι pinned.
+       Συντελεστής 1.3 → ολοκλήρωση στο ~77%, το υπόλοιπο dwell */
+    if (manifestoPin) {
+      var m = manifestoPin.update(vh);
+      if (m && mWords.length) {
+        var active = Math.floor(m.p * mWords.length * 1.3);
+        for (var i = 0; i < mWords.length; i++) {
+          if (i < active) mWords[i].classList.add('on');
+          else mWords[i].classList.remove('on');
+        }
       }
     }
 
-    /* Services: η κάρτα που καλύπτεται μικραίνει & σκοτεινιάζει */
-    if (!reduced && cards.length > 1) {
-      for (var j = 0; j < cards.length - 1; j++) {
-        var nr = cards[j + 1].getBoundingClientRect();
-        var cp = clamp01((vh - nr.top) / (vh - CARD_TOP));
-        cards[j].style.transform = cp > 0 ? 'scale(' + (1 - cp * 0.05) + ')' : '';
-        cards[j].style.filter    = cp > 0 ? 'brightness(' + (1 - cp * 0.35) + ')' : '';
+    /* 2 · Services deck: κάθε κάρτα γλιστράει πάνω από την
+       προηγούμενη στο δικό της τμήμα του progress */
+    if (servicesPin) {
+      var sv = servicesPin.update(vh);
+      if (sv && deckCards.length > 1 && pinsEnabled) {
+        var n  = deckCards.length;
+        var ty = [], sc = [], br = [];
+        for (var a = 0; a < n; a++) { ty[a] = (a === 0) ? 0 : 105; sc[a] = 1; br[a] = 1; }
+        for (var b = 1; b < n; b++) {
+          var local = smooth(sv.p * n - b);
+          ty[b] = (1 - local) * 105;
+          sc[b - 1] -= local * 0.06;
+          br[b - 1] -= local * 0.42;
+        }
+        for (var c = 0; c < n; c++) {
+          deckCards[c].style.transform =
+            'translate3d(0,' + ty[c] + '%,0) scale(' + sc[c] + ')';
+          deckCards[c].style.filter = (br[c] < 1) ? 'brightness(' + br[c] + ')' : '';
+        }
       }
     }
 
-    /* Projects: οριζόντια μετατόπιση 1:1 px με start/end dwell —
-       η οθόνη κλειδώνει πριν και μετά την κίνηση της γκαλερί */
-    if (hSec && hTrack && hMax > 0 && hSec.classList.contains('xp-h-on')) {
-      var hr = hSec.getBoundingClientRect();
-      var scrolled = -hr.top;
-      if (scrolled < 0) scrolled = 0;
-      var x = scrolled - hStartDwell();
-      if (x < 0) x = 0;
-      if (x > hMax) x = hMax;
-      hTrack.style.transform = 'translate3d(' + (-x) + 'px, 0, 0)';
+    /* 3 · Projects: οριζόντια μετατόπιση 1:1 px με start/end dwell */
+    if (projPin) {
+      var pj = projPin.update(vh);
+      if (pj && hMax > 0 && hOn()) {
+        var scrolled = -pj.rect.top;
+        if (scrolled < 0) scrolled = 0;
+        var x = scrolled - hStartDwell();
+        if (x < 0) x = 0;
+        if (x > hMax) x = hMax;
+        hTrack.style.transform = 'translate3d(' + (-x) + 'px, 0, 0)';
+      }
     }
+
+    /* 4 · Stats: απλό pin — οι μετρητές τρέχουν όσο είναι καρφωμένο */
+    if (statsPin) statsPin.update(vh);
+  }
+
+  function refreshAll() {
+    refreshH();
+    allPins.forEach(function (p) { if (p) p.reset(); });
+    update();
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { refreshH(); onScroll(); });
+  window.addEventListener('resize', refreshAll);
   if (desktopH.addEventListener) {
-    desktopH.addEventListener('change', function () { refreshH(); onScroll(); });
+    desktopH.addEventListener('change', refreshAll);
   }
   /* ξανά-μέτρημα όταν φορτώσουν fonts/εικόνες */
-  window.addEventListener('load', function () { refreshH(); update(); });
+  window.addEventListener('load', refreshAll);
 
-  refreshH();
-  update();
+  refreshAll();
 })();

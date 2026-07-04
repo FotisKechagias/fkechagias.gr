@@ -1,6 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
    HOME EXPERIENCE — scroll-driven αρχική σελίδα
    Φορτώνεται ΜΟΝΟ στην αρχική, μετά το styles.css (το υπερισχύει)
+
+   PINNING: γίνεται από το home.js (absolute → fixed → absolute),
+   ΟΧΙ με position:sticky — άρα κανένα overflow/ancestor rule
+   δεν μπορεί να το σπάσει.
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── WebGL backdrop: fixed πίσω από όλο το περιεχόμενο ────────── */
@@ -21,20 +25,6 @@ body:not(.is-slider) #services::after,
 body:not(.is-slider) #projects::after,
 body:not(.is-slider) #contact::after { content: none; }
 
-/* ΚΡΙΣΙΜΟ: overflow visible στα sections με sticky παιδιά.
-   Οποιοδήποτε overflow:hidden σε γονέα απενεργοποιεί το
-   position:sticky → τα sections δεν "κλειδώνουν" στο scroll. */
-body:not(.is-slider) #vision,
-body:not(.is-slider) #services,
-body:not(.is-slider) #projects,
-body:not(.is-slider) #contact,
-.xp-manifesto,
-.xp-services,
-.xp-projects,
-.xp-stats {
-  overflow: visible;
-}
-
 /* ── Layout primitives ────────────────────────────────────────── */
 .xp-container {
   width: 100%;
@@ -52,6 +42,22 @@ body:not(.is-slider) #contact,
 .xp-contact {
   position: relative;
   z-index: 2;
+  overflow: visible;
+}
+
+/* ── Pin stage: το στοιχείο που "καρφώνεται" από το home.js ──── */
+.xp-pin-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  z-index: 2;
+}
+.xp-stage-center {
+  display: flex;
+  align-items: center;
 }
 
 .xp-label {
@@ -212,7 +218,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   align-items: center;
   gap: 10px;
   z-index: 4;
-  /* το translateX μπαίνει εδώ, όχι στο .xp-fade transform */
   margin-left: -12px;
 }
 .xp-scroll-cue span {
@@ -238,20 +243,14 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   01 · MANIFESTO — λέξη-λέξη αποκάλυψη
+   01 · MANIFESTO — λέξη-λέξη αποκάλυψη σε pinned stage
    ═══════════════════════════════════════════════════════════════ */
 .xp-manifesto {
-  /* Μεγάλο runway: οι λέξεις ολοκληρώνονται στο ~77% και μετά
-     η οθόνη μένει "κλειδωμένη" για λίγο πριν συνεχίσει το scroll */
+  /* Διάδρομος: οι λέξεις ολοκληρώνονται στο ~77%, το υπόλοιπο
+     είναι κράτημα (dwell) πριν συνεχίσει το scroll */
   height: 300vh;
 }
-.xp-manifesto-sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  display: flex;
-  align-items: center;
-  width: 100%;
+.xp-manifesto .xp-pin-stage {
   background: radial-gradient(ellipse 90% 70% at 50% 50%, oklch(0.10 0.02 260 / 0.55) 0%, transparent 78%);
 }
 .xp-manifesto-text {
@@ -284,16 +283,23 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 .xp-w.on { opacity: 1; }
 
 /* ═══════════════════════════════════════════════════════════════
-   02 · SERVICES — sticky stacking cards
+   02 · SERVICES — pinned deck: οι κάρτες γλιστρούν η μία
+   πάνω στην άλλη όσο η οθόνη μένει κλειδωμένη
    ═══════════════════════════════════════════════════════════════ */
 .xp-services {
-  padding: 20vh 0 14vh;
+  /* 1 οθόνη ανάγνωσης ανά κάρτα + μεταβάσεις */
+  height: 420vh;
 }
-.xp-sec-head { margin-bottom: 64px; }
+.xp-services .xp-pin-stage {
+  display: flex;
+  align-items: center;
+  overflow: hidden; /* κόβει τις κάρτες που περιμένουν από κάτω */
+}
+.xp-sec-head { margin-bottom: 40px; }
 .xp-sec-title {
   font-family: var(--font-display);
   font-variation-settings: 'opsz' 60;
-  font-size: clamp(40px, 7vw, 92px);
+  font-size: clamp(34px, 5.5vw, 72px);
   font-weight: 300;
   line-height: 0.98;
   letter-spacing: -0.03em;
@@ -301,23 +307,20 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   margin: 0;
 }
 
-.xp-stack {
-  display: flex;
-  flex-direction: column;
-  /* Μεγάλο κενό = κάθε κάρτα μένει pinned αρκετή ώρα
-     πριν φτάσει η επόμενη να την καλύψει */
-  gap: 16vh;
+.xp-deck {
+  position: relative;
+  height: min(58svh, 600px);
 }
 .xp-card {
-  position: sticky;
-  top: 104px;
+  position: absolute;
+  inset: 0;
   display: grid;
   grid-template-columns: 130px 1fr;
   gap: 40px;
   align-items: start;
-  min-height: 58vh;
-  padding: clamp(28px, 4.5vw, 56px);
-  background: oklch(0.13 0.02 260 / 0.92);
+  align-content: center;
+  padding: clamp(24px, 4vw, 52px);
+  background: oklch(0.13 0.02 260 / 0.94);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 0.5px solid oklch(1 0 0 / 0.09);
@@ -325,6 +328,12 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   box-shadow: 0 -14px 50px oklch(0 0 0 / 0.38);
   transform-origin: top center;
   will-change: transform, filter;
+  overflow: hidden;
+}
+/* Αρχική θέση: όλες εκτός της πρώτης περιμένουν από κάτω
+   (το home.js τις οδηγεί με το scroll) */
+.xp-deck .xp-card:nth-child(n+2) {
+  transform: translate3d(0, 105%, 0);
 }
 .xp-card-num {
   font-family: var(--font-display);
@@ -339,7 +348,7 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 .xp-card-body h3 {
   font-family: var(--font-display);
   font-variation-settings: 'opsz' 36;
-  font-size: clamp(26px, 3.6vw, 52px);
+  font-size: clamp(24px, 3.2vw, 46px);
   font-weight: 300;
   font-style: italic;
   color: var(--c-white);
@@ -373,13 +382,27 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   03 · PROJECTS — οριζόντιο gallery
+   03 · PROJECTS — οριζόντιο gallery σε pinned stage
    Default: κάθετη στοίβα (mobile / no-JS).
-   Με .xp-h-on (JS + desktop): sticky οριζόντιο ταξίδι.
+   Με .xp-h-on (JS + desktop): pinned οριζόντιο ταξίδι.
    ═══════════════════════════════════════════════════════════════ */
 .xp-projects {
   padding: 14vh 0;
 }
+/* Χωρίς οριζόντιο mode το stage είναι κανονικό block στο flow */
+.xp-projects:not(.xp-h-on) .xp-pin-stage {
+  position: static;
+  height: auto;
+}
+.xp-projects.xp-h-on {
+  padding: 0; /* το ύψος-διάδρομος ορίζεται inline από το home.js */
+}
+.xp-projects.xp-h-on .xp-pin-stage {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
 .xp-htrack {
   display: flex;
   flex-direction: column;
@@ -501,18 +524,11 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 .xp-hend:hover em { transform: translateX(6px); }
 
-/* ── Horizontal mode (JS-enabled, desktop) ────────────────────── */
-.xp-projects.xp-h-on {
-  padding: 0;
+.xp-projects.xp-h-on .xp-hintro {
+  flex: 0 0 auto;
+  width: min(430px, 38vw);
 }
-.xp-projects.xp-h-on .xp-hsticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
+.xp-projects.xp-h-on .xp-hintro-hint { display: block; }
 .xp-projects.xp-h-on .xp-htrack {
   flex-direction: row;
   align-items: center;
@@ -521,11 +537,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   margin: 0;
   will-change: transform;
 }
-.xp-projects.xp-h-on .xp-hintro {
-  flex: 0 0 auto;
-  width: min(430px, 38vw);
-}
-.xp-projects.xp-h-on .xp-hintro-hint { display: block; }
 .xp-projects.xp-h-on .xp-proj {
   flex: 0 0 auto;
   width: clamp(440px, 46vw, 660px);
@@ -539,19 +550,10 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   04 · STATS — ζωντανοί μετρητές
+   04 · STATS — pinned μετρητές
    ═══════════════════════════════════════════════════════════════ */
 .xp-stats {
-  /* Pinned: το section κρατάει την οθόνη όσο τρέχουν οι μετρητές */
   height: 180vh;
-}
-.xp-stats-sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  display: flex;
-  align-items: center;
-  width: 100%;
 }
 .xp-stats-row {
   display: flex;
@@ -634,10 +636,10 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 @media (max-width: 900px) {
   .xp-card {
     grid-template-columns: 1fr;
-    gap: 16px;
-    min-height: 0;
-    top: 92px;
+    gap: 14px;
   }
+  .xp-card-num { font-size: clamp(32px, 7vw, 48px); }
+  .xp-deck { height: min(64svh, 620px); }
   .xp-contact-grid { grid-template-columns: 1fr; }
   .xp-stats-row { flex-direction: column; gap: 48px; padding: 48px 0; }
 }
@@ -653,25 +655,34 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   .xp-manifesto { height: 260vh; }
   .xp-manifesto-text { font-size: clamp(24px, 6.8vw, 34px); line-height: 1.42; }
 
-  .xp-services { padding: 14vh 0 10vh; }
-  .xp-sec-head { margin-bottom: 40px; }
-  .xp-stack { gap: 12vh; }
+  .xp-services { height: 380vh; }
+  .xp-sec-head { margin-bottom: 24px; }
+  .xp-deck { height: min(66svh, 560px); }
+  .xp-card-body h3 { font-size: clamp(20px, 6vw, 28px); }
+  .xp-card-body p { font-size: 13px; }
 
   .xp-proj { aspect-ratio: 16 / 11; }
   .xp-stats { height: 150vh; }
   .xp-contact { padding: 8vh 0 14vh; }
 }
 
-/* ── Χωρίς κίνηση: όλα ορατά, ήσυχα ──────────────────────────── */
+/* ── Χωρίς κίνηση: όλα ορατά, στατικά, χωρίς pinning ─────────── */
 @media (prefers-reduced-motion: reduce) {
   .xp-line { transform: none; transition: none; }
   .xp-fade { opacity: 1; transform: none; transition: none; }
   .xp-scroll-cue i { animation: none; }
-  .xp-manifesto { height: auto; padding: 24vh 0; }
-  .xp-manifesto-sticky { position: static; height: auto; }
+
+  .xp-manifesto,
+  .xp-services,
+  .xp-stats { height: auto; padding: 18vh 0; }
+  .xp-pin-stage {
+    position: static !important;
+    height: auto;
+    display: block;
+  }
   .xp-w { opacity: 1; transition: none; }
-  .xp-card { position: static; }
-  .xp-stack { gap: 32px; }
-  .xp-stats { height: auto; padding: 16vh 0; }
-  .xp-stats-sticky { position: static; height: auto; }
+
+  .xp-deck { height: auto; display: flex; flex-direction: column; gap: 32px; }
+  .xp-card { position: static; transform: none !important; filter: none !important; }
+  .xp-deck .xp-card:nth-child(n+2) { transform: none; }
 }
