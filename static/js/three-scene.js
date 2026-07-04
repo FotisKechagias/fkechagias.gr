@@ -9,7 +9,7 @@
   var W = window.innerWidth;
   var H = window.innerHeight;
   var isMobile = W < 768;
-  var COUNT = isMobile ? 420 : 900;
+  var COUNT = isMobile ? 260 : 520;
 
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: !isMobile });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -17,8 +17,8 @@
   renderer.setClearColor(0x000000, 0);
 
   var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 100);
-  camera.position.z = 4.5;
+  var camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 200);
+  camera.position.z = 6;
 
   /* ── Particle geometry ── */
   var geo = new THREE.BufferGeometry();
@@ -38,10 +38,10 @@
   for (var i = 0; i < COUNT; i++) {
     var theta = Math.random() * Math.PI * 2;
     var phi   = Math.acos(2 * Math.random() - 1);
-    var r     = 2.2 + Math.random() * 2.8;
+    var r     = 8.0 + Math.random() * 9.0;
 
     pos[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
-    pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.65;
+    pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.55;
     pos[i * 3 + 2] = r * Math.cos(phi);
 
     var c = palette[Math.floor(Math.random() * palette.length)];
@@ -49,7 +49,7 @@
     col[i * 3 + 1] = c[1];
     col[i * 3 + 2] = c[2];
 
-    sz[i] = Math.random() * 1.8 + 0.4;
+    sz[i] = Math.random() * 0.7 + 0.2;
   }
 
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -64,7 +64,7 @@
     'void main(){',
     '  vColor = color;',
     '  vec4 mv = modelViewMatrix * vec4(position, 1.0);',
-    '  gl_PointSize = size * uPR * (280.0 / -mv.z);',
+    '  gl_PointSize = min(size * uPR * (55.0 / -mv.z), 12.0);',
     '  gl_Position  = projectionMatrix * mv;',
     '}'
   ].join('\n');
@@ -74,8 +74,8 @@
     'void main(){',
     '  float d = length(gl_PointCoord - 0.5);',
     '  if (d > 0.5) discard;',
-    '  float a = 1.0 - smoothstep(0.15, 0.5, d);',
-    '  gl_FragColor = vec4(vColor, a * 0.72);',
+    '  float a = 1.0 - smoothstep(0.1, 0.5, d);',
+    '  gl_FragColor = vec4(vColor, a * 0.55);',
     '}'
   ].join('\n');
 
@@ -94,8 +94,8 @@
   /* ── Mouse parallax ── */
   var mx = 0, my = 0, tx = 0, ty = 0;
   document.addEventListener('mousemove', function (e) {
-    tx = (e.clientX / W - 0.5) * 0.55;
-    ty = -(e.clientY / H - 0.5) * 0.35;
+    tx = (e.clientX / W - 0.5) * 0.30;
+    ty = -(e.clientY / H - 0.5) * 0.20;
   });
 
   var clock = new THREE.Clock();
