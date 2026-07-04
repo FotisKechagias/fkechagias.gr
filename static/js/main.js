@@ -323,4 +323,83 @@
     });
   }
 
+  /* ── Lenis smooth scroll (non-slider pages) ──────────────────── */
+  if (!isSlider && typeof Lenis !== 'undefined') {
+    var lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+
+    function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
+    requestAnimationFrame(lenisRaf);
+
+    /* Make data-slide anchor links use Lenis */
+    var anchorMap = ['#hero', '#vision', '#services', '#projects', '#contact'];
+    document.querySelectorAll('[data-slide]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        var idx = parseInt(el.dataset.slide, 10);
+        if (!isNaN(idx) && anchorMap[idx]) {
+          e.preventDefault();
+          lenis.scrollTo(anchorMap[idx], { offset: -80, duration: 1.2 });
+        }
+      });
+    });
+  }
+
+  /* ── Custom cursor ────────────────────────────────────────────── */
+  var cursorDot  = document.getElementById('cursor-dot');
+  var cursorRing = document.getElementById('cursor-ring');
+  var hasFine    = window.matchMedia('(pointer: fine)').matches;
+
+  if (cursorDot && cursorRing && hasFine) {
+    var cX = -200, cY = -200, rX = -200, rY = -200;
+
+    document.addEventListener('mousemove', function (e) {
+      cX = e.clientX; cY = e.clientY;
+      cursorDot.style.transform = 'translate(' + (cX - 2.5) + 'px,' + (cY - 2.5) + 'px)';
+    });
+
+    (function ringLoop() {
+      rX += (cX - rX) * 0.11;
+      rY += (cY - rY) * 0.11;
+      cursorRing.style.transform = 'translate(' + (rX - 19) + 'px,' + (rY - 19) + 'px)';
+      requestAnimationFrame(ringLoop);
+    })();
+
+    document.querySelectorAll('a,button,.tilt-card,.magnetic').forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        cursorRing.classList.add('cursor-hover');
+        cursorDot.classList.add('cursor-hover');
+      });
+      el.addEventListener('mouseleave', function () {
+        cursorRing.classList.remove('cursor-hover');
+        cursorDot.classList.remove('cursor-hover');
+      });
+    });
+  }
+
+  /* ── Magnetic buttons ─────────────────────────────────────────── */
+  document.querySelectorAll('.magnetic').forEach(function (el) {
+    el.addEventListener('mousemove', function (e) {
+      var r = el.getBoundingClientRect();
+      var x = e.clientX - r.left - r.width  / 2;
+      var y = e.clientY - r.top  - r.height / 2;
+      el.style.transform = 'translate(' + (x * 0.28) + 'px,' + (y * 0.36) + 'px)';
+    });
+    el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+  });
+
+  /* ── 3D card tilt on project cards ───────────────────────────── */
+  document.querySelectorAll('.tilt-card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r  = card.getBoundingClientRect();
+      var x  = (e.clientX - r.left)  / r.width  - 0.5;
+      var y  = (e.clientY - r.top)   / r.height - 0.5;
+      card.style.transform =
+        'perspective(700px) rotateY(' + (x * 10) + 'deg) rotateX(' + (-y * 7) + 'deg) translateZ(12px) translateY(-6px)';
+      card.style.boxShadow = '0 28px 64px oklch(0 0 0 / 0.55), 0 0 0 0.5px oklch(0.68 0.20 250 / 0.3)';
+    });
+    card.addEventListener('mouseleave', function () {
+      card.style.transform = '';
+      card.style.boxShadow = '';
+    });
+  });
+
 })();

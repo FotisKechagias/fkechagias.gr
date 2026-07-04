@@ -26,12 +26,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
 
+  <!-- Three.js r160 -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js" defer></script>
+  <!-- Lenis smooth scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+
   <!-- Styles -->
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 
   {% block extra_head %}{% endblock %}
 </head>
 <body class="dark-mode {% block body_class %}{% endblock %}" id="body">
+
+  <!-- Custom cursor -->
+  <div id="cursor-dot"  aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Film grain noise overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
 
   <!-- Preloader -->
   <div id="preloader" aria-hidden="true">
@@ -175,6 +187,7 @@
 
   <!-- Scripts -->
   <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/three-scene.js' %}" defer></script>
 
   {% block extra_scripts %}{% endblock %}
 </body>
