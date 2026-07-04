@@ -2180,3 +2180,173 @@ body:not(.is-slider) #contact::after  { content: '04'; }
   body:not(.is-slider) #projects::after,
   body:not(.is-slider) #contact::after { font-size: clamp(100px, 28vw, 160px); }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO V3 — Full editorial layout, typography-first
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Container overrides for hero-v3 */
+#hero .container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.hero-v3 {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding-top: 96px;
+  padding-bottom: 108px;
+  position: relative;
+  z-index: 3;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* ── Eyebrow: badge + location ──────────────────────────────── */
+.hv3-eyebrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.hv3-location {
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: oklch(0.40 0.02 260);
+}
+
+/* ── Title block ────────────────────────────────────────────── */
+.hv3-title-block {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.hv3-headline {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  gap: 0;
+}
+
+.hv3-t1 {
+  display: block;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 72;
+  font-size: clamp(68px, 11vw, 152px);
+  font-weight: 200;
+  font-style: italic;
+  color: var(--c-white);
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  filter: drop-shadow(0 0 40px oklch(0.08 0.02 260 / 0.9));
+}
+
+.hv3-t2 {
+  display: block;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 48;
+  font-size: clamp(72px, 14.5vw, 200px);
+  font-weight: 800;
+  font-style: italic;
+  background: linear-gradient(115deg,
+    var(--c-blue) 0%,
+    oklch(0.72 0.22 270) 40%,
+    var(--c-purple-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+  filter: drop-shadow(0 0 60px oklch(0.60 0.22 250 / 0.30));
+}
+
+/* ── Bottom bar ─────────────────────────────────────────────── */
+.hv3-bottom {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 60px;
+  align-items: end;
+  padding-top: 28px;
+  border-top: 0.5px solid oklch(1 0 0 / 0.07);
+  margin-top: 32px;
+}
+
+.hv3-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hv3-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.hv3-sn {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 24;
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--c-white);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.hv3-sl {
+  font-family: var(--font-body);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: oklch(0.45 0.02 260);
+}
+
+.hv3-info {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.hv3-pitch {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 14;
+  font-size: clamp(14px, 1.4vw, 17px);
+  font-weight: 300;
+  color: oklch(0.68 0.02 260);
+  line-height: 1.85;
+}
+
+.hv3-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.hv3-cta .btn-primary,
+.hv3-cta .btn-ghost { margin-top: 0; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hv3-bottom { grid-template-columns: 1fr; gap: 28px; }
+  .hv3-stats { flex-direction: row; gap: 32px; }
+  .hv3-stat { flex-direction: column; gap: 4px; }
+  .hero-v3 { padding-bottom: 100px; }
+}
+
+@media (max-width: 640px) {
+  .hv3-eyebrow { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .hv3-location { display: none; }
+  .hv3-t1 { font-size: clamp(52px, 13vw, 90px); }
+  .hv3-t2 { font-size: clamp(56px, 15vw, 100px); }
+  .hv3-stats { gap: 20px; flex-wrap: wrap; }
+  .hero-v3 { padding-top: 88px; padding-bottom: 96px; }
+}
