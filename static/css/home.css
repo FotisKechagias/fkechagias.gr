@@ -227,7 +227,9 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
    01 · MANIFESTO — λέξη-λέξη αποκάλυψη
    ═══════════════════════════════════════════════════════════════ */
 .xp-manifesto {
-  height: 240vh;
+  /* Μεγάλο runway: οι λέξεις ολοκληρώνονται στο ~77% και μετά
+     η οθόνη μένει "κλειδωμένη" για λίγο πριν συνεχίσει το scroll */
+  height: 300vh;
 }
 .xp-manifesto-sticky {
   position: sticky;
@@ -288,7 +290,9 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 .xp-stack {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  /* Μεγάλο κενό = κάθε κάρτα μένει pinned αρκετή ώρα
+     πριν φτάσει η επόμενη να την καλύψει */
+  gap: 16vh;
 }
 .xp-card {
   position: sticky;
@@ -524,7 +528,16 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
    04 · STATS — ζωντανοί μετρητές
    ═══════════════════════════════════════════════════════════════ */
 .xp-stats {
-  padding: 16vh 0;
+  /* Pinned: το section κρατάει την οθόνη όσο τρέχουν οι μετρητές */
+  height: 180vh;
+}
+.xp-stats-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 .xp-stats-row {
   display: flex;
@@ -623,14 +636,15 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   .xp-hero-bottom { flex-direction: column; align-items: flex-start; gap: 24px; }
   .xp-scroll-cue { display: none; }
 
-  .xp-manifesto { height: 220vh; }
+  .xp-manifesto { height: 260vh; }
   .xp-manifesto-text { font-size: clamp(24px, 6.8vw, 34px); line-height: 1.42; }
 
   .xp-services { padding: 14vh 0 10vh; }
   .xp-sec-head { margin-bottom: 40px; }
+  .xp-stack { gap: 12vh; }
 
   .xp-proj { aspect-ratio: 16 / 11; }
-  .xp-stats { padding: 10vh 0; }
+  .xp-stats { height: 150vh; }
   .xp-contact { padding: 8vh 0 14vh; }
 }
 
@@ -643,4 +657,7 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   .xp-manifesto-sticky { position: static; height: auto; }
   .xp-w { opacity: 1; transition: none; }
   .xp-card { position: static; }
+  .xp-stack { gap: 32px; }
+  .xp-stats { height: auto; padding: 16vh 0; }
+  .xp-stats-sticky { position: static; height: auto; }
 }

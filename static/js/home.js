@@ -60,6 +60,11 @@
   var hTrack = document.querySelector('.xp-htrack');
   var hMax   = 0;
 
+  /* Dwell ζώνες: η οθόνη μένει "κλειδωμένη" πριν ξεκινήσει
+     και αφού τελειώσει η οριζόντια κίνηση */
+  function hStartDwell() { return Math.round(window.innerHeight * 0.25); }
+  function hEndDwell()   { return Math.round(window.innerHeight * 0.5); }
+
   function refreshH() {
     if (!hSec || !hTrack) return;
     var on = desktopH.matches && !reduced;
@@ -67,7 +72,7 @@
     if (on) {
       hMax = hTrack.scrollWidth - window.innerWidth;
       if (hMax < 0) hMax = 0;
-      hSec.style.height = (window.innerHeight + hMax) + 'px';
+      hSec.style.height = (window.innerHeight + hStartDwell() + hMax + hEndDwell()) + 'px';
     } else {
       hMax = 0;
       hSec.style.height = '';
@@ -80,7 +85,7 @@
     var target = parseInt(el.dataset.target || '0', 10);
     var suffix = el.dataset.suffix || '';
     if (reduced) { el.textContent = target + suffix; return; }
-    var t0 = null, DUR = 1300;
+    var t0 = null, DUR = 1700;
     function step(ts) {
       if (!t0) t0 = ts;
       var p = Math.min((ts - t0) / DUR, 1);
@@ -119,12 +124,14 @@
     ticking = false;
     var vh = window.innerHeight;
 
-    /* Manifesto: πόσες λέξεις είναι ενεργές */
+    /* Manifesto: πόσες λέξεις είναι ενεργές.
+       Συντελεστής 1.3 → ολοκλήρωση στο ~77% του section,
+       το υπόλοιπο 23% είναι pinned dwell (κρατάει την οθόνη) */
     if (manifestoSec && mWords.length) {
       var r = manifestoSec.getBoundingClientRect();
       var total = r.height - vh;
       var p = total > 0 ? clamp01(-r.top / total) : 1;
-      var active = Math.floor(p * mWords.length * 1.12);
+      var active = Math.floor(p * mWords.length * 1.3);
       for (var i = 0; i < mWords.length; i++) {
         if (i < active) mWords[i].classList.add('on');
         else mWords[i].classList.remove('on');
@@ -141,14 +148,16 @@
       }
     }
 
-    /* Projects: οριζόντια μετατόπιση */
+    /* Projects: οριζόντια μετατόπιση 1:1 px με start/end dwell —
+       η οθόνη κλειδώνει πριν και μετά την κίνηση της γκαλερί */
     if (hSec && hTrack && hMax > 0 && hSec.classList.contains('xp-h-on')) {
       var hr = hSec.getBoundingClientRect();
-      var denom = hr.height - vh;
-      if (denom > 0) {
-        var hp = clamp01(-hr.top / denom);
-        hTrack.style.transform = 'translate3d(' + (-hp * hMax) + 'px, 0, 0)';
-      }
+      var scrolled = -hr.top;
+      if (scrolled < 0) scrolled = 0;
+      var x = scrolled - hStartDwell();
+      if (x < 0) x = 0;
+      if (x > hMax) x = hMax;
+      hTrack.style.transform = 'translate3d(' + (-x) + 'px, 0, 0)';
     }
   }
 
