@@ -156,7 +156,17 @@
         activateSlide(idx, false);
       } else {
         var urls = ['/', '/#vision', '/#services', '/#projects', '/#contact'];
-        window.location.href = urls[idx] !== undefined ? urls[idx] : '/';
+        var dest = urls[idx] !== undefined ? urls[idx] : '/';
+        if (window.location.pathname !== '/') {
+          /* Από άλλη σελίδα: πλοήγηση στην αρχική με anchor */
+          window.location.href = dest;
+        } else if (typeof Lenis === 'undefined') {
+          /* Στην αρχική χωρίς Lenis: native smooth scroll fallback */
+          var anchor = dest.split('#')[1];
+          var target = anchor ? document.getElementById(anchor) : null;
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }
+        /* Στην αρχική με Lenis: το χειρίζεται ο Lenis handler παρακάτω */
       }
     });
   });
