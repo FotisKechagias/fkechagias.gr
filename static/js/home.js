@@ -5,16 +5,12 @@
      με position:fixed όσο το section διασχίζει το viewport.
    - About: word pull-up τίτλος + character-reveal σώμα (χωρίς pin)
    - Services: απλή λίστα με reveal-up (χωρίς pin)
-   - Projects: οριζόντιο ταξίδι (pinned) · Stats: pinned μετρητές
+   - Projects: οριζόντιο ταξίδι (pinned, σε όλα τα μεγέθη/συσκευές)
    ═══════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* pointer:fine εκτός από πλάτος — αλλιώς τηλέφωνα σε landscape
-     (π.χ. iPhone Pro Max ~930px) έπαιρναν το desktop JS scroll-hijack
-     αντί για native touch-scroll, κάτι που νιώθεται σπασμένο σε touch */
-  var desktopH = window.matchMedia('(min-width: 900px) and (pointer: fine)');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
 
@@ -139,7 +135,10 @@
 
   function refreshH() {
     if (!hSec || !hTrack) return;
-    var on = desktopH.matches && !reduced;
+    /* Το οριζόντιο pin+scroll λειτουργεί σε όλα τα μεγέθη/συσκευές —
+       το scroll (mouse wheel ή touch) οδηγεί το translateX κανονικά,
+       αφού διαβάζει απλώς τη θέση scroll, όχι mousemove/hover. */
+    var on = !reduced;
     hSec.classList.toggle('xp-h-on', on);
     if (on) {
       hMax = hTrack.scrollWidth - window.innerWidth;
@@ -153,39 +152,8 @@
   }
 
   /* ── Pins ────────────────────────────────────────────────────── */
-  var statsPin = makePin('.xp-stats', pinsOn);
-  var projPin  = makePin('#projects', function () { return pinsEnabled && hOn(); });
-  var allPins = [statsPin, projPin];
-
-  /* ── Counters ────────────────────────────────────────────────── */
-  function runCount(el) {
-    var target = parseInt(el.dataset.target || '0', 10);
-    var suffix = el.dataset.suffix || '';
-    if (reduced) { el.textContent = target + suffix; return; }
-    var t0 = null, DUR = 1600;
-    function step(ts) {
-      if (!t0) t0 = ts;
-      var p = Math.min((ts - t0) / DUR, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased) + suffix;
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  var counters = document.querySelectorAll('.xp-count');
-  if ('IntersectionObserver' in window && counters.length) {
-    var cio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        runCount(en.target);
-        cio.unobserve(en.target);
-      });
-    }, { threshold: 0.6 });
-    counters.forEach(function (c) { cio.observe(c); });
-  } else {
-    Array.prototype.forEach.call(counters, function (c) { runCount(c); });
-  }
+  var projPin = makePin('#projects', function () { return pinsEnabled && hOn(); });
+  var allPins = [projPin];
 
   /* ── Ενιαίο rAF scroll loop ──────────────────────────────────── */
   var ticking = false;
@@ -211,9 +179,6 @@
         hTrack.style.transform = 'translate3d(' + (-x) + 'px, 0, 0)';
       }
     }
-
-    /* 4 · Stats: απλό pin — οι μετρητές τρέχουν όσο είναι καρφωμένο */
-    if (statsPin) statsPin.update(vh);
   }
 
   function refreshAll() {
@@ -224,9 +189,6 @@
 
   bindScroll(onScroll);
   window.addEventListener('resize', refreshAll);
-  if (desktopH.addEventListener) {
-    desktopH.addEventListener('change', refreshAll);
-  }
   /* ξανά-μέτρημα όταν φορτώσουν fonts/εικόνες */
   window.addEventListener('load', refreshAll);
 

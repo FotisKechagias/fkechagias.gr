@@ -91,7 +91,6 @@ body:not(.is-slider) #contact::after { content: none; }
 .xp-hero,
 .xp-services,
 .xp-projects,
-.xp-stats,
 .xp-contact {
   position: relative;
   z-index: 2;
@@ -492,8 +491,9 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 
 /* ═══════════════════════════════════════════════════════════════
    03 · PROJECTS — οριζόντιο gallery σε pinned stage
-   Default: κάθετη στοίβα (mobile / no-JS).
-   Με .xp-h-on (JS + desktop): pinned οριζόντιο ταξίδι.
+   Το .xp-h-on ενεργοποιείται σε όλα τα μεγέθη/συσκευές (το scroll —
+   έστω και με touch — οδηγεί το translateX). Η στήλη :not(.xp-h-on)
+   είναι fallback ΜΟΝΟ για no-JS ή prefers-reduced-motion.
    ═══════════════════════════════════════════════════════════════ */
 .xp-projects {
   padding: 14vh 0;
@@ -658,8 +658,10 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   border-radius: 50%;
 }
 
-/* ── Mobile/tablet (<900px, ίδιο breakpoint με desktopH στο home.js):
-   κανονικό οριζόντιο scroll με snap αντί για pinned scroll-hijack ── */
+/* ── Fallback ΜΟΝΟ για no-JS/reduced-motion σε στενές οθόνες (<900px):
+   οριζόντιο scroll με snap αντί για απλή κάθετη στοίβα.
+   Σε κανονική χρήση (JS + κίνηση ενεργή) δεν εφαρμόζεται πουθενά,
+   αφού το .xp-h-on ενεργοποιείται πάντα. ── */
 @media (max-width: 899px) {
   .xp-projects:not(.xp-h-on) .xp-htrack {
     flex-direction: row;
@@ -681,49 +683,7 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   04 · STATS — pinned μετρητές
-   ═══════════════════════════════════════════════════════════════ */
-.xp-stats {
-  height: 180vh;
-}
-.xp-stats-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 40px;
-  padding: 60px 0;
-  border-top: 0.5px solid oklch(1 0 0 / 0.08);
-  border-bottom: 0.5px solid oklch(1 0 0 / 0.08);
-  flex-wrap: wrap;
-}
-.xp-stat {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.xp-count {
-  font-family: var(--font-display);
-  font-variation-settings: 'opsz' 72;
-  font-size: clamp(56px, 9vw, 128px);
-  font-weight: 200;
-  font-style: italic;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  background: linear-gradient(115deg, var(--c-blue) 0%, var(--c-purple-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.xp-stat-l {
-  font-family: var(--font-body);
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: oklch(0.50 0.02 260);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   05 · CONTACT
+   04 · CONTACT
    ═══════════════════════════════════════════════════════════════ */
 .xp-contact {
   padding: 12vh 0 20vh;
@@ -786,7 +746,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
    ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
   .xp-contact-grid { grid-template-columns: 1fr; }
-  .xp-stats-row { flex-direction: column; gap: 48px; padding: 48px 0; }
 }
 
 /* Tablet (641-899px): ενδιάμεσο μέγεθος τίτλου — τα 10.5vw/14.5vw
@@ -811,7 +770,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   .xp-sitem-num { font-size: clamp(28px, 8vw, 40px); }
 
   .xp-proj { aspect-ratio: 16 / 11; }
-  .xp-stats { height: 150vh; }
   .xp-contact { padding: 8vh 0 14vh; }
   .xp-contact-bg-num { display: none; }
 }
@@ -822,7 +780,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   .xp-fade { opacity: 1; transform: none; transition: none; }
   .xp-scroll-cue i { animation: none; }
 
-  .xp-stats { height: auto; padding: 18vh 0; }
   .xp-pin-stage {
     position: static !important;
     height: auto;
