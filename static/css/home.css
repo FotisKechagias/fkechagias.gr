@@ -18,14 +18,37 @@
   opacity: 0.8;
 }
 
-/* ── Grain overlays: κινηματογραφική υφή πάνω από σωματίδια,
-   πιο ήπιες από όσο θα ήταν πάνω σε video (δεν χρειάζεται τόση ένταση) ── */
+/* ── Hero video: τοπικό φόντο ΜΟΝΟ στο Hero (όχι fixed σαν τον
+   καμβά) — γι' αυτό φαίνεται "μόνο στην αρχή" και σκρολάρει μαζί
+   με το section. Δεν έχει explicit z-index ώστε να μπαίνει κάτω
+   από το grain/περιεχόμενο βάσει σειράς στο DOM. ── */
+.xp-hero-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.xp-hero-video-fade {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    oklch(0.08 0.02 260 / 0.35) 0%,
+    transparent 45%,
+    oklch(0.08 0.02 260 / 0.65) 100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .xp-hero-video { display: none; }
+}
+
+/* ── Grain overlays: κινηματογραφική υφή. Πάνω από πραγματικό video
+   στο Hero χρειάζεται λίγο περισσότερη ένταση απ' ό,τι πάνω σε
+   σκέτα σωματίδια (Services). ── */
 .grain-hero {
   position: absolute; inset: 0;
   pointer-events: none;
   z-index: 3;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.06;
+  opacity: 0.12;
   mix-blend-mode: overlay;
 }
 .grain-subtle {
