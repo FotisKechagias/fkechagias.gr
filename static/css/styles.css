@@ -312,6 +312,31 @@ body:not(.is-slider) .reveal-up.visible {
   color: var(--c-white);
   box-shadow: var(--glow-blue);
 }
+
+/* ── Variant: πεδίο κειμένου + μαύρος κύκλος με βέλος στα δεξιά ──
+   Το βέλος μένει πάντα σκούρο· μεγαλώνει το κενό + κάνει scale
+   ο κύκλος στο hover, ανεξάρτητα από το shimmer/χρώμα του btn-primary */
+.btn-primary.btn-circle {
+  padding: 8px 8px 8px 26px;
+  transition: gap 0.3s ease, transform 0.3s var(--ease-spring),
+              background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-primary.btn-circle:hover { gap: 16px; }
+.btn-circle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: oklch(0.10 0.02 260);
+  color: var(--c-white);
+  flex-shrink: 0;
+  transition: transform 0.35s var(--ease-spring);
+}
+.btn-primary.btn-circle:hover .btn-circle-icon {
+  transform: scale(1.12);
+}
 .btn-ghost {
   display: inline-flex;
   align-items: center;

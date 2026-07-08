@@ -14,6 +14,8 @@
     .xp-w { opacity: 1 !important; }
     .xp-deck { height: auto !important; display: flex !important; flex-direction: column !important; gap: 32px !important; }
     .xp-card { position: static !important; transform: none !important; }
+    .xp-about-word { opacity: 1 !important; transform: none !important; }
+    .xp-about-char { opacity: 1 !important; }
   </style>
 </noscript>
 {% endblock %}
@@ -51,8 +53,13 @@
         χωρίς συμβιβασμούς. Μόνο custom δουλειά που ξεχωρίζει.
       </p>
       <div class="xp-hero-cta">
-        <button class="btn-primary magnetic" data-slide="3">Δες τα Έργα →</button>
-        <button class="btn-ghost magnetic" data-slide="4">Ας μιλήσουμε ↗</button>
+        <button class="btn-primary btn-circle magnetic" data-slide="4">
+          <span>Δες τα Έργα</span>
+          <span class="btn-circle-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </button>
+        <button class="btn-ghost magnetic" data-slide="5">Ας μιλήσουμε ↗</button>
       </div>
     </div>
 
@@ -83,6 +90,23 @@
     </div>
   </div>
 
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     00.5 · ABOUT — προσωπική εισαγωγή
+     ══════════════════════════════════════════════════ -->
+<section id="about" class="xp-about" aria-label="Λίγα λόγια για εμένα">
+  <div class="xp-container">
+    <div class="xp-about-card">
+      <span class="xp-label reveal-up">Λίγα λόγια</span>
+      <h2 class="xp-about-heading" id="about-heading">
+        <span class="xp-about-seg">Είμαι ο Φώτης Κεχαγιάς,</span>
+        <span class="xp-about-seg xp-about-accent">ένας αυτοδίδακτος developer.</span>
+        <span class="xp-about-seg">Φτιάχνω ιστοσελίδες που ξεχωρίζουν, από το μηδέν.</span>
+      </h2>
+      <p class="xp-about-body" id="about-body">Τα τελευταία δύο χρόνια συνεργάζομαι με επιχειρήσεις και ιδιώτες σε όλη την Ελλάδα, σχεδιάζοντας και αναπτύσσοντας ιστοσελίδες που ενώνουν αισθητική με απόδοση. Κάθε project είναι μια ευκαιρία να μετατρέψω μια ιδέα σε ψηφιακή εμπειρία που πραγματικά λειτουργεί.</p>
+    </div>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════
@@ -126,6 +150,12 @@
             κώδικας, βελτιστοποιημένος για SEO, με κορυφαίες επιδόσεις φόρτωσης
             σε κάθε συσκευή.
           </p>
+          <ul class="xp-checklist" aria-label="Τι περιλαμβάνει">
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Πλήρως custom design &amp; κώδικας</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>SEO-optimized δομή</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Ταχύτητα φόρτωσης &lt;1s</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Responsive σε κάθε συσκευή</li>
+          </ul>
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Django</span><span>React</span><span>SEO</span><span>Performance</span>
           </div>
@@ -141,6 +171,11 @@
             αυτοματισμών. Λύσεις κομμένες στα μέτρα της επιχείρησής σας,
             κατόπιν επικοινωνίας.
           </p>
+          <ul class="xp-checklist" aria-label="Τι περιλαμβάνει">
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>AI chatbot ενσωμάτωση</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Custom admin πάνελ</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Ενσωματώσεις τρίτων APIs</li>
+          </ul>
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Django</span><span>React</span><span>OpenAI API</span><span>Python</span>
           </div>
@@ -155,6 +190,11 @@
             Αναβάθμιση υπάρχουσας ιστοσελίδας: νέο design, βελτιστοποίηση
             Core Web Vitals, mobile-first προσέγγιση και πλήρες SEO audit.
           </p>
+          <ul class="xp-checklist" aria-label="Τι περιλαμβάνει">
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Πλήρες SEO audit</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Βελτιστοποίηση Core Web Vitals</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Mobile-first επανασχεδιασμός</li>
+          </ul>
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>UI/UX</span><span>Core Web Vitals</span><span>SEO Audit</span>
           </div>

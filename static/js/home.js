@@ -121,6 +121,61 @@
     mWords = Array.prototype.slice.call(mEl.querySelectorAll('.xp-w'));
   }
 
+  /* ── About: τίτλος (word pull-up μία φορά) + σώμα (character reveal
+     συνεχώς οδηγούμενο από το scroll, χωρίς pin) ─────────────────── */
+  var aboutHeading = document.getElementById('about-heading');
+  var aboutWords = [];
+  if (aboutHeading) {
+    Array.prototype.slice.call(aboutHeading.querySelectorAll('.xp-about-seg')).forEach(function (seg) {
+      var text = seg.textContent;
+      seg.textContent = '';
+      text.split(/(\s+)/).forEach(function (part) {
+        if (!part) return;
+        if (/^\s+$/.test(part)) {
+          seg.appendChild(document.createTextNode(' '));
+          return;
+        }
+        var w = document.createElement('span');
+        w.className = 'xp-about-word';
+        w.textContent = part;
+        seg.appendChild(w);
+        aboutWords.push(w);
+      });
+    });
+
+    if (reduced) {
+      aboutHeading.classList.add('in');
+    } else if ('IntersectionObserver' in window) {
+      var aboutObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          aboutWords.forEach(function (w, i) { w.style.transitionDelay = (i * 0.08) + 's'; });
+          aboutHeading.classList.add('in');
+          aboutObs.unobserve(aboutHeading);
+        });
+      }, { threshold: 0.3 });
+      aboutObs.observe(aboutHeading);
+    } else {
+      aboutHeading.classList.add('in');
+    }
+  }
+
+  var aboutBody = document.getElementById('about-body');
+  var aboutChars = [];
+  if (aboutBody && !reduced) {
+    var bodyText = aboutBody.textContent;
+    aboutBody.textContent = '';
+    var bodyFrag = document.createDocumentFragment();
+    for (var bi = 0; bi < bodyText.length; bi++) {
+      var cs = document.createElement('span');
+      cs.className = 'xp-about-char';
+      cs.textContent = bodyText[bi] === ' ' ? ' ' : bodyText[bi];
+      bodyFrag.appendChild(cs);
+    }
+    aboutBody.appendChild(bodyFrag);
+    aboutChars = Array.prototype.slice.call(aboutBody.querySelectorAll('.xp-about-char'));
+  }
+
   /* ── Services deck ───────────────────────────────────────────── */
   var deckCards = Array.prototype.slice.call(document.querySelectorAll('.xp-deck .xp-card'));
 
@@ -196,6 +251,22 @@
   function update() {
     ticking = false;
     var vh = window.innerHeight;
+
+    /* 0.5 · About body: character-by-character αδιαφάνεια, υπολογισμένη
+       απευθείας από τη θέση της παραγράφου στο viewport (χωρίς pin) —
+       ισοδύναμο του useScroll offset ['start 0.8','end 0.2'] */
+    if (aboutBody && aboutChars.length) {
+      var abRect  = aboutBody.getBoundingClientRect();
+      var abStart = vh * 0.8;
+      var abTotal = vh * 0.6 + abRect.height;
+      var abP     = clamp01((abStart - abRect.top) / abTotal);
+      var an = aboutChars.length;
+      for (var ai = 0; ai < an; ai++) {
+        var charProg = ai / an;
+        var abEnd = Math.min(charProg + 0.05, 1);
+        aboutChars[ai].style.opacity = clamp(remap(abP, charProg - 0.1, abEnd, 0.2, 1), 0.2, 1);
+      }
+    }
 
     /* 1 · Manifesto: κάθε λέξη έχει τη δική της αδιαφάνεια, οδηγούμενη
        συνεχώς (όχι on/off) από το progress του pin — WordReveal pattern:
