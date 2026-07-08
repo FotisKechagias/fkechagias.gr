@@ -14,11 +14,6 @@
   var desktopH = window.matchMedia('(min-width: 900px)');
 
   function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
-  function clamp(v, min, max) { return v < min ? min : v > max ? max : v; }
-  function remap(v, inLo, inHi, outLo, outHi) {
-    var t = (v - inLo) / (inHi - inLo);
-    return outLo + t * (outHi - outLo);
-  }
 
   /* Ακούει lenis.on('scroll') αντί για native window scroll ώστε το
      progress να μη "τρέχει μπροστά" από το οπτικό smooth-scroll του Lenis */
@@ -130,40 +125,6 @@
     }
   }
 
-  var aboutBody = document.getElementById('about-body');
-  var aboutChars = [];
-  var aboutDone = false;
-  if (aboutBody && !reduced) {
-    var bodyText = aboutBody.textContent;
-    aboutBody.textContent = '';
-    var bodyFrag = document.createDocumentFragment();
-    for (var bi = 0; bi < bodyText.length; bi++) {
-      var cs = document.createElement('span');
-      cs.className = 'xp-about-char';
-      cs.textContent = bodyText[bi] === ' ' ? ' ' : bodyText[bi];
-      bodyFrag.appendChild(cs);
-    }
-    aboutBody.appendChild(bodyFrag);
-    aboutChars = Array.prototype.slice.call(aboutBody.querySelectorAll('.xp-about-char'));
-
-    /* Ασφάλεια: η συνεχής scroll-based φόρμουλα δεν εγγυάται πάντα
-       opacity:1 (γρήγορο scroll/χαμηλά fps σε κινητό). Μόλις η
-       παράγραφος βγει εντελώς από πάνω, κλειδώνουμε σε πλήρη
-       αδιαφάνεια ώστε να μη μένει ποτέ "θαμπή" μετά που την προσπερνάς. */
-    if ('IntersectionObserver' in window) {
-      var aboutDoneObs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.boundingClientRect.top < 0 && !entry.isIntersecting) {
-            aboutDone = true;
-            aboutChars.forEach(function (c) { c.style.opacity = 1; });
-            aboutDoneObs.disconnect();
-          }
-        });
-      }, { threshold: 0 });
-      aboutDoneObs.observe(aboutBody);
-    }
-  }
-
   /* ── Horizontal projects ─────────────────────────────────────── */
   var hSec   = document.querySelector('.xp-projects');
   var hTrack = document.querySelector('.xp-htrack');
@@ -234,22 +195,6 @@
   function update() {
     ticking = false;
     var vh = window.innerHeight;
-
-    /* 0.5 · About body: character-by-character αδιαφάνεια, υπολογισμένη
-       απευθείας από τη θέση της παραγράφου στο viewport (χωρίς pin) —
-       ισοδύναμο του useScroll offset ['start 0.8','end 0.2'] */
-    if (aboutBody && aboutChars.length && !aboutDone) {
-      var abRect  = aboutBody.getBoundingClientRect();
-      var abStart = vh * 0.8;
-      var abTotal = vh * 0.6 + abRect.height;
-      var abP     = clamp01((abStart - abRect.top) / abTotal);
-      var an = aboutChars.length;
-      for (var ai = 0; ai < an; ai++) {
-        var charProg = ai / an;
-        var abEnd = Math.min(charProg + 0.05, 1);
-        aboutChars[ai].style.opacity = clamp(remap(abP, charProg - 0.1, abEnd, 0.2, 1), 0.2, 1);
-      }
-    }
 
     /* 1 · Projects: οριζόντια μετατόπιση 1:1 px με start/end dwell */
     if (projPin) {

@@ -353,17 +353,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   opacity: 1;
   transform: translateY(0);
 }
-.xp-about-body {
-  font-family: var(--font-display);
-  font-variation-settings: 'opsz' 14;
-  font-weight: 300;
-  font-size: clamp(14px, 1.5vw, 17px);
-  color: var(--c-text-dim);
-  line-height: 1.85;
-  max-width: 620px;
-  margin: 32px auto 0;
-}
-.xp-about-char { opacity: 0.2; }
 
 /* Η πρώην ξεχωριστή ενότητα "Vision" ενσωματωμένη εδώ ως pull-quote,
    ώστε να μη διακόπτεται η ροή με ένα ολόκληρο ξεχωριστό pinned scene */
@@ -376,7 +365,7 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   color: var(--c-text-dim);
   line-height: 1.65;
   max-width: 560px;
-  margin: 36px auto 0;
+  margin: 44px auto 0;
   padding-left: 24px;
   border-left: 2px solid var(--c-blue);
   text-align: left;
@@ -398,7 +387,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 
 @media (prefers-reduced-motion: reduce) {
   .xp-about-word { opacity: 1; transform: none; transition: none; }
-  .xp-about-char { opacity: 1; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
