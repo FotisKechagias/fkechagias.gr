@@ -11,7 +11,10 @@
   'use strict';
 
   var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var desktopH = window.matchMedia('(min-width: 900px)');
+  /* pointer:fine εκτός από πλάτος — αλλιώς τηλέφωνα σε landscape
+     (π.χ. iPhone Pro Max ~930px) έπαιρναν το desktop JS scroll-hijack
+     αντί για native touch-scroll, κάτι που νιώθεται σπασμένο σε touch */
+  var desktopH = window.matchMedia('(min-width: 900px) and (pointer: fine)');
 
   function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
 
