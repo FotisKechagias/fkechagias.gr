@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import Navbar from '../components/Navbar';
 import WordsPullUp from '../components/WordsPullUp';
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -22,8 +21,6 @@ export default function Hero() {
         />
         <div className="noise-overlay absolute inset-0 opacity-[0.7] mix-blend-overlay pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
-
-        <Navbar />
 
         <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 sm:px-8 sm:pb-10 md:px-10 md:pb-14 lg:px-14 lg:pb-16">
           <div className="grid grid-cols-12 gap-6 md:gap-10 items-end">

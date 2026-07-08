@@ -8,7 +8,7 @@ const NAV_ITEMS: { label: string; href: string }[] = [
 
 export default function Navbar() {
   return (
-    <nav className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
+    <nav className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-50">
       <div className="bg-black rounded-b-2xl md:rounded-b-3xl px-4 py-2 md:px-8">
         <ul className="flex items-center gap-3 sm:gap-6 md:gap-12 lg:gap-14">
           {NAV_ITEMS.map((item) => (

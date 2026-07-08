@@ -20,7 +20,12 @@ export default function WordsPullUp({ text, showAsterisk = false }: WordsPullUpP
       {words.map((word, i) => {
         const isLast = i === words.length - 1;
         return (
-          <span key={i} className="overflow-hidden inline-block pb-[0.1em] mr-[0.22em] last:mr-0">
+          <span
+            key={i}
+            className={`overflow-hidden inline-block pb-[0.1em] mr-[0.22em] last:mr-0 ${
+              showAsterisk && isLast ? 'pr-[0.5em]' : ''
+            }`}
+          >
             <motion.span
               className="inline-block relative"
               initial={{ y: 20, opacity: 0 }}
