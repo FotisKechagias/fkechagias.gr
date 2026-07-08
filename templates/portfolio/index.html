@@ -1,36 +1,287 @@
-{% load static vite_tags %}
-<!DOCTYPE html>
-<html lang="el">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#000000" />
+{% extends 'base.html' %}
+{% load static %}
 
-  <title>FKECHAGIAS — Web Design &amp; Development</title>
-  <meta name="description" content="Freelance web design &amp; development. Ιστοσελίδες που ξεχωρίζουν, χτισμένες από το μηδέν, χωρίς templates." />
+{% block body_class %}{% endblock %}
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="{% static 'images/logo.svg' %}" />
-  <link rel="apple-touch-icon" href="{% static 'images/logo.svg' %}" />
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+<noscript>
+  <style>
+    .xp-line { transform: none !important; }
+    .xp-fade { opacity: 1 !important; transform: none !important; }
+    .xp-manifesto, .xp-services, .xp-stats, .xp-projects { height: auto !important; padding: 12vh 0 !important; }
+    .xp-pin-stage { position: static !important; height: auto !important; display: block !important; }
+    .xp-w { opacity: 1 !important; }
+    .xp-deck { height: auto !important; display: flex !important; flex-direction: column !important; gap: 32px !important; }
+    .xp-card { position: static !important; transform: none !important; }
+  </style>
+</noscript>
+{% endblock %}
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="FKECHAGIAS — Web Design & Development" />
-  <meta property="og:description" content="Ιστοσελίδες που ξεχωρίζουν, χτισμένες από το μηδέν." />
-  <meta property="og:url" content="https://fkechagias.gr" />
-  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.svg' %}" />
+{% block content %}
 
-  <!-- Fonts: Almarai (global) + Instrument Serif italic (accent) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Instrument+Serif:ital@1&display=swap"
-    rel="stylesheet"
-  />
+<!-- Fixed WebGL backdrop — η κάμερα ταξιδεύει με το scroll -->
+<canvas id="xp-canvas" aria-hidden="true"></canvas>
 
-  {% vite_asset 'src/main.tsx' %}
-</head>
-<body class="bg-black">
-  <div id="root"></div>
-</body>
-</html>
+<!-- ══════════════════════════════════════════════════
+     00 · HERO
+     ══════════════════════════════════════════════════ -->
+<section id="hero" class="xp-hero" aria-label="Hero">
+
+  <div class="xp-container xp-hero-inner">
+
+    <div class="xp-hero-top xp-fade">
+      <span class="hero-available">
+        <span class="ha-dot"></span>
+        Διαθέσιμος για νέα projects
+      </span>
+      <span class="xp-hero-meta">Fotis Kechagias — Web Designer &amp; Developer</span>
+    </div>
+
+    <h1 class="xp-h1">
+      <span class="xp-mask"><span class="xp-line xp-l1">Φτιάχνω</span></span>
+      <span class="xp-mask"><span class="xp-line xp-l2">Εμπειρίες.</span></span>
+    </h1>
+
+    <div class="xp-hero-bottom xp-fade">
+      <p class="xp-hero-pitch">
+        Web design &amp; development από το μηδέν — χωρίς templates,
+        χωρίς συμβιβασμούς. Μόνο custom δουλειά που ξεχωρίζει.
+      </p>
+      <div class="xp-hero-cta">
+        <button class="btn-primary magnetic" data-slide="3">Δες τα Έργα →</button>
+        <button class="btn-ghost magnetic" data-slide="4">Ας μιλήσουμε ↗</button>
+      </div>
+    </div>
+
+    <div class="xp-scroll-cue xp-fade" aria-hidden="true">
+      <span>scroll</span>
+      <i></i>
+    </div>
+
+  </div>
+
+  <!-- Infinite marquee ribbon -->
+  <div class="hero-marquee" aria-hidden="true">
+    <div class="hero-marquee-track">
+      <span>PREMIUM WEB DESIGN</span><span class="mq-dot">·</span>
+      <span>FULL-STACK DEVELOPMENT</span><span class="mq-dot">·</span>
+      <span>DJANGO &amp; REACT</span><span class="mq-dot">·</span>
+      <span>SEO &amp; PERFORMANCE</span><span class="mq-dot">·</span>
+      <span>AI INTEGRATION</span><span class="mq-dot">·</span>
+      <span>THREE.JS &amp; WEBGL</span><span class="mq-dot">·</span>
+      <span>FKECHAGIAS WEB STUDIO</span><span class="mq-dot">·</span>
+      <span>PREMIUM WEB DESIGN</span><span class="mq-dot">·</span>
+      <span>FULL-STACK DEVELOPMENT</span><span class="mq-dot">·</span>
+      <span>DJANGO &amp; REACT</span><span class="mq-dot">·</span>
+      <span>SEO &amp; PERFORMANCE</span><span class="mq-dot">·</span>
+      <span>AI INTEGRATION</span><span class="mq-dot">·</span>
+      <span>THREE.JS &amp; WEBGL</span><span class="mq-dot">·</span>
+      <span>FKECHAGIAS WEB STUDIO</span><span class="mq-dot">·</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     01 · MANIFESTO — αποκάλυψη λέξη-λέξη στο scroll
+     ══════════════════════════════════════════════════ -->
+<section id="vision" class="xp-manifesto" aria-label="Φιλοσοφία">
+  <div class="xp-pin-stage xp-stage-center">
+    <div class="xp-container">
+      <span class="xp-label">Η φιλοσοφία</span>
+      <p class="xp-manifesto-text"
+         aria-label="Ο επισκέπτης σας αποφασίζει μέσα σε τρία δευτερόλεπτα. Σχεδιάζω εμπειρίες που τον κερδίζουν στο πρώτο βλέμμα — και τον μετατρέπουν σε πελάτη.">
+        Ο επισκέπτης σας αποφασίζει μέσα σε <em>τρία δευτερόλεπτα</em>.
+        Σχεδιάζω εμπειρίες που τον κερδίζουν στο πρώτο βλέμμα —
+        και τον μετατρέπουν σε <em>πελάτη</em>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     02 · SERVICES — sticky stacking cards
+     ══════════════════════════════════════════════════ -->
+<section id="services" class="xp-services" aria-label="Υπηρεσίες">
+  <div class="xp-pin-stage">
+    <div class="xp-container">
+
+    <div class="xp-sec-head reveal-up">
+      <span class="xp-label">Υπηρεσίες</span>
+      <h2 class="xp-sec-title">Τι μπορώ να φτιάξω<br /><strong>για εσάς.</strong></h2>
+    </div>
+
+    <div class="xp-deck">
+
+      <article class="xp-card">
+        <span class="xp-card-num" aria-hidden="true">01</span>
+        <div class="xp-card-body">
+          <h3>Κατασκευή Ιστοσελίδας</h3>
+          <p>
+            Εταιρικά sites, landing pages και eshops από το μηδέν. Πλήρως custom
+            κώδικας, βελτιστοποιημένος για SEO, με κορυφαίες επιδόσεις φόρτωσης
+            σε κάθε συσκευή.
+          </p>
+          <div class="xp-tags" aria-label="Τεχνολογίες">
+            <span>Django</span><span>React</span><span>SEO</span><span>Performance</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="xp-card">
+        <span class="xp-card-num" aria-hidden="true">02</span>
+        <div class="xp-card-body">
+          <h3>Advanced Web Apps &amp; AI</h3>
+          <p>
+            Από σύνθετες web εφαρμογές μέχρι ενσωμάτωση AI chatbots και
+            αυτοματισμών. Λύσεις κομμένες στα μέτρα της επιχείρησής σας,
+            κατόπιν επικοινωνίας.
+          </p>
+          <div class="xp-tags" aria-label="Τεχνολογίες">
+            <span>Django</span><span>React</span><span>OpenAI API</span><span>Python</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="xp-card">
+        <span class="xp-card-num" aria-hidden="true">03</span>
+        <div class="xp-card-body">
+          <h3>Redesign &amp; Performance</h3>
+          <p>
+            Αναβάθμιση υπάρχουσας ιστοσελίδας: νέο design, βελτιστοποίηση
+            Core Web Vitals, mobile-first προσέγγιση και πλήρες SEO audit.
+          </p>
+          <div class="xp-tags" aria-label="Τεχνολογίες">
+            <span>UI/UX</span><span>Core Web Vitals</span><span>SEO Audit</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     03 · PROJECTS — οριζόντιο ταξίδι στο scroll
+     ══════════════════════════════════════════════════ -->
+<section id="projects" class="xp-projects" aria-label="Έργα">
+  <div class="xp-pin-stage">
+    <div class="xp-htrack">
+
+      <div class="xp-hintro">
+        <span class="xp-label">Portfolio</span>
+        <h2 class="xp-hintro-title">Επιλεγμένα<br /><strong>Έργα.</strong></h2>
+        <p class="xp-hintro-hint" aria-hidden="true">( scroll )</p>
+      </div>
+
+      {% if projects %}
+        {% for project in projects|slice:":4" %}
+        <a href="{{ project.get_absolute_url }}" class="xp-proj"
+           aria-label="{{ project.title }} — Δες το project">
+          {% if project.image %}
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
+          {% else %}
+            <div class="project-placeholder"></div>
+          {% endif %}
+          <div class="xp-proj-info">
+            <div class="xp-proj-meta">
+              <h3>{{ project.title }}</h3>
+              <span class="xp-proj-industry">{{ project.industry }}</span>
+            </div>
+            <span class="xp-proj-arrow" aria-hidden="true">↗</span>
+          </div>
+        </a>
+        {% endfor %}
+      {% else %}
+        <div class="xp-proj">
+          <div class="project-placeholder"></div>
+          <div class="xp-proj-info">
+            <div class="xp-proj-meta">
+              <h3>Έρχεται σύντομα</h3>
+              <span class="xp-proj-industry">Portfolio</span>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <a href="{% url 'project_list' %}" class="xp-hend magnetic">
+        <span>Δες όλα τα projects</span>
+        <em aria-hidden="true">→</em>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     04 · STATS — ζωντανοί μετρητές
+     ══════════════════════════════════════════════════ -->
+<section class="xp-stats" aria-label="Στατιστικά">
+  <div class="xp-pin-stage xp-stage-center">
+    <div class="xp-container">
+      <div class="xp-stats-row">
+        <div class="xp-stat reveal-up">
+          <span class="xp-count" data-target="20" data-suffix="+">0+</span>
+          <span class="xp-stat-l">Ολοκληρωμένα projects</span>
+        </div>
+        <div class="xp-stat reveal-up" data-delay="1">
+          <span class="xp-count" data-target="2" data-suffix="+">0+</span>
+          <span class="xp-stat-l">Χρόνια εμπειρίας</span>
+        </div>
+        <div class="xp-stat reveal-up" data-delay="2">
+          <span class="xp-count" data-target="100" data-suffix="%">0%</span>
+          <span class="xp-stat-l">Custom κώδικας</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     05 · CONTACT
+     ══════════════════════════════════════════════════ -->
+<section id="contact" class="xp-contact" aria-label="Επικοινωνία">
+  <div class="xp-container xp-contact-grid">
+
+    <div class="xp-contact-left">
+      <span class="xp-label reveal-up">Επικοινωνία</span>
+      <h2 class="xp-contact-title reveal-up">Έτοιμοι να<br /><strong>ξεχωρίσετε;</strong></h2>
+      <p class="xp-contact-sub reveal-up" data-delay="1">
+        Πείτε μου την ιδέα σας. Θα σας απαντήσω μέσα σε 24 ώρες
+        με ένα συγκεκριμένο πλάνο για τη σελίδα σας.
+      </p>
+
+      <div class="xp-contact-links reveal-up" data-delay="2">
+        <a href="mailto:fkechagias07@gmail.com" class="contact-link-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          fkechagias07@gmail.com
+        </a>
+        <a href="tel:+306987530306" class="contact-link-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6 6l1.06-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +30 6987 530 306
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-form-minimal reveal-up" data-delay="2">
+      <span class="contact-form-title">Στείλτε μήνυμα</span>
+      <form id="contact-form" novalidate>
+        {% csrf_token %}
+        <input type="text"  class="minimal-input"    name="name"    placeholder="Το όνομά σας *" required />
+        <input type="email" class="minimal-input"    name="email"   placeholder="Το email σας *" required />
+        <input type="text"  class="minimal-input"    name="service" placeholder="Τι ψάχνετε; (π.χ. Κατασκευή Ιστοσελίδας)" />
+        <textarea           class="minimal-textarea" name="message" placeholder="Πείτε μου λίγα λόγια για το project σας *" rows="4"></textarea>
+        <button type="submit" class="btn-primary magnetic">Αποστολή →</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/home.js' %}" defer></script>
+{% endblock %}

@@ -31,7 +31,3 @@ Thumbs.db
 
 *.Identifier
 :Zone.Identifier
-
-# Frontend (React/Vite) — built output in static/landing/ IS committed
-# since the production server has no Node; only node_modules is ignored.
-frontend/node_modules/
