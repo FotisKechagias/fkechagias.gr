@@ -14,6 +14,21 @@
 
   function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
   function smooth(t)  { t = clamp01(t); return t * t * (3 - 2 * t); }
+  function clamp(v, min, max) { return v < min ? min : v > max ? max : v; }
+  function remap(v, inLo, inHi, outLo, outHi) {
+    var t = (v - inLo) / (inHi - inLo);
+    return outLo + t * (outHi - outLo);
+  }
+
+  /* Ακούει lenis.on('scroll') αντί για native window scroll ώστε το
+     progress να μη "τρέχει μπροστά" από το οπτικό smooth-scroll του Lenis */
+  function bindScroll(handler) {
+    if (window.__lenis && typeof window.__lenis.on === 'function') {
+      window.__lenis.on('scroll', handler);
+    } else {
+      window.addEventListener('scroll', handler, { passive: true });
+    }
+  }
 
   /* ── Hero entrance: συγχρονισμένο με το preloader ────────────── */
   function heroIn() { document.body.classList.add('xp-loaded'); }
@@ -145,7 +160,7 @@
     var target = parseInt(el.dataset.target || '0', 10);
     var suffix = el.dataset.suffix || '';
     if (reduced) { el.textContent = target + suffix; return; }
-    var t0 = null, DUR = 1700;
+    var t0 = null, DUR = 1600;
     function step(ts) {
       if (!t0) t0 = ts;
       var p = Math.min((ts - t0) / DUR, 1);
@@ -182,15 +197,17 @@
     ticking = false;
     var vh = window.innerHeight;
 
-    /* 1 · Manifesto: λέξεις ανάβουν όσο το stage είναι pinned.
-       Συντελεστής 1.3 → ολοκλήρωση στο ~77%, το υπόλοιπο dwell */
+    /* 1 · Manifesto: κάθε λέξη έχει τη δική της αδιαφάνεια, οδηγούμενη
+       συνεχώς (όχι on/off) από το progress του pin — WordReveal pattern:
+       wordProgress = i / n, opacity = remap(p, wp-0.08, wp+0.04, 0.15, 1) */
     if (manifestoPin) {
       var m = manifestoPin.update(vh);
       if (m && mWords.length) {
-        var active = Math.floor(m.p * mWords.length * 1.3);
-        for (var i = 0; i < mWords.length; i++) {
-          if (i < active) mWords[i].classList.add('on');
-          else mWords[i].classList.remove('on');
+        var n = mWords.length;
+        for (var i = 0; i < n; i++) {
+          var wordProgress = i / n;
+          var op = clamp(remap(m.p, wordProgress - 0.08, wordProgress + 0.04, 0.15, 1), 0.15, 1);
+          mWords[i].style.opacity = op;
         }
       }
     }
@@ -240,7 +257,7 @@
     update();
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
+  bindScroll(onScroll);
   window.addEventListener('resize', refreshAll);
   if (desktopH.addEventListener) {
     desktopH.addEventListener('change', refreshAll);

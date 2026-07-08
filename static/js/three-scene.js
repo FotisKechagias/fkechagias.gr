@@ -104,13 +104,23 @@
     ty = -(e.clientY / H - 0.5) * 0.5;
   });
 
-  /* ── Scroll → ταξίδι κάμερας ── */
+  /* ── Scroll → ταξίδι κάμερας ──
+     Ακούει lenis.on('scroll') αντί για native window scroll ώστε η
+     κάμερα να μένει συγχρονισμένη με το smooth-scroll του Lenis. */
+  function bindScroll(handler) {
+    if (window.__lenis && typeof window.__lenis.on === 'function') {
+      window.__lenis.on('scroll', handler);
+    } else {
+      window.addEventListener('scroll', handler, { passive: true });
+    }
+  }
+
   var prog = 0, targetProg = 0;
   function onScroll() {
     var max = document.documentElement.scrollHeight - window.innerHeight;
     targetProg = max > 0 ? window.scrollY / max : 0;
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
+  bindScroll(onScroll);
   onScroll();
 
   var clock = new THREE.Clock();
@@ -138,10 +148,10 @@
     /* Στατικό: ένα render + follow στο scroll χωρίς συνεχές loop */
     prog = targetProg;
     render();
-    window.addEventListener('scroll', function () {
+    bindScroll(function () {
       prog = targetProg;
       render();
-    }, { passive: true });
+    });
   } else {
     animate();
   }

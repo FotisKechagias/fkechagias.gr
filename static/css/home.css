@@ -18,6 +18,25 @@
   opacity: 0.8;
 }
 
+/* ── Grain overlays: κινηματογραφική υφή πάνω από σωματίδια,
+   πιο ήπιες από όσο θα ήταν πάνω σε video (δεν χρειάζεται τόση ένταση) ── */
+.grain-hero {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+}
+.grain-subtle {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+}
+
 /* ── Απενεργοποίηση παλιών decorations της αρχικής ────────────── */
 #hero::after { content: none; }
 body:not(.is-slider) #vision::after,
@@ -276,11 +295,12 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+/* Η αδιαφάνεια οδηγείται συνεχώς inline από το home.js (remap/clamp
+   πάνω στο progress του PinEngine) — το 0.15 εδώ είναι μόνο το fallback
+   πριν προλάβει να τρέξει το πρώτο animation frame */
 .xp-w {
-  opacity: 0.13;
-  transition: opacity 0.35s ease;
+  opacity: 0.15;
 }
-.xp-w.on { opacity: 1; }
 
 /* ═══════════════════════════════════════════════════════════════
    02 · SERVICES — pinned deck: οι κάρτες γλιστρούν η μία
@@ -547,6 +567,28 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   height: 300px;
   min-height: 0;
   border-radius: 50%;
+}
+
+/* ── Mobile/tablet (<900px, ίδιο breakpoint με desktopH στο home.js):
+   κανονικό οριζόντιο scroll με snap αντί για pinned scroll-hijack ── */
+@media (max-width: 899px) {
+  .xp-projects:not(.xp-h-on) .xp-htrack {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+  .xp-projects:not(.xp-h-on) .xp-hintro,
+  .xp-projects:not(.xp-h-on) .xp-proj,
+  .xp-projects:not(.xp-h-on) .xp-hend {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 82vw;
+  }
+  .xp-projects:not(.xp-h-on) .xp-hend { min-height: 96px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════

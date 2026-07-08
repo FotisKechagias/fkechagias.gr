@@ -248,6 +248,17 @@
         if (docHeight > 0) progressBar.style.width = (scrollTop / docHeight * 100) + '%';
       }, { passive: true });
     }
+
+    /* ── Navbar: διαφανές πάνω από το hero, background+blur στο scroll ── */
+    var navbar = document.getElementById('navbar');
+    if (navbar) {
+      var toggleNavScrolled = function () {
+        var y = window.scrollY || document.documentElement.scrollTop;
+        navbar.classList.toggle('scrolled', y > 24);
+      };
+      window.addEventListener('scroll', toggleNavScrolled, { passive: true });
+      toggleNavScrolled();
+    }
   }
 
   /* ── Mobile Menu ─────────────────────────────────────────────── */
@@ -336,6 +347,9 @@
   /* ── Lenis smooth scroll (non-slider pages) ──────────────────── */
   if (!isSlider && typeof Lenis !== 'undefined') {
     var lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+    /* Εκτεθειμένο globally ώστε το home.js/three-scene.js να ακούνε
+       lenis.on('scroll') αντί για native window scroll */
+    window.__lenis = lenis;
 
     function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
     requestAnimationFrame(lenisRaf);
