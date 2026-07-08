@@ -155,7 +155,7 @@
         e.stopPropagation();
         activateSlide(idx, false);
       } else {
-        var urls = ['/', '/#about', '/#vision', '/#services', '/#projects', '/#contact'];
+        var urls = ['/', '/#about', '/#services', '/#projects', '/#contact'];
         var dest = urls[idx] !== undefined ? urls[idx] : '/';
         if (window.location.pathname !== '/') {
           /* Από άλλη σελίδα: πλοήγηση στην αρχική με anchor */
@@ -355,7 +355,7 @@
     requestAnimationFrame(lenisRaf);
 
     /* Make data-slide anchor links use Lenis */
-    var anchorMap = ['#hero', '#about', '#vision', '#services', '#projects', '#contact'];
+    var anchorMap = ['#hero', '#about', '#services', '#projects', '#contact'];
     document.querySelectorAll('[data-slide]').forEach(function (el) {
       el.addEventListener('click', function (e) {
         var idx = parseInt(el.dataset.slide, 10);

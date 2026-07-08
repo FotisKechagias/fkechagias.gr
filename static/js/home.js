@@ -3,8 +3,9 @@
    - JS-driven pinning (ΔΕΝ βασίζεται σε position:sticky — δουλεύει
      παντού): το section είναι ψηλός "διάδρομος", το stage καρφώνεται
      με position:fixed όσο το section διασχίζει το viewport.
-   - Manifesto: αποκάλυψη λέξη-λέξη · Services: pinned deck καρτών
-   - Projects: οριζόντιο ταξίδι · Stats: pinned μετρητές
+   - About: word pull-up τίτλος + character-reveal σώμα (χωρίς pin)
+   - Services: απλή λίστα με reveal-up (χωρίς pin)
+   - Projects: οριζόντιο ταξίδι (pinned) · Stats: pinned μετρητές
    ═══════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -13,7 +14,6 @@
   var desktopH = window.matchMedia('(min-width: 900px)');
 
   function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
-  function smooth(t)  { t = clamp01(t); return t * t * (3 - 2 * t); }
   function clamp(v, min, max) { return v < min ? min : v > max ? max : v; }
   function remap(v, inLo, inHi, outLo, outHi) {
     var t = (v - inLo) / (inHi - inLo);
@@ -91,36 +91,6 @@
   var pinsEnabled = !reduced;
   function pinsOn() { return pinsEnabled; }
 
-  /* ── Manifesto: σπάσιμο σε λέξεις (κρατάει τα <em>) ──────────── */
-  function splitWords(root) {
-    Array.prototype.slice.call(root.childNodes).forEach(function (node) {
-      if (node.nodeType === 3) {
-        var frag = document.createDocumentFragment();
-        node.textContent.split(/(\s+)/).forEach(function (part) {
-          if (!part) return;
-          if (/^\s+$/.test(part)) {
-            frag.appendChild(document.createTextNode(' '));
-            return;
-          }
-          var s = document.createElement('span');
-          s.className = 'xp-w';
-          s.textContent = part;
-          frag.appendChild(s);
-        });
-        root.replaceChild(frag, node);
-      } else if (node.nodeType === 1) {
-        splitWords(node);
-      }
-    });
-  }
-
-  var mEl = document.querySelector('.xp-manifesto-text');
-  var mWords = [];
-  if (mEl && !reduced) {
-    splitWords(mEl);
-    mWords = Array.prototype.slice.call(mEl.querySelectorAll('.xp-w'));
-  }
-
   /* ── About: τίτλος (word pull-up μία φορά) + σώμα (character reveal
      συνεχώς οδηγούμενο από το scroll, χωρίς pin) ─────────────────── */
   var aboutHeading = document.getElementById('about-heading');
@@ -176,9 +146,6 @@
     aboutChars = Array.prototype.slice.call(aboutBody.querySelectorAll('.xp-about-char'));
   }
 
-  /* ── Services deck ───────────────────────────────────────────── */
-  var deckCards = Array.prototype.slice.call(document.querySelectorAll('.xp-deck .xp-card'));
-
   /* ── Horizontal projects ─────────────────────────────────────── */
   var hSec   = document.querySelector('.xp-projects');
   var hTrack = document.querySelector('.xp-htrack');
@@ -204,11 +171,9 @@
   }
 
   /* ── Pins ────────────────────────────────────────────────────── */
-  var manifestoPin = makePin('#vision', pinsOn);
-  var servicesPin  = makePin('#services', pinsOn);
-  var statsPin     = makePin('.xp-stats', pinsOn);
-  var projPin      = makePin('#projects', function () { return pinsEnabled && hOn(); });
-  var allPins = [manifestoPin, servicesPin, statsPin, projPin];
+  var statsPin = makePin('.xp-stats', pinsOn);
+  var projPin  = makePin('#projects', function () { return pinsEnabled && hOn(); });
+  var allPins = [statsPin, projPin];
 
   /* ── Counters ────────────────────────────────────────────────── */
   function runCount(el) {
@@ -268,44 +233,7 @@
       }
     }
 
-    /* 1 · Manifesto: κάθε λέξη έχει τη δική της αδιαφάνεια, οδηγούμενη
-       συνεχώς (όχι on/off) από το progress του pin — WordReveal pattern:
-       wordProgress = i / n, opacity = remap(p, wp-0.08, wp+0.04, 0.15, 1) */
-    if (manifestoPin) {
-      var m = manifestoPin.update(vh);
-      if (m && mWords.length) {
-        var n = mWords.length;
-        for (var i = 0; i < n; i++) {
-          var wordProgress = i / n;
-          var op = clamp(remap(m.p, wordProgress - 0.08, wordProgress + 0.04, 0.15, 1), 0.15, 1);
-          mWords[i].style.opacity = op;
-        }
-      }
-    }
-
-    /* 2 · Services deck: κάθε κάρτα γλιστράει πάνω από την
-       προηγούμενη στο δικό της τμήμα του progress */
-    if (servicesPin) {
-      var sv = servicesPin.update(vh);
-      if (sv && deckCards.length > 1 && pinsEnabled) {
-        var n  = deckCards.length;
-        var ty = [], sc = [], br = [];
-        for (var a = 0; a < n; a++) { ty[a] = (a === 0) ? 0 : 105; sc[a] = 1; br[a] = 1; }
-        for (var b = 1; b < n; b++) {
-          var local = smooth(sv.p * n - b);
-          ty[b] = (1 - local) * 105;
-          sc[b - 1] -= local * 0.06;
-          br[b - 1] -= local * 0.42;
-        }
-        for (var c = 0; c < n; c++) {
-          deckCards[c].style.transform =
-            'translate3d(0,' + ty[c] + '%,0) scale(' + sc[c] + ')';
-          deckCards[c].style.filter = (br[c] < 1) ? 'brightness(' + br[c] + ')' : '';
-        }
-      }
-    }
-
-    /* 3 · Projects: οριζόντια μετατόπιση 1:1 px με start/end dwell */
+    /* 1 · Projects: οριζόντια μετατόπιση 1:1 px με start/end dwell */
     if (projPin) {
       var pj = projPin.update(vh);
       if (pj && hMax > 0 && hOn()) {

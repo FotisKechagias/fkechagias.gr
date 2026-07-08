@@ -9,11 +9,8 @@
   <style>
     .xp-line { transform: none !important; }
     .xp-fade { opacity: 1 !important; transform: none !important; }
-    .xp-manifesto, .xp-services, .xp-stats, .xp-projects { height: auto !important; padding: 12vh 0 !important; }
+    .xp-stats, .xp-projects { height: auto !important; padding: 12vh 0 !important; }
     .xp-pin-stage { position: static !important; height: auto !important; display: block !important; }
-    .xp-w { opacity: 1 !important; }
-    .xp-deck { height: auto !important; display: flex !important; flex-direction: column !important; gap: 32px !important; }
-    .xp-card { position: static !important; transform: none !important; }
     .xp-about-word { opacity: 1 !important; transform: none !important; }
     .xp-about-char { opacity: 1 !important; }
   </style>
@@ -57,13 +54,13 @@
         χωρίς συμβιβασμούς. Μόνο custom δουλειά που ξεχωρίζει.
       </p>
       <div class="xp-hero-cta">
-        <button class="btn-primary btn-circle magnetic" data-slide="4">
+        <button class="btn-primary btn-circle magnetic" data-slide="3">
           <span>Δες τα Έργα</span>
           <span class="btn-circle-icon" aria-hidden="true">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </span>
         </button>
-        <button class="btn-ghost magnetic" data-slide="5">Ας μιλήσουμε ↗</button>
+        <button class="btn-ghost magnetic" data-slide="4">Ας μιλήσουμε ↗</button>
       </div>
     </div>
 
@@ -97,7 +94,7 @@
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     00.5 · ABOUT — προσωπική εισαγωγή
+     00.5 · ABOUT — προσωπική εισαγωγή + φιλοσοφία (ενωμένα)
      ══════════════════════════════════════════════════ -->
 <section id="about" class="xp-about" aria-label="Λίγα λόγια για εμένα">
   <div class="xp-container">
@@ -109,45 +106,32 @@
         <span class="xp-about-seg">Φτιάχνω ιστοσελίδες που ξεχωρίζουν, από το μηδέν.</span>
       </h2>
       <p class="xp-about-body" id="about-body">Τα τελευταία δύο χρόνια συνεργάζομαι με επιχειρήσεις και ιδιώτες σε όλη την Ελλάδα, σχεδιάζοντας και αναπτύσσοντας ιστοσελίδες που ενώνουν αισθητική με απόδοση. Κάθε project είναι μια ευκαιρία να μετατρέψω μια ιδέα σε ψηφιακή εμπειρία που πραγματικά λειτουργεί.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════
-     01 · MANIFESTO — αποκάλυψη λέξη-λέξη στο scroll
-     ══════════════════════════════════════════════════ -->
-<section id="vision" class="xp-manifesto" aria-label="Φιλοσοφία">
-  <div class="xp-pin-stage xp-stage-center">
-    <div class="xp-container">
-      <span class="xp-label">Η φιλοσοφία</span>
-      <p class="xp-manifesto-text"
-         aria-label="Ο επισκέπτης σας αποφασίζει μέσα σε τρία δευτερόλεπτα. Σχεδιάζω εμπειρίες που τον κερδίζουν στο πρώτο βλέμμα — και τον μετατρέπουν σε πελάτη.">
+      <blockquote class="xp-about-quote reveal-up" data-delay="1">
         Ο επισκέπτης σας αποφασίζει μέσα σε <em>τρία δευτερόλεπτα</em>.
         Σχεδιάζω εμπειρίες που τον κερδίζουν στο πρώτο βλέμμα —
         και τον μετατρέπουν σε <em>πελάτη</em>.
-      </p>
+      </blockquote>
     </div>
   </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     02 · SERVICES — sticky stacking cards
+     01 · SERVICES — απλή λίστα, reveal στο scroll (όχι pinned cards)
      ══════════════════════════════════════════════════ -->
 <section id="services" class="xp-services" aria-label="Υπηρεσίες">
-  <div class="xp-pin-stage">
-    <div class="grain-subtle" aria-hidden="true"></div>
-    <div class="xp-container">
+  <div class="grain-subtle" aria-hidden="true"></div>
+  <div class="xp-container">
 
     <div class="xp-sec-head reveal-up">
       <span class="xp-label">Υπηρεσίες</span>
       <h2 class="xp-sec-title">Τι μπορώ να φτιάξω<br /><strong>για εσάς.</strong></h2>
     </div>
 
-    <div class="xp-deck">
+    <ul class="xp-slist" role="list">
 
-      <article class="xp-card">
-        <span class="xp-card-num" aria-hidden="true">01</span>
-        <div class="xp-card-body">
+      <li class="xp-sitem reveal-up">
+        <span class="xp-sitem-num" aria-hidden="true">01</span>
+        <div class="xp-sitem-body">
           <h3>Κατασκευή Ιστοσελίδας</h3>
           <p>
             Εταιρικά sites, landing pages και eshops από το μηδέν. Πλήρως custom
@@ -164,11 +148,11 @@
             <span>Django</span><span>React</span><span>SEO</span><span>Performance</span>
           </div>
         </div>
-      </article>
+      </li>
 
-      <article class="xp-card">
-        <span class="xp-card-num" aria-hidden="true">02</span>
-        <div class="xp-card-body">
+      <li class="xp-sitem reveal-up">
+        <span class="xp-sitem-num" aria-hidden="true">02</span>
+        <div class="xp-sitem-body">
           <h3>Advanced Web Apps &amp; AI</h3>
           <p>
             Από σύνθετες web εφαρμογές μέχρι ενσωμάτωση AI chatbots και
@@ -184,11 +168,11 @@
             <span>Django</span><span>React</span><span>OpenAI API</span><span>Python</span>
           </div>
         </div>
-      </article>
+      </li>
 
-      <article class="xp-card">
-        <span class="xp-card-num" aria-hidden="true">03</span>
-        <div class="xp-card-body">
+      <li class="xp-sitem reveal-up">
+        <span class="xp-sitem-num" aria-hidden="true">03</span>
+        <div class="xp-sitem-body">
           <h3>Redesign &amp; Performance</h3>
           <p>
             Αναβάθμιση υπάρχουσας ιστοσελίδας: νέο design, βελτιστοποίηση
@@ -203,10 +187,48 @@
             <span>UI/UX</span><span>Core Web Vitals</span><span>SEO Audit</span>
           </div>
         </div>
-      </article>
+      </li>
 
-    </div>
-    </div>
+      <li class="xp-sitem reveal-up">
+        <span class="xp-sitem-num" aria-hidden="true">04</span>
+        <div class="xp-sitem-body">
+          <h3>E-Commerce</h3>
+          <p>
+            Ηλεκτρονικά καταστήματα από το μηδέν, με ασφαλείς πληρωμές,
+            διαχείριση αποθέματος και βελτιστοποιημένη διαδικασία checkout
+            για μέγιστες μετατροπές.
+          </p>
+          <ul class="xp-checklist" aria-label="Τι περιλαμβάνει">
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Ενσωμάτωση πληρωμών (Stripe/Viva)</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Διαχείριση αποθέματος &amp; παραγγελιών</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Βελτιστοποιημένο checkout</li>
+          </ul>
+          <div class="xp-tags" aria-label="Τεχνολογίες">
+            <span>E-Commerce</span><span>Stripe</span><span>Inventory</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="xp-sitem reveal-up">
+        <span class="xp-sitem-num" aria-hidden="true">05</span>
+        <div class="xp-sitem-body">
+          <h3>Συντήρηση &amp; Υποστήριξη</h3>
+          <p>
+            Μηνιαία συντήρηση, ενημερώσεις ασφαλείας και τεχνική υποστήριξη
+            ώστε η ιστοσελίδα σας να παραμένει γρήγορη, ασφαλής και ενημερωμένη.
+          </p>
+          <ul class="xp-checklist" aria-label="Τι περιλαμβάνει">
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Τακτικά backups &amp; ενημερώσεις ασφαλείας</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Παρακολούθηση επιδόσεων</li>
+            <li class="xp-check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Άμεση τεχνική υποστήριξη</li>
+          </ul>
+          <div class="xp-tags" aria-label="Τεχνολογίες">
+            <span>Maintenance</span><span>Security</span><span>Monitoring</span>
+          </div>
+        </div>
+      </li>
+
+    </ul>
   </div>
 </section>
 
@@ -290,12 +312,16 @@
      05 · CONTACT
      ══════════════════════════════════════════════════ -->
 <section id="contact" class="xp-contact" aria-label="Επικοινωνία">
+  <span class="xp-contact-bg-num" aria-hidden="true">05</span>
   <div class="xp-container xp-contact-grid">
 
     <div class="xp-contact-left">
-      <span class="xp-label reveal-up">Επικοινωνία</span>
-      <h2 class="xp-contact-title reveal-up">Έτοιμοι να<br /><strong>ξεχωρίσετε;</strong></h2>
-      <p class="xp-contact-sub reveal-up" data-delay="1">
+      <span class="hero-available reveal-up">
+        <span class="ha-dot"></span>
+        Απαντάω εντός 24 ωρών
+      </span>
+      <h2 class="xp-contact-title reveal-up" data-delay="1">Έτοιμοι να<br /><strong>ξεχωρίσετε;</strong></h2>
+      <p class="xp-contact-sub reveal-up" data-delay="2">
         Πείτε μου την ιδέα σας. Θα σας απαντήσω μέσα σε 24 ώρες
         με ένα συγκεκριμένο πλάνο για τη σελίδα σας.
       </p>
