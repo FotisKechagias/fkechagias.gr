@@ -934,6 +934,23 @@ body:not(.is-slider) #projects .story-title { text-align: center; margin-left: a
 
 .mobile-menu { position: fixed; inset: 0; background: var(--c-bg); z-index: 1001; display: flex; flex-direction: column; justify-content: center; padding: 40px; transform: translateY(-100%); transition: transform 0.5s var(--ease-out); }
 .mobile-menu.open { transform: translateY(0); }
+/* Το hamburger/X στο navbar (z-index:1000) μένει κρυμμένο πίσω από
+   αυτό το overlay (z-index:1001) μόλις ανοίξει — χρειάζεται δικό
+   του, ορατό κουμπί κλεισίματος μέσα στο ίδιο το μενού. */
+.mobile-menu-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-white);
+  border-radius: 50%;
+  transition: background 0.25s ease, transform 0.3s var(--ease-spring);
+}
+.mobile-menu-close:hover { background: oklch(1 0 0 / 0.08); transform: rotate(90deg); }
 .mobile-nav { display: flex; flex-direction: column; gap: 8px; }
 .mobile-nav-link {
   font-family: var(--font-display);

@@ -9,8 +9,6 @@
   <style>
     .xp-line { transform: none !important; }
     .xp-fade { opacity: 1 !important; transform: none !important; }
-    .xp-projects { height: auto !important; padding: 12vh 0 !important; }
-    .xp-pin-stage { position: static !important; height: auto !important; display: block !important; }
     .xp-about-word { opacity: 1 !important; transform: none !important; }
   </style>
 </noscript>
@@ -272,22 +270,23 @@
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     03 · PROJECTS — οριζόντιο ταξίδι στο scroll
+     03 · PROJECTS — απλή κάθετη λίστα, χωρίς animation
      ══════════════════════════════════════════════════ -->
 <section id="projects" class="xp-projects" aria-label="Έργα">
-  <div class="xp-pin-stage">
-    <div class="xp-htrack">
+  <div class="xp-container">
 
-      <div class="xp-hintro">
-        <span class="xp-label">Portfolio</span>
-        <h2 class="xp-hintro-title">Επιλεγμένα<br /><strong>Έργα.</strong></h2>
-        <p class="xp-hintro-hint" aria-hidden="true">( scroll )</p>
-      </div>
+    <div class="xp-sec-head reveal-up">
+      <span class="xp-label">Portfolio</span>
+      <h2 class="xp-sec-title">Επιλεγμένα<br /><strong>Έργα.</strong></h2>
+    </div>
 
+    <div class="xp-proj-list">
       {% if projects %}
         {% for project in projects|slice:":4" %}
-        <a href="{{ project.get_absolute_url }}" class="xp-proj"
-           aria-label="{{ project.title }} — Δες το project">
+        <a href="{% if project.live_url %}{{ project.live_url }}{% else %}#{% endif %}"
+           {% if project.live_url %}target="_blank" rel="noopener noreferrer"{% endif %}
+           class="xp-proj"
+           aria-label="{{ project.title }}{% if project.live_url %} — Επίσκεψη στη σελίδα{% endif %}">
           {% if project.image %}
             <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
           {% else %}
@@ -313,13 +312,13 @@
           </div>
         </div>
       {% endif %}
-
-      <a href="{% url 'project_list' %}" class="xp-hend magnetic">
-        <span>Δες όλα τα projects</span>
-        <em aria-hidden="true">→</em>
-      </a>
-
     </div>
+
+    <a href="{% url 'project_list' %}" class="xp-hend magnetic">
+      <span>Δες όλα τα projects</span>
+      <em aria-hidden="true">→</em>
+    </a>
+
   </div>
 </section>
 

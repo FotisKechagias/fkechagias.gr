@@ -97,21 +97,6 @@ body:not(.is-slider) #contact::after { content: none; }
   overflow: visible;
 }
 
-/* ── Pin stage: το στοιχείο που "καρφώνεται" από το home.js ──── */
-.xp-pin-stage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-  z-index: 2;
-}
-.xp-stage-center {
-  display: flex;
-  align-items: center;
-}
-
 .xp-label {
   display: inline-flex;
   align-items: center;
@@ -133,7 +118,6 @@ body:not(.is-slider) #contact::after { content: none; }
 
 /* Κοινό gradient για τα strong μέσα σε τίτλους */
 .xp-sec-title strong,
-.xp-hintro-title strong,
 .xp-contact-title strong {
   font-weight: 700;
   font-style: italic;
@@ -490,55 +474,16 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   03 · PROJECTS — οριζόντιο gallery σε pinned stage
-   Το .xp-h-on ενεργοποιείται σε όλα τα μεγέθη/συσκευές (το scroll —
-   έστω και με touch — οδηγεί το translateX). Η στήλη :not(.xp-h-on)
-   είναι fallback ΜΟΝΟ για no-JS ή prefers-reduced-motion.
+   03 · PROJECTS — απλή κάθετη λίστα, ΧΩΡΙΣ pin/animation
    ═══════════════════════════════════════════════════════════════ */
 .xp-projects {
-  padding: 14vh 0;
+  padding: 16vh 0;
 }
-/* Χωρίς οριζόντιο mode το stage είναι κανονικό block στο flow */
-.xp-projects:not(.xp-h-on) .xp-pin-stage {
-  position: static;
-  height: auto;
-}
-.xp-projects.xp-h-on {
-  padding: 0; /* το ύψος-διάδρομος ορίζεται inline από το home.js */
-}
-.xp-projects.xp-h-on .xp-pin-stage {
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-}
-
-.xp-htrack {
+.xp-proj-list {
   display: flex;
   flex-direction: column;
   gap: 28px;
-  padding-left: clamp(20px, 4vw, 48px);
-  padding-right: clamp(20px, 4vw, 48px);
-  max-width: 1280px;
-  margin: 0 auto;
-}
-.xp-hintro { width: 100%; }
-.xp-hintro-title {
-  font-family: var(--font-display);
-  font-variation-settings: 'opsz' 60;
-  font-size: clamp(40px, 6.5vw, 88px);
-  font-weight: 300;
-  line-height: 0.98;
-  letter-spacing: -0.03em;
-  color: var(--c-white);
-  margin: 0 0 16px;
-}
-.xp-hintro-hint {
-  font-family: var(--font-body);
-  font-size: 9px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: oklch(0.42 0.02 260);
-  display: none;
+  margin-top: 48px;
 }
 
 .xp-proj {
@@ -604,13 +549,13 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 
 .xp-hend {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  min-height: 96px;
-  border-radius: 20px;
+  min-height: 72px;
+  margin-top: 28px;
+  border-radius: 100px;
   border: 0.5px solid oklch(0.55 0.16 255 / 0.4);
   background: oklch(0.68 0.20 250 / 0.07);
   font-family: var(--font-body);
@@ -618,11 +563,11 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--c-text);
-  transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease, transform 0.45s var(--ease-out);
+  transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
 }
 .xp-hend em {
   font-style: normal;
-  font-size: 22px;
+  font-size: 16px;
   color: var(--c-blue);
   transition: transform 0.3s var(--ease-out);
 }
@@ -632,55 +577,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   color: var(--c-white);
 }
 .xp-hend:hover em { transform: translateX(6px); }
-
-.xp-projects.xp-h-on .xp-hintro {
-  flex: 0 0 auto;
-  width: min(430px, 38vw);
-}
-.xp-projects.xp-h-on .xp-hintro-hint { display: block; }
-.xp-projects.xp-h-on .xp-htrack {
-  flex-direction: row;
-  align-items: center;
-  gap: clamp(28px, 3.5vw, 56px);
-  max-width: none;
-  margin: 0;
-  will-change: transform;
-}
-.xp-projects.xp-h-on .xp-proj {
-  flex: 0 0 auto;
-  width: clamp(440px, 46vw, 660px);
-}
-.xp-projects.xp-h-on .xp-hend {
-  flex: 0 0 auto;
-  width: 300px;
-  height: 300px;
-  min-height: 0;
-  border-radius: 50%;
-}
-
-/* ── Fallback ΜΟΝΟ για no-JS/reduced-motion σε στενές οθόνες (<900px):
-   οριζόντιο scroll με snap αντί για απλή κάθετη στοίβα.
-   Σε κανονική χρήση (JS + κίνηση ενεργή) δεν εφαρμόζεται πουθενά,
-   αφού το .xp-h-on ενεργοποιείται πάντα. ── */
-@media (max-width: 899px) {
-  .xp-projects:not(.xp-h-on) .xp-htrack {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;
-  }
-  .xp-projects:not(.xp-h-on) .xp-hintro,
-  .xp-projects:not(.xp-h-on) .xp-proj,
-  .xp-projects:not(.xp-h-on) .xp-hend {
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-    width: 82vw;
-  }
-  .xp-projects:not(.xp-h-on) .xp-hend { min-height: 96px; }
-}
 
 /* ═══════════════════════════════════════════════════════════════
    04 · CONTACT
@@ -779,10 +675,4 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   .xp-line { transform: none; transition: none; }
   .xp-fade { opacity: 1; transform: none; transition: none; }
   .xp-scroll-cue i { animation: none; }
-
-  .xp-pin-stage {
-    position: static !important;
-    height: auto;
-    display: block;
-  }
 }
