@@ -399,18 +399,23 @@
     });
   }
 
-  /* ── Magnetic buttons ─────────────────────────────────────────── */
-  document.querySelectorAll('.magnetic').forEach(function (el) {
-    el.addEventListener('mousemove', function (e) {
-      var r = el.getBoundingClientRect();
-      var x = e.clientX - r.left - r.width  / 2;
-      var y = e.clientY - r.top  - r.height / 2;
-      el.style.transform = 'translate(' + (x * 0.28) + 'px,' + (y * 0.36) + 'px)';
+  /* ── Magnetic buttons (μόνο σε συσκευές με πραγματικό ποντίκι) ──
+     Σε touch, ένα tap μπορεί να πυροδοτήσει synthetic mousemove χωρίς
+     αντίστοιχο mouseleave — το κουμπί έμενε μόνιμα μετατοπισμένο. */
+  if (hasFine) {
+    document.querySelectorAll('.magnetic').forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var x = e.clientX - r.left - r.width  / 2;
+        var y = e.clientY - r.top  - r.height / 2;
+        el.style.transform = 'translate(' + (x * 0.28) + 'px,' + (y * 0.36) + 'px)';
+      });
+      el.addEventListener('mouseleave', function () { el.style.transform = ''; });
     });
-    el.addEventListener('mouseleave', function () { el.style.transform = ''; });
-  });
+  }
 
-  /* ── 3D card tilt on project cards ───────────────────────────── */
+  /* ── 3D card tilt on project cards (ίδιος λόγος: μόνο pointer:fine) */
+  if (hasFine) {
   document.querySelectorAll('.tilt-card').forEach(function (card) {
     card.addEventListener('mousemove', function (e) {
       var r  = card.getBoundingClientRect();
@@ -425,5 +430,6 @@
       card.style.boxShadow = '';
     });
   });
+  }
 
 })();

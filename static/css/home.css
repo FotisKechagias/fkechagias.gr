@@ -28,6 +28,19 @@
   object-fit: cover;
   pointer-events: none;
 }
+/* Color-grade: το βίντεο έχει ζεστούς (χρυσαφί/πορτοκαλί) τόνους στα
+   σύννεφα, ενώ όλη η υπόλοιπη σελίδα είναι μπλε/μοβ — αυτό το tint
+   τραβάει το βίντεο λίγο πιο κοντά στην ταυτότητα του site χωρίς να
+   κρύβει τη σκηνή. */
+.xp-hero-video-tint {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg,
+    oklch(0.45 0.16 250 / 0.28) 0%,
+    oklch(0.35 0.18 295 / 0.16) 55%,
+    transparent 100%);
+  mix-blend-mode: color;
+}
 .xp-hero-video-fade {
   position: absolute; inset: 0;
   pointer-events: none;
@@ -786,6 +799,14 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 @media (max-width: 900px) {
   .xp-contact-grid { grid-template-columns: 1fr; }
   .xp-stats-row { flex-direction: column; gap: 48px; padding: 48px 0; }
+}
+
+/* Tablet (641-899px): ενδιάμεσο μέγεθος τίτλου — τα 10.5vw/14.5vw
+   του desktop μπορούν να κάνουν τη λέξη "Εμπειρίες." πλατύτερη από
+   το viewport σε αυτό το εύρος, δημιουργώντας οριζόντιο overflow */
+@media (max-width: 899px) and (min-width: 641px) {
+  .xp-l1 { font-size: clamp(56px, 10vw, 110px); }
+  .xp-l2 { font-size: clamp(64px, 12vw, 150px); }
 }
 
 @media (max-width: 640px) {

@@ -132,6 +132,7 @@
 
   var aboutBody = document.getElementById('about-body');
   var aboutChars = [];
+  var aboutDone = false;
   if (aboutBody && !reduced) {
     var bodyText = aboutBody.textContent;
     aboutBody.textContent = '';
@@ -144,6 +145,23 @@
     }
     aboutBody.appendChild(bodyFrag);
     aboutChars = Array.prototype.slice.call(aboutBody.querySelectorAll('.xp-about-char'));
+
+    /* Ασφάλεια: η συνεχής scroll-based φόρμουλα δεν εγγυάται πάντα
+       opacity:1 (γρήγορο scroll/χαμηλά fps σε κινητό). Μόλις η
+       παράγραφος βγει εντελώς από πάνω, κλειδώνουμε σε πλήρη
+       αδιαφάνεια ώστε να μη μένει ποτέ "θαμπή" μετά που την προσπερνάς. */
+    if ('IntersectionObserver' in window) {
+      var aboutDoneObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.boundingClientRect.top < 0 && !entry.isIntersecting) {
+            aboutDone = true;
+            aboutChars.forEach(function (c) { c.style.opacity = 1; });
+            aboutDoneObs.disconnect();
+          }
+        });
+      }, { threshold: 0 });
+      aboutDoneObs.observe(aboutBody);
+    }
   }
 
   /* ── Horizontal projects ─────────────────────────────────────── */
@@ -220,7 +238,7 @@
     /* 0.5 · About body: character-by-character αδιαφάνεια, υπολογισμένη
        απευθείας από τη θέση της παραγράφου στο viewport (χωρίς pin) —
        ισοδύναμο του useScroll offset ['start 0.8','end 0.2'] */
-    if (aboutBody && aboutChars.length) {
+    if (aboutBody && aboutChars.length && !aboutDone) {
       var abRect  = aboutBody.getBoundingClientRect();
       var abStart = vh * 0.8;
       var abTotal = vh * 0.6 + abRect.height;
