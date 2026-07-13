@@ -36,13 +36,13 @@
   var col = new Float32Array(COUNT * 3);
   var sz  = new Float32Array(COUNT);
 
-  /* blue / purple / cyan palette */
+  /* Muted accent οικογένεια — ίδια απόχρωση με το design system */
   var palette = [
-    [0.33, 0.52, 0.94],
-    [0.60, 0.40, 0.93],
-    [0.25, 0.76, 0.84],
-    [0.46, 0.44, 0.97],
-    [0.80, 0.55, 0.98],
+    [0.43, 0.52, 0.84],
+    [0.55, 0.63, 0.91],
+    [0.35, 0.42, 0.66],
+    [0.62, 0.65, 0.72],
+    [0.82, 0.84, 0.90],
   ];
 
   for (var i = 0; i < COUNT; i++) {
