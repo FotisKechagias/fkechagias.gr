@@ -87,9 +87,10 @@
 }
 
 @supports not (backdrop-filter: blur(1px)) {
-  .nav-glass, .mobile-menu, #cookie-banner, .contact-form-minimal,
-  .xp-about-card, .pd-sidebar-block, .pl-card-link, .site-footer,
-  .btn-ghost {
+  .nav-inner, .nav-glass.scrolled .nav-inner, .mobile-menu,
+  .cookie-banner, .contact-form-minimal, .xp-about-card,
+  .pd-sidebar-block, .pl-card-link, .site-footer, .btn-ghost,
+  .hero-marquee, .hero-available, .xp-hend {
     background: var(--bg-elevated) !important;
   }
 }
@@ -454,7 +455,7 @@ body:not(.is-slider) .reveal-up.visible {
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
-  background: oklch(0.09 0.02 260);
+  background: var(--bg);
   /* Προωθεί το fixed+blurred background στο δικό του compositor layer ώστε
      το iOS Safari να μην το ξαναζωγραφίζει σε κάθε frame του scroll (jank fix) */
   transform: translateZ(0);
@@ -466,12 +467,14 @@ body:not(.is-slider) .reveal-up.visible {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(oklch(1 0 0 / 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 36px 36px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 80%);
 }
 @media (max-width: 768px) { .ambient-bg::before { display: none; } }
+/* Blobs: αποκορεσμένα, μονής απόχρωσης, πολύ χαμηλής έντασης —
+   δίνουν βάθος χωρίς να γίνονται πολύχρωμο gradient show */
 .ab-blob {
   position: absolute;
   border-radius: 50%;
@@ -480,43 +483,28 @@ body:not(.is-slider) .reveal-up.visible {
 .ab-1 {
   width: 75vmax;
   height: 75vmax;
-  background: oklch(0.45 0.28 250);
-  opacity: 0.38;
+  background: #2a3352;
+  opacity: 0.5;
   top: -25%;
   left: -10%;
 }
 .ab-2 {
   width: 60vmax;
   height: 60vmax;
-  background: oklch(0.42 0.24 290);
-  opacity: 0.32;
+  background: #232841;
+  opacity: 0.45;
   bottom: -20%;
   right: -10%;
 }
 .ab-3 {
   width: 45vmax;
   height: 45vmax;
-  background: oklch(0.58 0.22 195);
-  opacity: 0.26;
+  background: #262c45;
+  opacity: 0.3;
   top: 30%;
   left: 35%;
 }
-.ab-4 {
-  width: 40vmax;
-  height: 40vmax;
-  background: oklch(0.50 0.26 320);
-  opacity: 0.24;
-  top: -10%;
-  right: 10%;
-}
-.ab-5 {
-  width: 35vmax;
-  height: 35vmax;
-  background: oklch(0.52 0.20 170);
-  opacity: 0.20;
-  bottom: 5%;
-  left: 5%;
-}
+.ab-4, .ab-5 { display: none; }
 /* ── UI Elements ────────────────────────────────────────────── */
 
 
@@ -945,13 +933,13 @@ body:not(.is-slider) .site-footer.story-section {
   font-size: 8px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: oklch(0.68 0.02 260);
+  color: var(--text-muted);
 }
 
 .sh-track {
   width: 1px;
   height: 32px;
-  background: oklch(0.30 0.02 260);
+  background: var(--border);
   border-radius: 1px;
   position: relative;
   overflow: hidden;
@@ -1001,7 +989,7 @@ body:not(.is-slider) .slide-counter { display: none; }
 .sc-divider, .sc-total {
   font-family: var(--font-body);
   font-size: 10px;
-  color: oklch(0.65 0.02 260);
+  color: var(--text-muted);
   letter-spacing: 0.05em;
 }
 
@@ -1023,14 +1011,14 @@ body:not(.is-slider) .slide-dots { display: none; }
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: oklch(0.52 0.02 260);
+  background: rgba(255, 255, 255, 0.3);
   border: none;
   padding: 0;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease, height 0.3s ease;
   display: block;
 }
-.sd-dot:hover { background: oklch(0.65 0.01 260); }
+.sd-dot:hover { background: rgba(255, 255, 255, 0.5); }
 .sd-dot.active {
   background: var(--c-white);
   height: 16px;

@@ -106,19 +106,18 @@
 
   .pl-title {
     font-family: var(--font-display);
-    font-variation-settings: 'opsz' 72;
-    font-size: clamp(32px, 9vw, 120px);
-    font-weight: 300;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    color: var(--c-white);
+    font-size: clamp(32px, 9vw, 110px);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.045em;
+    color: var(--text);
     margin-bottom: 20px;
   }
 
   .pl-title em {
-    font-style: italic;
-    font-weight: 700;
-    color: var(--c-blue-light);
+    font-style: normal;
+    font-weight: 800;
+    color: var(--text);
   }
 
   .pl-count {
@@ -139,21 +138,22 @@
   }
   @media (max-width: 768px) { .pl-grid { grid-template-columns: 1fr; gap: 16px; } }
 
+  /* Κάρτα: η κοινή glass συνταγή */
   .pl-card-link {
     display: block;
-    background: oklch(0.13 0.015 260 / 0.55);
-    border: 0.5px solid var(--c-border);
+    background: var(--glass-bg);
+    border: var(--glass-border);
     border-radius: var(--radius-xl);
     overflow: hidden;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: var(--shadow-card);
-    transition: border-color 0.4s ease, transform 0.4s var(--ease-spring), box-shadow 0.4s ease;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow), var(--rim);
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
   }
   .pl-card-link:hover {
-    border-color: oklch(0.55 0.16 255 / 0.55);
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-card-hover), var(--glow-blue);
+    border-color: rgba(255, 255, 255, 0.22);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), var(--rim);
   }
 
   .pl-card-image {
@@ -172,41 +172,37 @@
   }
   .pl-card-link:hover .pl-card-image img { transform: scale(1.04); }
 
-  /* Placeholder με gradient berdasarkan index */
+  /* Placeholder: ουδέτερο elevated φόντο — όχι πολύχρωμα gradients */
   .pl-card-placeholder {
     width: 100%;
     height: 100%;
-    background:
-      radial-gradient(
-        ellipse at calc(30% + var(--n, 1) * 7%) 40%,
-        oklch(0.30 0.08 calc(240 + var(--n, 1) * 15)) 0%,
-        transparent 60%
-      ),
-      var(--c-surface);
+    background: var(--bg-elevated);
   }
 
   .pl-card-hover {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, oklch(0 0 0 / 0.75) 0%, transparent 55%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 55%);
     display: flex;
     align-items: flex-end;
     padding: 24px;
     opacity: 0;
-    transition: opacity 0.35s ease;
+    transition: opacity var(--transition);
   }
   .pl-card-link:hover .pl-card-hover { opacity: 1; }
 
   .pl-card-cta {
     font-family: var(--font-body);
     font-size: 11px;
+    font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--c-white);
-    background: var(--grad-accent);
+    color: var(--accent-ink);
+    background-color: var(--accent);
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
     padding: 9px 18px;
-    border-radius: 100px;
-    box-shadow: var(--glow-blue);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--rim);
   }
 
   .pl-card-body { padding: 28px 32px 36px; }
@@ -224,7 +220,7 @@
     font-weight: 400;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--c-blue);
+    color: var(--text-muted);
   }
 
   .pl-card-client {
@@ -235,11 +231,10 @@
 
   .pl-card-title {
     font-family: var(--font-display);
-    font-variation-settings: 'opsz' 24;
-    font-size: clamp(22px, 2.5vw, 30px);
-    font-weight: 300;
-    font-style: italic;
-    color: var(--c-white);
+    font-size: clamp(22px, 2.5vw, 28px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
     line-height: 1.15;
     margin-bottom: 12px;
   }
@@ -262,10 +257,10 @@
   }
   .pl-empty-text {
     font-family: var(--font-display);
-    font-variation-settings: 'opsz' 36;
-    font-size: clamp(28px, 5vw, 56px);
-    font-weight: 300;
-    color: var(--c-text-dim);
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--text-muted);
   }
 
   /* ── CTA strip ───────────────────────────────────────────────── */
@@ -282,7 +277,7 @@
     left: 10%;
     width: 480px;
     height: 320px;
-    background: radial-gradient(ellipse, oklch(0.45 0.22 255 / 0.16) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(110, 133, 214, 0.08) 0%, transparent 70%);
     pointer-events: none;
     z-index: -1;
   }
@@ -297,23 +292,22 @@
     font-size: 10px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--c-blue);
+    color: var(--text-muted);
     margin-bottom: 20px;
   }
   .pl-cta-title {
     font-family: var(--font-display);
-    font-variation-settings: 'opsz' 72;
-    font-size: clamp(48px, 8vw, 100px);
-    font-weight: 300;
-    line-height: 0.97;
-    letter-spacing: -0.025em;
-    color: var(--c-white);
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.045em;
+    color: var(--text);
     margin-bottom: 0;
   }
   .pl-cta-title em {
-    font-style: italic;
-    font-weight: 700;
-    color: var(--c-blue-light);
+    font-style: normal;
+    font-weight: 800;
+    color: var(--text);
   }
 </style>
 {% endblock %}
