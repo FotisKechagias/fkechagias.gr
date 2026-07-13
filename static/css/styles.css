@@ -534,103 +534,111 @@ body:not(.is-slider) .reveal-up.visible {
 
 /* three-canvas removed */
 
-/* ── Navigation — Apple glass pill ──────────────────────────── */
+/* ── Navigation — floating liquid glass pill ─────────────────── */
 .nav-glass {
   position: fixed;
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 48px);
-  max-width: 980px;
+  max-width: 880px;
   z-index: 1000;
 }
 .nav-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border: 0.5px solid transparent;
-  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
   padding: 10px 10px 10px 24px;
-  box-shadow: none;
-  transition: background 0.4s ease, backdrop-filter 0.4s ease,
-              border-color 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: var(--rim);
+  transition: background var(--transition), border-color var(--transition),
+              box-shadow var(--transition), padding var(--transition);
 }
-/* Διαφανές πάνω από το hero· background+blur μόλις κάνεις scroll
-   (toggle μέσω .scrolled από το main.js) */
+/* Στο scroll: πιο συμπαγές, πιο σκούρο, πιο θολό (toggle .scrolled από main.js) */
 .nav-glass.scrolled .nav-inner {
-  background: oklch(0.09 0.015 260 / 0.78);
-  backdrop-filter: saturate(160%) blur(24px);
-  -webkit-backdrop-filter: saturate(160%) blur(24px);
-  border-color: oklch(0.95 0 0 / 0.10);
-  box-shadow:
-    0 2px 32px oklch(0 0 0 / 0.45),
-    inset 0 0.5px 0 oklch(1 0 0 / 0.07);
+  background: rgba(16, 16, 18, 0.72);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border-color: var(--border);
+  padding: 6px 6px 6px 20px;
+  box-shadow: var(--rim-strong), 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 .nav-logo {
   font-family: var(--font-display);
-  font-variation-settings: 'opsz' 24;
   font-weight: 700;
-  font-style: italic;
-  font-size: 20px;
-  color: var(--c-white);
-  letter-spacing: -0.02em;
+  font-size: 19px;
+  color: var(--text);
+  letter-spacing: -0.03em;
 }
-.nav-logo-dot { color: var(--c-blue); font-style: normal; }
-.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-logo-dot { color: var(--accent); }
+.nav-links { display: flex; gap: 6px; align-items: center; }
 .nav-link {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: oklch(0.75 0.01 260);
-  transition: color 0.25s ease;
-  position: relative;
-}
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--c-blue);
-  transition: width 0.3s var(--ease-out);
-  border-radius: 1px;
-}
-.nav-link:hover { color: var(--c-white); }
-.nav-link:hover::after { width: 100%; }
-.nav-cta {
   font-family: var(--font-body);
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: var(--c-white);
-  color: oklch(0.10 0.02 260);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  transition: color var(--transition), background var(--transition);
+}
+.nav-link:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.07);
+}
+/* Ενεργή ενότητα/σελίδα: μόνιμο pill background */
+.nav-link.active {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+.nav-cta {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--accent);
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
+  color: var(--accent-ink);
   padding: 9px 20px;
-  border-radius: 100px;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--rim);
+  transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 .nav-cta:hover {
-  background: var(--c-blue);
-  color: var(--c-white);
-  transform: scale(1.03);
-  box-shadow: var(--glow-blue);
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--rim), 0 8px 24px rgba(110, 133, 214, 0.35);
 }
-.nav-cta-arrow { display: inline-block; transition: transform 0.25s ease; }
+.nav-cta-arrow { display: inline-block; transition: transform var(--transition); }
 .nav-cta:hover .nav-cta-arrow { transform: translate(2px, -2px); }
 
 .nav-hamburger { display: none; flex-direction: column; gap: 5px; padding: 6px; }
-.hb-line { width: 22px; height: 1.5px; background: var(--c-white); transition: transform 0.3s; transform-origin: center; }
+.hb-line { width: 22px; height: 1.5px; background: var(--text); transition: transform 0.3s; transform-origin: center; }
 .nav-hamburger.open .hb-top { transform: rotate(45deg) translate(4.5px, 4.5px); }
 .nav-hamburger.open .hb-bottom { transform: rotate(-45deg) translate(4.5px, -4.5px); }
 @media (max-width: 999px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
 
-.mobile-menu { position: fixed; inset: 0; background: var(--c-bg); z-index: 1001; display: flex; flex-direction: column; justify-content: center; padding: 40px; transform: translateY(-100%); transition: transform 0.5s var(--ease-out); }
+/* Mobile drawer — πραγματικό frosted glass (υπάρχει περιεχόμενο από πίσω) */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 16, 18, 0.82);
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  transform: translateY(-100%);
+  transition: transform 0.45s var(--ease);
+}
 .mobile-menu.open { transform: translateY(0); }
 /* Το hamburger/X στο navbar (z-index:1000) μένει κρυμμένο πίσω από
    αυτό το overlay (z-index:1001) μόλις ανοίξει — χρειάζεται δικό
@@ -644,26 +652,28 @@ body:not(.is-slider) .reveal-up.visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--c-white);
+  color: var(--text);
+  border: 1px solid var(--border-soft);
   border-radius: 50%;
-  transition: background 0.25s ease, transform 0.3s var(--ease-spring);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: var(--rim);
+  transition: background var(--transition), transform 0.3s var(--ease-spring);
 }
-.mobile-menu-close:hover { background: oklch(1 0 0 / 0.08); transform: rotate(90deg); }
+.mobile-menu-close:hover { background: rgba(255, 255, 255, 0.1); transform: rotate(90deg); }
 .mobile-nav { display: flex; flex-direction: column; gap: 8px; }
 .mobile-nav-link {
   font-family: var(--font-display);
-  font-variation-settings: 'opsz' 60;
-  font-size: clamp(36px, 9vw, 64px);
-  font-weight: 300;
-  font-style: italic;
-  color: var(--c-text-muted);
+  font-size: clamp(32px, 8vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-body);
   padding: 10px 0;
-  border-bottom: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--border-soft);
   text-align: left;
   transition: color var(--transition);
 }
-.mobile-nav-link:hover { color: var(--c-white); }
-.mobile-nav-cta { color: var(--c-blue) !important; border-bottom: none; }
+.mobile-nav-link:hover { color: var(--text); }
+.mobile-nav-cta { color: var(--accent-hover) !important; border-bottom: none; }
 .mobile-menu-contacts { margin-top: 48px; display: flex; flex-direction: column; gap: 8px; }
 
 /* ── Footer / Project Details additions ─────────────────────── */
