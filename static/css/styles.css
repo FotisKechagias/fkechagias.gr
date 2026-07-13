@@ -3,33 +3,95 @@
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  --c-blue:        oklch(0.68 0.20 250);
-  --c-blue-light:  oklch(0.75 0.18 240);
-  --c-blue-dim:    oklch(0.45 0.15 250);
-  --c-purple:      oklch(0.62 0.24 295);
-  --c-purple-light: oklch(0.72 0.18 295);
-  --c-cyan:        oklch(0.78 0.14 195);
-  --c-bg:          oklch(0.12 0.02 260);
-  --c-bg-elevated: oklch(0.15 0.022 260);
-  --c-surface:     oklch(0.16 0.02 260);
-  --c-border:      oklch(0.28 0.03 260);
-  --c-border-soft: oklch(0.30 0.02 260 / 0.5);
-  --c-text:        oklch(0.92 0.01 260);
-  --c-text-muted:  oklch(0.82 0.02 260);
-  --c-text-dim:    oklch(0.65 0.02 260);
-  --c-white:       oklch(0.98 0.01 260);
-  --font-display:  'Newsreader', Georgia, serif;
-  --font-body:     'Space Mono', 'Courier New', monospace;
-  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
-  --transition:    0.35s var(--ease-out);
-  --radius-lg:     24px;
-  --radius-xl:     28px;
-  --glow-blue:     0 12px 48px oklch(0.60 0.22 250 / 0.32);
-  --glow-purple:   0 12px 48px oklch(0.55 0.24 295 / 0.28);
-  --shadow-card:   0 4px 24px oklch(0 0 0 / 0.25), 0 1px 0 oklch(1 0 0 / 0.04) inset;
-  --shadow-card-hover: 0 20px 60px oklch(0 0 0 / 0.45), 0 1px 0 oklch(1 0 0 / 0.06) inset;
-  --grad-accent:   linear-gradient(120deg, var(--c-blue) 0%, var(--c-purple-light) 100%);
+  /* ── Liquid Glass Design System ──────────────────────────────
+     Dark, unsaturated, single-accent. See MEMORY/spec for rules. */
+
+  /* Base surfaces */
+  --bg:              #101012;
+  --bg-elevated:     #17171a;
+  --surface:         #17171a;
+
+  /* Text — always light-on-dark */
+  --text:            #f5f5f7;
+  --text-body:       #e8e8ea;
+  --text-muted:      #a1a1a6;
+  --text-dim:        #a1a1a6;
+
+  /* Hairline borders — never solid grey */
+  --border:          rgba(255, 255, 255, 0.12);
+  --border-soft:     rgba(255, 255, 255, 0.08);
+
+  /* Single muted brand accent (blue) — only on primary CTAs / active states */
+  --accent:          #6e85d6;
+  --accent-hover:    #8098e0;
+  --accent-dim:      #4e5fa0;
+  --accent-ink:      #0b0e17;                 /* dark text on accent */
+  --accent-soft:     rgba(110, 133, 214, 0.14);
+  --accent-soft-border: rgba(110, 133, 214, 0.35);
+
+  /* Glass recipe — ONE recipe for every card/panel/container, no exceptions */
+  --glass-bg:        rgba(255, 255, 255, 0.06);
+  --glass-blur:      blur(16px);
+  --glass-border:    1px solid var(--border);
+  --glass-shadow:    0 8px 32px rgba(0, 0, 0, 0.28);
+
+  /* Liquid rim — layered inset light/dark mimicking a curved glass edge */
+  --rim: inset 0 1px 0 rgba(255, 255, 255, 0.16),
+         inset 0 -1px 0 rgba(0, 0, 0, 0.24),
+         0 1px 2px rgba(0, 0, 0, 0.14);
+  --rim-strong: inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+                0 2px 4px rgba(0, 0, 0, 0.18);
+
+  /* Radius */
+  --radius-sm:       10px;
+  --radius-md:       16px;
+  --radius-lg:       24px;
+  --radius-xl:       28px;
+  --radius-pill:     999px;
+
+  /* Motion — subtle & fast, respects prefers-reduced-motion */
+  --ease:            cubic-bezier(.4, 0, .2, 1);
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition:      0.25s var(--ease);
+
+  /* Typography */
+  --font-display:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:       'Space Mono', 'Courier New', monospace;
+
+  /* ── Legacy aliases — DO NOT REMOVE.
+     static/js/main.js injects an inline style referencing var(--c-blue)
+     and var(--font-display) directly into the DOM; other rules across
+     both stylesheets still reference the --c-* names throughout. ── */
+  --c-blue:          var(--accent);
+  --c-blue-light:    var(--accent-hover);
+  --c-blue-dim:      var(--accent-dim);
+  --c-purple:        var(--accent);
+  --c-purple-light:  var(--accent-hover);
+  --c-cyan:          var(--accent-hover);
+  --c-bg:            var(--bg);
+  --c-bg-elevated:   var(--bg-elevated);
+  --c-surface:       var(--surface);
+  --c-border:        var(--border);
+  --c-border-soft:   var(--border-soft);
+  --c-text:          var(--text);
+  --c-text-muted:    var(--text-muted);
+  --c-text-dim:      var(--text-dim);
+  --c-white:         var(--text);
+  --ease-out:        var(--ease);
+  --glow-blue:       0 12px 48px rgba(110, 133, 214, 0.28);
+  --glow-purple:     0 12px 48px rgba(110, 133, 214, 0.20);
+  --shadow-card:     var(--glass-shadow);
+  --shadow-card-hover: 0 20px 60px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  --grad-accent:     var(--accent);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .nav-glass, .mobile-menu, #cookie-banner, .contact-form-minimal,
+  .xp-about-card, .pd-sidebar-block, .pl-card-link, .site-footer,
+  .btn-ghost {
+    background: var(--bg-elevated) !important;
+  }
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
