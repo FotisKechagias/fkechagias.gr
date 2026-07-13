@@ -674,14 +674,15 @@ body:not(.is-slider) .reveal-up.visible {
 /* ── Footer / Project Details additions ─────────────────────── */
 .site-footer {
   padding: 80px 0 40px;
-  background: oklch(0.10 0.025 260 / 0.55);
-  backdrop-filter: blur(24px) saturate(1.4);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  background: rgba(16, 16, 18, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border-soft);
   position: relative;
   z-index: 4;
   overflow: hidden;
 }
-/* Ζεστό glow πίσω από την υπογραφή — premium agency footer */
+/* Πολύ διακριτικό glow πίσω από την υπογραφή */
 .site-footer::after {
   content: '';
   position: absolute;
@@ -690,7 +691,7 @@ body:not(.is-slider) .reveal-up.visible {
   transform: translateX(-50%);
   width: 600px;
   height: 300px;
-  background: radial-gradient(ellipse, oklch(0.45 0.22 255 / 0.18) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(110, 133, 214, 0.08) 0%, transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
@@ -756,21 +757,21 @@ body:not(.is-slider) .site-footer.story-section {
 .footer-contacts span:not(.fc-label) { font-size: 14px; color: var(--c-text-muted); }
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; font-size: 13px; color: var(--c-text-dim); }
 
-/* ── Contact Form Minimal ───────────────────────────────────── */
+/* ── Contact Form Minimal — κοινή glass συνταγή ─────────────── */
 .contact-form-minimal {
   width: 100%;
-  background: oklch(0.14 0.018 260 / 0.55);
-  border: 0.5px solid oklch(0.32 0.03 260 / 0.8);
+  background: var(--glass-bg);
+  border: var(--glass-border);
   border-radius: var(--radius-xl);
   padding: 36px;
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  box-shadow: var(--shadow-card);
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--rim);
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 .contact-form-minimal:focus-within {
-  border-color: oklch(0.55 0.16 255 / 0.6);
-  box-shadow: var(--shadow-card), var(--glow-blue);
+  border-color: var(--accent-soft-border);
+  box-shadow: var(--glass-shadow), var(--rim), 0 0 0 4px var(--accent-soft);
 }
 .contact-form-minimal .btn-primary { width: 100%; justify-content: center; margin-top: 8px; }
 
@@ -813,20 +814,20 @@ body:not(.is-slider) .site-footer.story-section {
   transform: translateX(-50%);
   width: calc(100% - 48px);
   max-width: 640px;
-  background: oklch(0.13 0.018 260 / 0.92);
-  backdrop-filter: saturate(140%) blur(20px);
-  -webkit-backdrop-filter: saturate(140%) blur(20px);
-  border: 0.5px solid oklch(0.30 0.03 260);
-  border-radius: 16px;
+  background: rgba(23, 23, 26, 0.78);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   padding: 18px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
   z-index: 8000;
-  box-shadow: 0 8px 32px oklch(0 0 0 / 0.5);
+  box-shadow: var(--glass-shadow), var(--rim);
   flex-wrap: wrap;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity var(--transition), transform var(--transition);
 }
 .cookie-banner.hidden {
   opacity: 0;
@@ -908,14 +909,14 @@ body:not(.is-slider) .site-footer.story-section {
 .pd-main p { font-size: 16px; color: var(--c-text-muted); line-height: 1.8; margin-bottom: 20px; }
 .pd-case-study { font-size: 15px; color: var(--c-text-muted); line-height: 1.8; margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--c-border); }
 .pd-sidebar-block {
-  background: oklch(0.14 0.018 260 / 0.55);
-  border: 0.5px solid var(--c-border);
+  background: var(--glass-bg);
+  border: var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 24px;
   margin-bottom: 16px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--rim);
 }
 .pd-sidebar-block h4 { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c-text-dim); margin-bottom: 16px; }
 .pd-cta-inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 28px; }
