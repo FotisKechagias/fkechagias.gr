@@ -507,8 +507,18 @@ body:not(.is-slider) .reveal-up.visible {
 .ab-4, .ab-5 { display: none; }
 /* ── UI Elements ────────────────────────────────────────────── */
 
-
-/* three-canvas removed */
+/* Site-wide WebGL wave field (three-scene.js) — ίδιο stacking slot
+   με το ambient-bg (fixed, z0, αμέσως μετά του στο DOM) ώστε να
+   κάθεται πάντα πίσω από το περιεχόμενο σε κάθε σελίδα. */
+#xp-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.8;
+}
 
 /* ── Navigation — floating liquid glass pill ─────────────────── */
 .nav-glass {
