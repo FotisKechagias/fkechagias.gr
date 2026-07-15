@@ -89,8 +89,8 @@
 @supports not (backdrop-filter: blur(1px)) {
   .nav-inner, .nav-glass.scrolled .nav-inner, .mobile-menu,
   .cookie-banner, .contact-form-minimal, .xp-about-card,
-  .pd-sidebar-block, .pl-card-link, .site-footer, .btn-ghost,
-  .hero-marquee, .hero-available, .xp-hend {
+  .xp-sitem, .pd-sidebar-block, .pl-card-link, .site-footer,
+  .btn-ghost, .hero-marquee, .hero-available, .xp-hend {
     background: var(--bg-elevated) !important;
   }
 }
