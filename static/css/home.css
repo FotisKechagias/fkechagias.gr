@@ -490,11 +490,12 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   margin-top: 48px;
 }
 
+/* Κάρτα: η εικόνα (screenshot) εμφανίζεται ΟΛΟΚΛΗΡΗ, σε φυσικό λόγο
+   πλευρών, χωρίς crop/zoom — τα στοιχεία μπαίνουν ΚΑΤΩ από αυτήν. */
 .xp-proj {
   display: block;
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10.5;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--bg-elevated);
@@ -507,16 +508,12 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), var(--rim);
 }
-/* Parallax: το home.js οδηγεί το --par στο scroll· το scale(1.14)
-   δίνει περιθώριο ώστε η μετατόπιση να μην αφήνει κενά. */
 .xp-proj img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.14) translateY(var(--par, 0%));
-  will-change: transform;
+  height: auto;
 }
-.xp-proj .project-placeholder { position: absolute; inset: 0; }
+.xp-proj .project-placeholder { aspect-ratio: 16 / 9; }
 
 /* Staggered entrance (το .xp-anim μπαίνει από το home.js — χωρίς JS
    ή με prefers-reduced-motion οι κάρτες μένουν κανονικά ορατές) */
@@ -533,26 +530,24 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 .xp-proj.xp-anim.in:hover { transform: translateY(-4px); }
 
-/* Vignette στη βάση της φωτογραφίας — καθαρή εικόνα, όχι blur */
+/* Μπάρα πληροφοριών ΚΑΤΩ από την εικόνα — δεν κρύβει τίποτα */
 .xp-proj-info {
-  position: absolute;
-  inset: auto 0 0 0;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 22px 26px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.3) 65%, transparent 100%);
+  padding: 18px 24px;
+  border-top: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.04);
 }
 .xp-proj-meta h3 {
   font-family: var(--font-display);
-  font-size: clamp(20px, 2.3vw, 30px);
+  font-size: clamp(18px, 2vw, 26px);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
   line-height: 1.1;
   margin: 0 0 4px;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
 }
 .xp-proj-industry {
   font-family: var(--font-body);
@@ -691,9 +686,9 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
     border-radius: 22px;
   }
 
-  .xp-proj { aspect-ratio: 16 / 11; }
   .xp-proj.xp-anim:nth-child(odd),
   .xp-proj.xp-anim:nth-child(even) { transform: translateY(50px) scale(0.97); }
+  .xp-proj-info { padding: 14px 16px; }
   .xp-contact-bg-num { display: none; }
 }
 
@@ -703,5 +698,4 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   .xp-fade { opacity: 1; transform: none; transition: none; }
   .xp-scroll-cue i { animation: none; }
   .xp-proj.xp-anim { opacity: 1; transform: none; transition: none; }
-  .xp-proj img { transform: none; }
 }

@@ -3,8 +3,9 @@
    - Hero: masked line reveal (καθαρό CSS) + xp-fade entrance
      συγχρονισμένη με το preloader.
    - About: τίτλος με word pull-up (μία φορά, IntersectionObserver).
-   - Projects: staggered entrance (εναλλάξ από αριστερά/δεξιά) +
-     parallax στις εικόνες των καρτών, οδηγούμενο από το scroll.
+   - Projects: staggered entrance (εναλλάξ από αριστερά/δεξιά).
+     Οι εικόνες εμφανίζονται ολόκληρες — χωρίς parallax/zoom που
+     θα έκρυβε μέρος του screenshot.
    - Services/Contact: το reveal-up fade τους χειρίζεται ήδη το
      main.js σε όλη τη σελίδα.
    ═══════════════════════════════════════════════════════════════ */
@@ -81,33 +82,5 @@
       });
     }, { threshold: 0.15 });
     projs.forEach(function (p) { projObs.observe(p); });
-
-    /* Parallax: η εικόνα κάθε κάρτας μετατοπίζεται ελαφρά (±6%)
-       ανάλογα με τη θέση της κάρτας στο viewport. */
-    var projImgs = projs.map(function (p) { return p.querySelector('img'); });
-    var parTick = false;
-    function parallax() {
-      parTick = false;
-      var vh = window.innerHeight || 1;
-      projs.forEach(function (p, i) {
-        var img = projImgs[i];
-        if (!img) return;
-        var r = p.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > vh) return;
-        /* -1 (κάρτα κάτω από το viewport) … +1 (κάρτα πάνω) */
-        var t = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
-        img.style.setProperty('--par', (t * -6).toFixed(2) + '%');
-      });
-    }
-    function queueParallax() {
-      if (!parTick) { parTick = true; requestAnimationFrame(parallax); }
-    }
-    if (window.__lenis && typeof window.__lenis.on === 'function') {
-      window.__lenis.on('scroll', queueParallax);
-    } else {
-      window.addEventListener('scroll', queueParallax, { passive: true });
-    }
-    window.addEventListener('resize', queueParallax);
-    parallax();
   }
 })();
