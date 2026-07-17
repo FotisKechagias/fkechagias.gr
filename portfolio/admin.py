@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Testimonial, ContactMessage
+from .models import Project, Testimonial, ContactMessage, ProjectBrief
 
 
 @admin.register(Project)
@@ -16,6 +16,16 @@ class TestimonialAdmin(admin.ModelAdmin):
     list_display = ('client_name', 'client_company', 'rating', 'is_active', 'order')
     list_editable = ('is_active', 'order')
     list_filter = ('is_active', 'rating')
+
+
+@admin.register(ProjectBrief)
+class ProjectBriefAdmin(admin.ModelAdmin):
+    list_display = ('business_name', 'contact_name', 'business_type', 'service_needed', 'budget', 'created_at', 'is_read')
+    list_editable = ('is_read',)
+    list_filter = ('is_read', 'service_needed', 'business_type')
+    search_fields = ('business_name', 'contact_name', 'email', 'phone')
+    readonly_fields = ('created_at',)
+    ordering = ('-created_at',)
 
 
 @admin.register(ContactMessage)

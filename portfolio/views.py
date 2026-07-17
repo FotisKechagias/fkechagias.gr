@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.core.mail import EmailMessage
 from django.conf import settings
-from .models import Project, Testimonial, ContactMessage
+from .models import Project, Testimonial, ContactMessage, ProjectBrief
 
 
 def index(request):
@@ -25,6 +25,105 @@ def project_list(request):
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
     return render(request, 'portfolio/project_detail.html', {'project': project})
+
+
+def build_together(request):
+    """Διαδραστική σελίδα-οδηγός «Ας χτίσουμε μαζί»."""
+    return render(request, 'portfolio/build_together.html')
+
+
+@require_POST
+def build_submit(request):
+    """Παραλαβή του αναλυτικού brief (multipart λόγω logo) + αναλυτικό email."""
+    try:
+        d = request.POST
+        contact_name  = d.get('contact_name', '').strip()[:200]
+        business_name = d.get('business_name', '').strip()[:200]
+        business_type = d.get('business_type', '').strip()[:120]
+        service       = d.get('service_needed', '').strip()[:120]
+        current_url   = d.get('current_url', '').strip()[:200]
+        email         = d.get('email', '').strip()[:254]
+        phone         = d.get('phone', '').strip()[:30]
+        city          = d.get('city', '').strip()[:120]
+        address       = d.get('address', '').strip()[:200]
+        budget        = d.get('budget', '').strip()[:60]
+        timeline      = d.get('timeline', '').strip()[:60]
+        vision        = d.get('vision', '').strip()[:5000]
+        logo          = request.FILES.get('logo')
+
+        if not contact_name or not business_name or not email:
+            return JsonResponse({'success': False, 'error': 'Λείπουν υποχρεωτικά πεδία.'}, status=400)
+
+        if logo:
+            if logo.size > 5 * 1024 * 1024:
+                return JsonResponse({'success': False, 'error': 'Το logo ξεπερνά τα 5MB.'}, status=400)
+            if not (logo.content_type or '').startswith('image/'):
+                return JsonResponse({'success': False, 'error': 'Το logo πρέπει να είναι εικόνα.'}, status=400)
+
+        brief = ProjectBrief.objects.create(
+            contact_name=contact_name,
+            business_name=business_name,
+            business_type=business_type,
+            service_needed=service,
+            current_url=current_url,
+            logo=logo,
+            email=email,
+            phone=phone,
+            city=city,
+            address=address,
+            budget=budget,
+            timeline=timeline,
+            vision=vision,
+        )
+
+        body = f"""Νέο αίτημα project από τη σελίδα «Ας χτίσουμε μαζί»
+═══════════════════════════════════════════════
+
+ΕΠΙΧΕΙΡΗΣΗ
+  Όνομα:              {business_name}
+  Τύπος:              {business_type or '—'}
+  Υπάρχουσα σελίδα:   {current_url or '—'}
+  Logo:               {'Επισυνάπτεται' if logo else 'Δεν δόθηκε'}
+
+ΤΙ ΧΡΕΙΑΖΕΤΑΙ
+  Υπηρεσία:           {service or '—'}
+  Budget:             {budget or '—'}
+  Χρονοδιάγραμμα:     {timeline or '—'}
+
+ΕΠΙΚΟΙΝΩΝΙΑ
+  Όνομα:              {contact_name}
+  Email:              {email}
+  Κινητό:             {phone or '—'}
+  Πόλη:               {city or '—'}
+  Διεύθυνση:          {address or '—'}
+
+ΟΡΑΜΑ / ΣΗΜΕΙΩΣΕΙΣ
+{vision or '—'}
+
+═══════════════════════════════════════════════
+Αποθηκεύτηκε και στο admin: /admin/portfolio/projectbrief/{brief.pk}/
+"""
+        try:
+            msg = EmailMessage(
+                subject=f'Νέο project brief: {business_name} ({service or "—"}) — FKECHAGIAS',
+                body=body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[settings.CONTACT_RECIPIENT_EMAIL],
+                reply_to=[email],
+            )
+            if logo:
+                logo.seek(0)
+                msg.attach(logo.name, logo.read(), logo.content_type)
+            msg.send(fail_silently=False)
+        except Exception:
+            # Το brief έχει ήδη σωθεί στη βάση/admin — μη χαθεί το lead
+            # επειδή απέτυχε στιγμιαία το SMTP.
+            pass
+
+        return JsonResponse({'success': True})
+
+    except Exception:
+        return JsonResponse({'success': False, 'error': 'Προέκυψε σφάλμα. Δοκιμάστε ξανά.'}, status=500)
 
 
 @require_POST

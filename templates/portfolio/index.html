@@ -407,16 +407,25 @@
       </div>
     </div>
 
-    <div class="contact-form-minimal reveal-up" data-delay="2">
-      <span class="contact-form-title">Στείλτε μήνυμα</span>
-      <form id="contact-form" novalidate>
-        {% csrf_token %}
-        <input type="text"  class="minimal-input"    name="name"    placeholder="Το όνομά σας *" required />
-        <input type="email" class="minimal-input"    name="email"   placeholder="Το email σας *" required />
-        <input type="text"  class="minimal-input"    name="service" placeholder="Τι ψάχνετε; (π.χ. Κατασκευή Ιστοσελίδας)" />
-        <textarea           class="minimal-textarea" name="message" placeholder="Πείτε μου λίγα λόγια για το project σας *" rows="4"></textarea>
-        <button type="submit" class="btn-primary magnetic">Αποστολή →</button>
-      </form>
+    <div class="contact-form-minimal xp-build-cta reveal-up" data-delay="2">
+      <span class="contact-form-title">Ξεκινήστε το project σας</span>
+      <h3 class="xp-build-title">Ας χτίσουμε <strong>μαζί.</strong></h3>
+      <p class="xp-build-sub">
+        Ένας διαδραστικός οδηγός 2-3 λεπτών: μου λέτε βήμα-βήμα για την
+        επιχείρησή σας, ανεβάζετε το logo σας — και λαμβάνετε
+        συγκεκριμένη πρόταση εντός 24 ωρών.
+      </p>
+      <ul class="xp-build-points" aria-hidden="true">
+        <li>Χωρίς δεσμεύσεις</li>
+        <li>2-3 λεπτά</li>
+        <li>Απάντηση σε 24h</li>
+      </ul>
+      <a href="{% url 'build_together' %}" class="btn-primary btn-circle magnetic xp-build-btn">
+        <span>Ξεκινάμε</span>
+        <span class="btn-circle-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
     </div>
 
   </div>

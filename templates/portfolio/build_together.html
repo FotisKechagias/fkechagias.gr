@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ας χτίσουμε μαζί — FKECHAGIAS{% endblock %}
+{% block description %}Πείτε μου για την επιχείρησή σας βήμα-βήμα και θα λάβετε συγκεκριμένη πρόταση για τη νέα σας ιστοσελίδα εντός 24 ωρών.{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/build.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="bw-page">
+  <div class="bw-shell" id="bw-shell">
+
+    <!-- Progress -->
+    <div class="bw-progress" id="bw-progress" aria-hidden="true">
+      <div class="bw-progress-bar" id="bw-progress-bar"></div>
+    </div>
+    <div class="bw-counter" id="bw-counter" aria-hidden="true"></div>
+
+    <form id="bw-form" novalidate>
+      {% csrf_token %}
+
+      <!-- 0 · INTRO -->
+      <section class="bw-step is-active" data-step="intro">
+        <span class="bw-label">Νέο project</span>
+        <h1 class="bw-title">Ας χτίσουμε <strong>μαζί.</strong></h1>
+        <p class="bw-sub">
+          Απαντήστε σε λίγες σύντομες ερωτήσεις — παίρνει 2-3 λεπτά.
+          Θα λάβω ό,τι χρειάζομαι για να σας απαντήσω εντός 24 ωρών
+          με συγκεκριμένη πρόταση για τη σελίδα σας.
+        </p>
+        <div class="bw-actions">
+          <button type="button" class="btn-primary bw-next">Ξεκινάμε
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+        <p class="bw-hint">Enter ↵ για συνέχεια σε κάθε βήμα</p>
+      </section>
+
+      <!-- 1 · Όνομα -->
+      <section class="bw-step" data-step="name" data-required="contact_name">
+        <h2 class="bw-q">Πώς σας λένε; <em>*</em></h2>
+        <input type="text" class="bw-input" name="contact_name" placeholder="π.χ. Γιώργος Παπαδόπουλος" autocomplete="name" />
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Συνέχεια</button>
+        </div>
+      </section>
+
+      <!-- 2 · Επιχείρηση -->
+      <section class="bw-step" data-step="business" data-required="business_name">
+        <h2 class="bw-q">Πώς λέγεται η επιχείρησή σας; <em>*</em></h2>
+        <input type="text" class="bw-input" name="business_name" placeholder="π.χ. Καφέ Το Στέκι" autocomplete="organization" />
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Συνέχεια</button>
+        </div>
+      </section>
+
+      <!-- 3 · Τύπος επιχείρησης -->
+      <section class="bw-step" data-step="type" data-required="business_type">
+        <h2 class="bw-q">Τι είδους επιχείρηση είναι; <em>*</em></h2>
+        <div class="bw-chips" data-name="business_type">
+          <button type="button" class="bw-chip">Εστιατόριο / Καφέ</button>
+          <button type="button" class="bw-chip">Κατάστημα / E-shop</button>
+          <button type="button" class="bw-chip">Ξενοδοχείο / Καταλύματα</button>
+          <button type="button" class="bw-chip">Ιατρείο / Υγεία</button>
+          <button type="button" class="bw-chip">Γραφείο / Υπηρεσίες</button>
+          <button type="button" class="bw-chip">Κατασκευές / Τεχνικά</button>
+          <button type="button" class="bw-chip">Ομορφιά / Fitness</button>
+          <button type="button" class="bw-chip" data-other="1">Άλλο…</button>
+        </div>
+        <input type="hidden" name="business_type" />
+        <input type="text" class="bw-input bw-other-input" placeholder="Γράψτε τον τύπο της επιχείρησης" hidden />
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Συνέχεια</button>
+        </div>
+      </section>
+
+      <!-- 4 · Τι χρειάζεστε -->
+      <section class="bw-step" data-step="service" data-required="service_needed">
+        <h2 class="bw-q">Τι χρειάζεστε; <em>*</em></h2>
+        <div class="bw-chips" data-name="service_needed">
+          <button type="button" class="bw-chip">Νέα ιστοσελίδα</button>
+          <button type="button" class="bw-chip">Ανανέωση υπάρχουσας</button>
+          <button type="button" class="bw-chip">E-shop</button>
+          <button type="button" class="bw-chip">Σύστημα κρατήσεων</button>
+          <button type="button" class="bw-chip">Web εφαρμογή</button>
+          <button type="button" class="bw-chip">Δεν είμαι σίγουρος</button>
+        </div>
+        <input type="hidden" name="service_needed" />
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Συνέχεια</button>
+        </div>
+      </section>
+
+      <!-- 5 · Υπάρχουσα σελίδα -->
+      <section class="bw-step" data-step="current">
+        <h2 class="bw-q">Έχετε ήδη ιστοσελίδα;</h2>
+        <p class="bw-note">Αν ναι, γράψτε τη διεύθυνσή της — αλλιώς προχωρήστε.</p>
+        <input type="text" class="bw-input" name="current_url" placeholder="π.χ. www.mysite.gr (προαιρετικό)" inputmode="url" />
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Συνέχεια</button>
+        </div>
+      </section>
+
+      <!-- 6 · Logo -->
+      <section class="bw-step" data-step="logo">
+        <h2 class="bw-q">Έχετε logo;</h2>
+        <p class="bw-note">Ανεβάστε το να το δω — ή προχωρήστε αν δεν έχετε ακόμα.</p>
+        <label class="bw-drop" id="bw-drop" for="bw-logo-input">
+          <input type="file" id="bw-logo-input" name="logo" accept="image/*" hidden />
+          <span class="bw-drop-idle" id="bw-drop-idle">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Σύρετε το logo εδώ ή <u>πατήστε για επιλογή</u>
+            <small>PNG, JPG ή SVG — έως 5MB</small>
+          </span>
+          <span class="bw-drop-preview" id="bw-drop-preview" hidden>
+            <img id="bw-logo-preview" alt="Προεπισκόπηση logo" />
+            <span id="bw-logo-name"></span>
+            <button type="button" class="bw-logo-remove" id="bw-logo-remove">Αφαίρεση ✕</button>
+          </span>
+        </label>
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Συνέχεια</button>
+        </div>
+      </section>
+
+      <!-- 7 · Επικοινωνία -->
+      <section class="bw-step" data-step="contact" data-required="email">
+        <h2 class="bw-q">Στοιχεία επικοινωνίας</h2>
+        <div class="bw-grid">
+          <input type="email" class="bw-input" name="email" placeholder="Email * " autocomplete="email" inputmode="email" />
+          <input type="tel" class="bw-input" name="phone" placeholder="Κινητό" autocomplete="tel" inputmode="tel" />
+          <input type="text" class="bw-input" name="city" placeholder="Πόλη" autocomplete="address-level2" />
+          <input type="text" class="bw-input" name="address" placeholder="Οδός / Διεύθυνση" autocomplete="street-address" />
+        </div>
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Συνέχεια</button>
+        </div>
+      </section>
+
+      <!-- 8 · Budget & Χρόνος -->
+      <section class="bw-step" data-step="budget">
+        <h2 class="bw-q">Budget &amp; χρονοδιάγραμμα</h2>
+        <p class="bw-note">Βοηθάει να σας προτείνω τη σωστή λύση — όχι δεσμευτικό.</p>
+        <span class="bw-mini-label">Ενδεικτικό budget</span>
+        <div class="bw-chips bw-chips-stay" data-name="budget">
+          <button type="button" class="bw-chip">Έως 500€</button>
+          <button type="button" class="bw-chip">500 – 1.000€</button>
+          <button type="button" class="bw-chip">1.000 – 2.000€</button>
+          <button type="button" class="bw-chip">2.000€+</button>
+          <button type="button" class="bw-chip">Θα το συζητήσουμε</button>
+        </div>
+        <input type="hidden" name="budget" />
+        <span class="bw-mini-label">Πότε το χρειάζεστε;</span>
+        <div class="bw-chips bw-chips-stay" data-name="timeline">
+          <button type="button" class="bw-chip">Άμεσα</button>
+          <button type="button" class="bw-chip">Σε 1-2 μήνες</button>
+          <button type="button" class="bw-chip">Ευέλικτο</button>
+        </div>
+        <input type="hidden" name="timeline" />
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Συνέχεια</button>
+        </div>
+      </section>
+
+      <!-- 9 · Όραμα -->
+      <section class="bw-step" data-step="vision">
+        <h2 class="bw-q">Πείτε μου το όραμά σας</h2>
+        <p class="bw-note">Τι θέλετε να πετύχει η σελίδα; Υπάρχουν sites που σας αρέσουν; (προαιρετικό)</p>
+        <textarea class="bw-input bw-textarea" name="vision" rows="5" placeholder="π.χ. Θέλω οι πελάτες να βλέπουν τον κατάλογο και να κλείνουν τραπέζι online…"></textarea>
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-next">Σύνοψη</button>
+        </div>
+      </section>
+
+      <!-- 10 · REVIEW -->
+      <section class="bw-step" data-step="review">
+        <h2 class="bw-q">Μια τελευταία ματιά</h2>
+        <p class="bw-note">Ελέγξτε τα στοιχεία — πατήστε σε ό,τι θέλετε να διορθώσετε.</p>
+        <dl class="bw-review" id="bw-review"></dl>
+        <p class="bw-error" aria-live="polite"></p>
+        <div class="bw-actions">
+          <button type="button" class="bw-back" aria-label="Πίσω">←</button>
+          <button type="button" class="btn-primary bw-submit" id="bw-submit">Αποστολή
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 11 · SUCCESS -->
+      <section class="bw-step" data-step="done">
+        <div class="bw-done-icon" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 class="bw-title">Το έλαβα!</h2>
+        <p class="bw-sub">
+          Ευχαριστώ για τον χρόνο σας. Θα μελετήσω τα στοιχεία και θα σας
+          απαντήσω <strong>εντός 24 ωρών</strong> με συγκεκριμένη πρόταση.
+        </p>
+        <div class="bw-actions">
+          <a href="/" class="btn-primary">Πίσω στην αρχική</a>
+        </div>
+      </section>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/build.js' %}" defer></script>
+{% endblock %}

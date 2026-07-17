@@ -48,6 +48,33 @@ class Testimonial(models.Model):
         return f"{self.client_name} — {self.client_company}"
 
 
+class ProjectBrief(models.Model):
+    """Αναλυτικό αίτημα από τη σελίδα «Ας χτίσουμε μαζί»."""
+    contact_name = models.CharField(max_length=200, verbose_name="Όνομα")
+    business_name = models.CharField(max_length=200, verbose_name="Επιχείρηση")
+    business_type = models.CharField(max_length=120, verbose_name="Τύπος επιχείρησης")
+    service_needed = models.CharField(max_length=120, verbose_name="Τι χρειάζεται")
+    current_url = models.URLField(blank=True, verbose_name="Υπάρχουσα σελίδα")
+    logo = models.ImageField(upload_to='briefs/', blank=True, verbose_name="Logo")
+    email = models.EmailField(verbose_name="Email")
+    phone = models.CharField(max_length=30, blank=True, verbose_name="Κινητό")
+    city = models.CharField(max_length=120, blank=True, verbose_name="Πόλη")
+    address = models.CharField(max_length=200, blank=True, verbose_name="Διεύθυνση")
+    budget = models.CharField(max_length=60, blank=True, verbose_name="Budget")
+    timeline = models.CharField(max_length=60, blank=True, verbose_name="Χρονοδιάγραμμα")
+    vision = models.TextField(blank=True, verbose_name="Όραμα / Σημειώσεις")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Ημερομηνία")
+    is_read = models.BooleanField(default=False, verbose_name="Διαβάστηκε")
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Αίτημα Project"
+        verbose_name_plural = "Αιτήματα Project"
+
+    def __str__(self):
+        return f"{self.business_name} — {self.contact_name} ({self.created_at.strftime('%d/%m/%Y')})"
+
+
 class ContactMessage(models.Model):
     SERVICE_CHOICES = [
         ('custom', 'Custom Website Development'),
