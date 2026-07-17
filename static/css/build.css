@@ -353,3 +353,13 @@
 
 /* Submitting state */
 .bw-submit[disabled] { opacity: 0.6; pointer-events: none; }
+
+/* Honeypot — εκτός οθόνης, όχι display:none (κάποια bots το ελέγχουν) */
+.bw-hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}

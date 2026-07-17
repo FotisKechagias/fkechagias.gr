@@ -37,6 +37,12 @@ def build_submit(request):
     """Παραλαβή του αναλυτικού brief (multipart λόγω logo) + αναλυτικό email."""
     try:
         d = request.POST
+
+        # Honeypot: το πεδίο "website" είναι αόρατο για ανθρώπους —
+        # αν έχει τιμή, είναι bot. Απαντάμε "επιτυχία" χωρίς να σώσουμε.
+        if d.get('website', '').strip():
+            return JsonResponse({'success': True})
+
         contact_name  = d.get('contact_name', '').strip()[:200]
         business_name = d.get('business_name', '').strip()[:200]
         business_type = d.get('business_type', '').strip()[:120]
@@ -123,6 +129,33 @@ def build_submit(request):
             # επειδή απέτυχε στιγμιαία το SMTP.
             pass
 
+        # Αυτόματη επιβεβαίωση προς τον πελάτη — χτίζει εμπιστοσύνη
+        # και κλειδώνει την προσδοκία των 24 ωρών.
+        try:
+            confirm = EmailMessage(
+                subject='Έλαβα το αίτημά σας — FKECHAGIAS',
+                body=f"""Γεια σας {contact_name},
+
+Ευχαριστώ για τον χρόνο σας! Έλαβα το αίτημα για την επιχείρησή σας
+«{business_name}» και θα το μελετήσω προσεκτικά.
+
+Θα σας απαντήσω εντός 24 ωρών με συγκεκριμένη πρόταση.
+
+Στο μεταξύ, αν θέλετε να προσθέσετε κάτι, απαντήστε απευθείας σε αυτό
+το email ή καλέστε με στο +30 6987 530 306.
+
+Φώτης Κεχαγιάς
+Web Designer & Developer
+https://fkechagias.gr
+""",
+                from_email='noreply@fkechagias.gr',
+                to=[email],
+                reply_to=[settings.CONTACT_RECIPIENT_EMAIL],
+            )
+            confirm.send(fail_silently=True)
+        except Exception:
+            pass
+
         return JsonResponse({'success': True})
 
     except Exception:
@@ -133,6 +166,11 @@ def build_submit(request):
 def contact_submit(request):
     try:
         data = json.loads(request.body)
+
+        # Honeypot (βλ. build_submit)
+        if data.get('website', '').strip():
+            return JsonResponse({'success': True, 'message': 'OK'})
+
         name = data.get('name', '').strip()
         email = data.get('email', '').strip()
         phone = data.get('phone', '').strip()

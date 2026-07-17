@@ -20,6 +20,8 @@
 
     <form id="bw-form" novalidate>
       {% csrf_token %}
+      <!-- Honeypot: αόρατο για ανθρώπους, τα bots το συμπληρώνουν -->
+      <input type="text" name="website" class="bw-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
       <!-- 0 · INTRO -->
       <section class="bw-step is-active" data-step="intro">

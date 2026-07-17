@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}404 — Η σελίδα δεν βρέθηκε · FKECHAGIAS{% endblock %}
+{% block description %}Η σελίδα που ψάχνετε δεν υπάρχει ή έχει μετακινηθεί.{% endblock %}
+
+{% block content %}
+<section class="err-page" aria-label="Σφάλμα 404">
+  <div class="err-inner">
+    <span class="err-code" aria-hidden="true">404</span>
+    <h1 class="err-title">Χμ… αυτή η σελίδα<br /><strong>δεν υπάρχει.</strong></h1>
+    <p class="err-sub">
+      Ο σύνδεσμος μπορεί να είναι λάθος ή η σελίδα να έχει μετακινηθεί.
+      Πάμε κάπου πιο ενδιαφέροντα;
+    </p>
+    <div class="err-actions">
+      <a href="/" class="btn-primary">Πίσω στην αρχική</a>
+      <a href="{% url 'project_list' %}" class="btn-ghost">Δες τα έργα ↗</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

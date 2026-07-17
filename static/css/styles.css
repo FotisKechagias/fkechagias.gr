@@ -1299,6 +1299,57 @@ body:not(.is-slider) .story-section > .container {
   border-radius: 12px;
 }
 
+/* ── Σελίδα σφάλματος (404) ──────────────────────────────────── */
+.err-page {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 60px;
+  position: relative;
+  z-index: 2;
+}
+.err-code {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(90px, 18vw, 200px);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.16);
+  margin-bottom: 8px;
+  user-select: none;
+}
+.err-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+.err-title strong { font-weight: 800; }
+.err-sub {
+  font-family: var(--font-display);
+  font-size: clamp(14px, 1.7vw, 17px);
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: 440px;
+  margin: 0 auto;
+}
+.err-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.err-actions .btn-primary,
+.err-actions .btn-ghost { margin-top: 32px; }
+
 /* ── Back to top — floating glass κουμπί ─────────────────────── */
 .back-to-top {
   position: fixed;
