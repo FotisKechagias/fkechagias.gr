@@ -104,10 +104,13 @@ def build_submit(request):
 Αποθηκεύτηκε και στο admin: /admin/portfolio/projectbrief/{brief.pk}/
 """
         try:
+            # From: ΠΑΝΤΑ διεύθυνση του domain μας — αν μπει gmail κ.λπ.
+            # στο From ενώ στέλνουμε από τον δικό μας server, η Gmail το
+            # απορρίπτει με DMARC (550 5.7.26). Το gmail πάει μόνο στο to/reply_to.
             msg = EmailMessage(
                 subject=f'Νέο project brief: {business_name} ({service or "—"}) — FKECHAGIAS',
                 body=body,
-                from_email=settings.DEFAULT_FROM_EMAIL,
+                from_email='noreply@fkechagias.gr',
                 to=[settings.CONTACT_RECIPIENT_EMAIL],
                 reply_to=[email],
             )
