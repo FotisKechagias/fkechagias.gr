@@ -321,6 +321,52 @@
       </li>
 
     </ul>
+
+    <a href="{% url 'build_together' %}" class="xp-hend magnetic xp-services-cta">
+      <span>Δεν ξέρετε τι χρειάζεστε; Ας το βρούμε μαζί</span>
+      <em aria-hidden="true">→</em>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     02 · PROCESS — πώς δουλεύουμε, 4 βήματα
+     ══════════════════════════════════════════════════ -->
+<section id="process" class="xp-process" aria-label="Πώς δουλεύουμε">
+  <div class="grain-subtle" aria-hidden="true"></div>
+  <div class="xp-container">
+
+    <div class="xp-sec-head reveal-up">
+      <span class="xp-label">Διαδικασία</span>
+      <h2 class="xp-sec-title">Πώς <strong>δουλεύουμε.</strong></h2>
+    </div>
+
+    <ol class="xp-steps" role="list">
+      <li class="xp-pstep reveal-up">
+        <span class="xp-pstep-num" aria-hidden="true">01</span>
+        <h3>Γνωριμία</h3>
+        <p>Μου λέτε την ιδέα σας — από τον οδηγό ή με ένα τηλεφώνημα.
+           Καταλαβαίνω στόχους, κοινό και ανάγκες. Απαντάω εντός 24 ωρών.</p>
+      </li>
+      <li class="xp-pstep reveal-up" data-delay="1">
+        <span class="xp-pstep-num" aria-hidden="true">02</span>
+        <h3>Πρόταση</h3>
+        <p>Λαμβάνετε συγκεκριμένο πλάνο με τιμή και χρονοδιάγραμμα.
+           Χωρίς κρυφές χρεώσεις, χωρίς δεσμεύσεις μέχρι να πούμε «πάμε».</p>
+      </li>
+      <li class="xp-pstep reveal-up" data-delay="2">
+        <span class="xp-pstep-num" aria-hidden="true">03</span>
+        <h3>Σχεδίαση &amp; Ανάπτυξη</h3>
+        <p>Χτίζω τη σελίδα από το μηδέν και παρακολουθείτε την πρόοδο
+           ζωντανά σε δοκιμαστικό link — λέτε τη γνώμη σας σε κάθε βήμα.</p>
+      </li>
+      <li class="xp-pstep reveal-up" data-delay="3">
+        <span class="xp-pstep-num" aria-hidden="true">04</span>
+        <h3>Παράδοση &amp; Εξέλιξη</h3>
+        <p>Δημοσίευση, εκπαίδευση στο πάνελ διαχείρισης και συνεχής
+           υποστήριξη — η σελίδα σας μεγαλώνει μαζί με την επιχείρηση.</p>
+      </li>
+    </ol>
   </div>
 </section>
 
@@ -331,7 +377,7 @@
   <div class="xp-container">
 
     <div class="xp-sec-head reveal-up">
-      <span class="xp-label">Portfolio</span>
+      <span class="xp-label">Portfolio{% if projects %} · {{ projects|length }} έργ{% if projects|length == 1 %}ο{% else %}α{% endif %}{% endif %}</span>
       <h2 class="xp-sec-title">Επιλεγμένα<br /><strong>Έργα.</strong></h2>
     </div>
 
@@ -351,6 +397,9 @@
             <div class="xp-proj-meta">
               <h3>{{ project.title }}</h3>
               <span class="xp-proj-industry">{{ project.industry }}</span>
+              <span class="xp-proj-tags" aria-hidden="true">
+                {% for t in project.get_technologies_list|slice:":3" %}<span>{{ t }}</span>{% endfor %}
+              </span>
             </div>
             <span class="xp-proj-arrow" aria-hidden="true">↗</span>
           </div>
@@ -376,6 +425,124 @@
 
   </div>
 </section>
+
+{% if testimonials %}
+<!-- ══════════════════════════════════════════════════
+     03.5 · TESTIMONIALS — περιστρεφόμενες γνώμες πελατών
+     ══════════════════════════════════════════════════ -->
+<section id="testimonials" class="xp-tst" aria-label="Γνώμες πελατών">
+  <div class="xp-container">
+
+    <div class="xp-sec-head reveal-up">
+      <span class="xp-label">Πελάτες</span>
+      <h2 class="xp-sec-title">Τι λένε <strong>για εμένα.</strong></h2>
+    </div>
+
+    <div class="xp-tst-stage reveal-up" id="tst-stage" data-delay="1">
+      {% for t in testimonials %}
+      <figure class="xp-tst-card{% if forloop.first %} is-on{% endif %}">
+        <div class="xp-tst-stars" aria-label="{{ t.rating }} στα 5">{% for _ in "x"|rjust:t.rating %}★{% endfor %}</div>
+        <blockquote>{{ t.content }}</blockquote>
+        <figcaption>
+          <strong>{{ t.client_name }}</strong>
+          <span>{{ t.client_role }}{% if t.client_company %} · {{ t.client_company }}{% endif %}</span>
+        </figcaption>
+      </figure>
+      {% endfor %}
+      {% if testimonials|length > 1 %}
+      <div class="xp-tst-nav" role="tablist" aria-label="Επιλογή μαρτυρίας">
+        {% for t in testimonials %}
+        <button type="button" class="xp-tst-dot{% if forloop.first %} is-on{% endif %}" aria-label="Μαρτυρία {{ forloop.counter }}"></button>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+{% endif %}
+
+<!-- ══════════════════════════════════════════════════
+     03.7 · FAQ — συχνές ερωτήσεις (accordion)
+     ══════════════════════════════════════════════════ -->
+<section id="faq" class="xp-faq" aria-label="Συχνές ερωτήσεις">
+  <div class="xp-container">
+
+    <div class="xp-sec-head reveal-up">
+      <span class="xp-label">FAQ</span>
+      <h2 class="xp-sec-title">Συχνές <strong>ερωτήσεις.</strong></h2>
+    </div>
+
+    <div class="xp-faq-list reveal-up" data-delay="1">
+
+      <details class="xp-faq-item">
+        <summary>Πόσο κοστίζει μια ιστοσελίδα;<i aria-hidden="true"></i></summary>
+        <div class="xp-faq-a">
+          Εξαρτάται από τις ανάγκες: μια σελίδα παρουσίασης κοστίζει λιγότερο,
+          ένα e-shop ή σύστημα κρατήσεων περισσότερο. Συμπληρώστε τον οδηγό
+          «Ας χτίσουμε μαζί» και θα λάβετε συγκεκριμένη τιμή εντός 24 ωρών —
+          χωρίς καμία δέσμευση.
+        </div>
+      </details>
+
+      <details class="xp-faq-item">
+        <summary>Σε πόσο καιρό θα είναι έτοιμη;<i aria-hidden="true"></i></summary>
+        <div class="xp-faq-a">
+          Συνήθως 2-4 εβδομάδες για σελίδα παρουσίασης και 4-8 για e-shop ή
+          σύστημα κρατήσεων — ανάλογα με το περιεχόμενο και τις λειτουργίες.
+          Θα έχετε ακριβές χρονοδιάγραμμα στην πρόταση.
+        </div>
+      </details>
+
+      <details class="xp-faq-item">
+        <summary>Θα μπορώ να αλλάζω μόνος μου το περιεχόμενο;<i aria-hidden="true"></i></summary>
+        <div class="xp-faq-a">
+          Ναι. Κάθε σελίδα παραδίδεται με απλό πάνελ διαχείρισης για κείμενα,
+          φωτογραφίες και προϊόντα — και σας δείχνω αναλυτικά πώς να το
+          χρησιμοποιείτε.
+        </div>
+      </details>
+
+      <details class="xp-faq-item">
+        <summary>Θα φαίνεται σωστά στο κινητό;<i aria-hidden="true"></i></summary>
+        <div class="xp-faq-a">
+          Κάθε σελίδα σχεδιάζεται πρώτα για κινητό (mobile-first) και
+          δοκιμάζεται σε πραγματικές συσκευές — εκεί γίνεται η πλειοψηφία
+          των επισκέψεων σήμερα.
+        </div>
+      </details>
+
+      <details class="xp-faq-item">
+        <summary>Τι γίνεται μετά την παράδοση;<i aria-hidden="true"></i></summary>
+        <div class="xp-faq-a">
+          Δεν εξαφανίζομαι. Υπάρχουν πακέτα συντήρησης με backups,
+          ενημερώσεις ασφαλείας και αλλαγές περιεχομένου — ή απλή υποστήριξη
+          όποτε τη χρειαστείτε.
+        </div>
+      </details>
+
+      <details class="xp-faq-item">
+        <summary>Χρειάζομαι δικό μου hosting και domain;<i aria-hidden="true"></i></summary>
+        <div class="xp-faq-a">
+          Όχι απαραίτητα — αναλαμβάνω πλήρη ρύθμιση domain, hosting, email
+          και SSL, ή μεταφορά από τον τρέχοντα πάροχό σας χωρίς downtime.
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"Πόσο κοστίζει μια ιστοσελίδα;","acceptedAnswer":{"@type":"Answer","text":"Εξαρτάται από τις ανάγκες: μια σελίδα παρουσίασης κοστίζει λιγότερο, ένα e-shop ή σύστημα κρατήσεων περισσότερο. Με τον οδηγό «Ας χτίσουμε μαζί» λαμβάνετε συγκεκριμένη τιμή εντός 24 ωρών χωρίς δέσμευση."}},
+ {"@type":"Question","name":"Σε πόσο καιρό θα είναι έτοιμη;","acceptedAnswer":{"@type":"Answer","text":"Συνήθως 2-4 εβδομάδες για σελίδα παρουσίασης και 4-8 για e-shop ή σύστημα κρατήσεων, ανάλογα με το περιεχόμενο και τις λειτουργίες."}},
+ {"@type":"Question","name":"Θα μπορώ να αλλάζω μόνος μου το περιεχόμενο;","acceptedAnswer":{"@type":"Answer","text":"Ναι, κάθε σελίδα παραδίδεται με απλό πάνελ διαχείρισης και πλήρη εκπαίδευση."}},
+ {"@type":"Question","name":"Θα φαίνεται σωστά στο κινητό;","acceptedAnswer":{"@type":"Answer","text":"Κάθε σελίδα σχεδιάζεται mobile-first και δοκιμάζεται σε πραγματικές συσκευές."}},
+ {"@type":"Question","name":"Τι γίνεται μετά την παράδοση;","acceptedAnswer":{"@type":"Answer","text":"Υπάρχουν πακέτα συντήρησης με backups, ενημερώσεις ασφαλείας και αλλαγές περιεχομένου, ή υποστήριξη κατά περίπτωση."}},
+ {"@type":"Question","name":"Χρειάζομαι δικό μου hosting και domain;","acceptedAnswer":{"@type":"Answer","text":"Όχι απαραίτητα — αναλαμβάνεται πλήρης ρύθμιση domain, hosting, email και SSL ή μεταφορά χωρίς downtime."}}
+]}
+</script>
 
 <!-- ══════════════════════════════════════════════════
      04 · CONTACT

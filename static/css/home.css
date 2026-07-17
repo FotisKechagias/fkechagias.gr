@@ -71,7 +71,10 @@ body:not(.is-slider) #contact::after { content: none; }
    στρογγυλεμένες γωνίες, hairline και καθαρό ΚΕΝΟ ανάμεσά τους. ── */
 .xp-about,
 .xp-services,
+.xp-process,
 .xp-projects,
+.xp-tst,
+.xp-faq,
 .xp-contact {
   position: relative;
   z-index: 2;
@@ -100,6 +103,18 @@ body:not(.is-slider) #contact::after { content: none; }
     linear-gradient(to bottom, rgba(13, 13, 15, 0.76), rgba(13, 13, 15, 0.86)),
     url('../images/sections/projects.jpg');
 }
+.xp-process {
+  background-image:
+    linear-gradient(to bottom, rgba(13, 13, 15, 0.80), rgba(13, 13, 15, 0.88)),
+    url('../images/sections/process.jpg');
+}
+.xp-tst {
+  background-image:
+    linear-gradient(to bottom, rgba(13, 13, 15, 0.80), rgba(13, 13, 15, 0.88)),
+    url('../images/sections/testimonials.jpg');
+}
+/* FAQ: σκόπιμα χωρίς φωτογραφία — οπτική ανάσα ανάμεσα στις μπάντες */
+.xp-faq { background: rgba(255, 255, 255, 0.025); }
 .xp-contact {
   background-image:
     linear-gradient(to bottom, rgba(13, 13, 15, 0.74), rgba(13, 13, 15, 0.84)),
@@ -478,6 +493,71 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   02 · PROCESS — 4 βήματα συνεργασίας
+   ═══════════════════════════════════════════════════════════════ */
+.xp-process { padding: clamp(56px, 9vh, 110px) 0; }
+.xp-steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin: 48px 0 0;
+  padding: 0;
+  counter-reset: pstep;
+}
+.xp-pstep {
+  position: relative;
+  padding: 26px 22px;
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--rim);
+  transition: transform var(--transition), border-color var(--transition);
+}
+.xp-pstep:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.2); }
+/* Γραμμή-σύνδεσμος ανάμεσα στα βήματα (desktop) */
+.xp-pstep:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 38px;
+  right: -18px;
+  width: 18px;
+  height: 1px;
+  background: var(--border);
+}
+.xp-pstep-num {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--accent-hover);
+  margin-bottom: 12px;
+}
+.xp-pstep h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+.xp-pstep p {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+@media (max-width: 999px) {
+  .xp-steps { grid-template-columns: 1fr 1fr; }
+  .xp-pstep:not(:last-child)::after { display: none; }
+}
+@media (max-width: 560px) { .xp-steps { grid-template-columns: 1fr; gap: 12px; } }
+
+/* ═══════════════════════════════════════════════════════════════
    03 · PROJECTS — απλή κάθετη λίστα, ΧΩΡΙΣ pin/animation
    ═══════════════════════════════════════════════════════════════ */
 .xp-projects {
@@ -556,6 +636,25 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   text-transform: uppercase;
   color: var(--text-muted);
 }
+.xp-proj-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.xp-proj-tags span {
+  font-family: var(--font-body);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-pill);
+  padding: 3px 9px;
+}
+/* Mini CTA κάτω από τις υπηρεσίες */
+.xp-services-cta { margin-top: 22px; min-height: 60px; }
 .xp-proj-arrow {
   font-size: 20px;
   color: var(--text-muted);
@@ -596,6 +695,160 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   color: var(--text);
 }
 .xp-hend:hover em { transform: translateX(6px); color: var(--accent-hover); }
+
+/* ═══════════════════════════════════════════════════════════════
+   03.5 · TESTIMONIALS — fade carousel
+   ═══════════════════════════════════════════════════════════════ */
+.xp-tst { padding: clamp(56px, 9vh, 110px) 0; }
+.xp-tst-stage {
+  position: relative;
+  max-width: 720px;
+  margin: 44px auto 0;
+  min-height: 240px;
+}
+.xp-tst-card {
+  position: absolute;
+  inset: 0 0 auto 0;
+  margin: 0;
+  padding: clamp(26px, 4vw, 44px);
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--rim);
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.xp-tst-card.is-on {
+  position: relative;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.xp-tst-stars {
+  font-size: 13px;
+  letter-spacing: 3px;
+  color: var(--accent-hover);
+  margin-bottom: 14px;
+}
+.xp-tst-card blockquote {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.9vw, 20px);
+  font-weight: 500;
+  color: var(--text-body);
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  margin: 0 0 20px;
+}
+.xp-tst-card figcaption strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.xp-tst-card figcaption span {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.xp-tst-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+.xp-tst-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.22);
+  transition: background var(--transition), transform var(--transition);
+}
+.xp-tst-dot:hover { background: rgba(255, 255, 255, 0.4); }
+.xp-tst-dot.is-on { background: var(--accent); transform: scale(1.25); }
+
+/* ═══════════════════════════════════════════════════════════════
+   03.7 · FAQ — accordion
+   ═══════════════════════════════════════════════════════════════ */
+.xp-faq { padding: clamp(56px, 9vh, 110px) 0; }
+.xp-faq-list {
+  max-width: 760px;
+  margin: 44px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.xp-faq-item {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-md);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--rim);
+  overflow: hidden;
+  transition: border-color var(--transition), background var(--transition);
+}
+.xp-faq-item[open] {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+.xp-faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  list-style: none;
+  cursor: pointer;
+  padding: 18px 22px;
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.6vw, 17px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.xp-faq-item summary::-webkit-details-marker { display: none; }
+.xp-faq-item summary i {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  transition: transform 0.3s var(--ease);
+}
+.xp-faq-item summary i::before,
+.xp-faq-item summary i::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 1.5px;
+  background: var(--text-muted);
+  transform: translate(-50%, -50%);
+}
+.xp-faq-item summary i::after { transform: translate(-50%, -50%) rotate(90deg); }
+.xp-faq-item[open] summary i { transform: rotate(135deg); }
+.xp-faq-a {
+  padding: 0 22px 20px;
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  animation: faq-in 0.35s var(--ease);
+}
+@keyframes faq-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) { .xp-faq-a { animation: none; } }
 
 /* ═══════════════════════════════════════════════════════════════
    04 · CONTACT

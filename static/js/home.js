@@ -83,4 +83,33 @@
     }, { threshold: 0.15 });
     projs.forEach(function (p) { projObs.observe(p); });
   }
+
+  /* ── Testimonials: fade carousel (αν υπάρχουν >1) ────────────── */
+  var tstStage = document.getElementById('tst-stage');
+  if (tstStage) {
+    var tstCards = Array.prototype.slice.call(tstStage.querySelectorAll('.xp-tst-card'));
+    var tstDots = Array.prototype.slice.call(tstStage.querySelectorAll('.xp-tst-dot'));
+    if (tstCards.length > 1) {
+      var tstIdx = 0;
+      var tstTimer = null;
+
+      var tstShow = function (n) {
+        tstIdx = (n + tstCards.length) % tstCards.length;
+        tstCards.forEach(function (c, i) { c.classList.toggle('is-on', i === tstIdx); });
+        tstDots.forEach(function (d, i) { d.classList.toggle('is-on', i === tstIdx); });
+      };
+      var tstPlay = function () {
+        if (reduced) return;
+        tstTimer = setInterval(function () { tstShow(tstIdx + 1); }, 6000);
+      };
+      var tstStop = function () { if (tstTimer) { clearInterval(tstTimer); tstTimer = null; } };
+
+      tstDots.forEach(function (d, i) {
+        d.addEventListener('click', function () { tstStop(); tstShow(i); tstPlay(); });
+      });
+      tstStage.addEventListener('mouseenter', tstStop);
+      tstStage.addEventListener('mouseleave', function () { tstStop(); tstPlay(); });
+      tstPlay();
+    }
+  }
 })();
