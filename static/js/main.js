@@ -372,6 +372,23 @@
     });
   }
 
+  /* ── Anchor στο URL (πχ. /#contact από άλλη σελίδα) ────────────
+     Ο preloader + το Lenis init αφήνουν τη σελίδα στην κορυφή, οπότε
+     το native anchor jump χάνεται — κάνουμε το scroll εμείς μετά. */
+  if (!isSlider && window.location.hash) {
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var target = document.getElementById(window.location.hash.slice(1));
+        if (!target) return;
+        if (window.__lenis) {
+          window.__lenis.scrollTo(target, { offset: -80, duration: 1.1 });
+        } else {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 750);
+    });
+  }
+
   /* ── Custom cursor ────────────────────────────────────────────── */
   var cursorDot  = document.getElementById('cursor-dot');
   var cursorRing = document.getElementById('cursor-ring');
