@@ -190,6 +190,19 @@ body:not(.is-slider) #contact::after { content: none; }
   color: var(--text-muted);
   text-shadow: 0 1px 12px rgba(9, 9, 11, 0.7);
 }
+/* Ζωντανό ρολόι δίπλα στο meta */
+.xp-hero-clock { margin-left: 14px; opacity: 0.75; }
+.xp-hero-clock:empty { display: none; }
+.xp-hero-clock::before { content: '·'; margin-right: 14px; }
+
+/* Εναλλασσόμενη λέξη τίτλου: μαλακό crossfade (οδηγείται από home.js) */
+.xp-l2 { white-space: nowrap; transition: opacity 0.35s var(--ease), filter 0.35s var(--ease); }
+body.xp-loaded .xp-l2.is-swapping { opacity: 0; filter: blur(6px); }
+.xp-l2.is-long { font-size: clamp(52px, 10.5vw, 150px); }
+
+/* Scroll cue: χάνεται μετά το πρώτο scroll */
+.xp-scroll-cue { transition: opacity 0.5s var(--ease); }
+.xp-scroll-cue.is-gone { opacity: 0; pointer-events: none; }
 
 /* ── Τίτλος: masked reveal γραμμή-γραμμή ──────────────────────── */
 .xp-h1 {
@@ -310,7 +323,7 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 .xp-about {
   padding: clamp(56px, 9vh, 110px) 0;
 }
-/* Κάρτα: η κοινή glass συνταγή */
+/* Κάρτα: η κοινή glass συνταγή + απαλό 3D tilt (home.js) */
 .xp-about-card {
   background: var(--glass-bg);
   border: var(--glass-border);
@@ -322,6 +335,8 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   max-width: 1100px;
   margin: 0 auto;
   text-align: center;
+  transition: transform 0.3s var(--ease);
+  will-change: transform;
 }
 .xp-about-heading {
   font-family: var(--font-display);
@@ -588,11 +603,29 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), var(--rim);
 }
+/* Shimmer placeholder μέχρι να φορτώσει η εικόνα */
+.xp-proj {
+  background-image: linear-gradient(100deg,
+    rgba(255, 255, 255, 0.03) 30%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 70%);
+  background-size: 220% 100%;
+  animation: xp-shimmer 1.6s linear infinite;
+}
+.xp-proj.img-loaded { animation: none; background-image: none; }
+@keyframes xp-shimmer {
+  from { background-position: 130% 0; }
+  to   { background-position: -30% 0; }
+}
+@media (prefers-reduced-motion: reduce) { .xp-proj { animation: none; } }
 .xp-proj img {
   display: block;
   width: 100%;
   height: auto;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
 }
+.xp-proj.img-loaded img { opacity: 1; }
 .xp-proj .project-placeholder { aspect-ratio: 16 / 9; }
 
 /* Staggered entrance (το .xp-anim μπαίνει από το home.js — χωρίς JS
@@ -902,6 +935,36 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+/* Σειρά email + κουμπί αντιγραφής */
+.contact-link-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.contact-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-pill);
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+.contact-copy:hover { color: var(--text); border-color: var(--border); }
+.contact-copy.is-copied {
+  color: var(--accent-hover);
+  border-color: var(--accent-soft-border);
+  background: var(--accent-soft);
 }
 
 /* CTA panel «Ας χτίσουμε μαζί» — στη θέση της παλιάς φόρμας */

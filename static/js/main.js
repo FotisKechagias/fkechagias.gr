@@ -454,4 +454,69 @@
   });
   }
 
+  /* ── Back to top ─────────────────────────────────────────────── */
+  var backTop = document.getElementById('back-to-top');
+  if (backTop && !isSlider) {
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      backTop.classList.toggle('is-visible', y > 600);
+    }, { passive: true });
+    backTop.addEventListener('click', function () {
+      if (window.__lenis) window.__lenis.scrollTo(0, { duration: 1.1 });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* ── Scroll-spy: ενεργό pill στο nav link της ορατής ενότητας ── */
+  if (!isSlider && 'IntersectionObserver' in window) {
+    var spyMap = { about: 1, services: 2, projects: 3 };
+    var navLinks = document.querySelectorAll('.nav-link[data-slide]');
+    var spySections = Object.keys(spyMap)
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);
+    if (spySections.length && navLinks.length) {
+      var spyObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var idx = spyMap[entry.target.id];
+          navLinks.forEach(function (l) {
+            l.classList.toggle('active', parseInt(l.dataset.slide, 10) === idx);
+          });
+        });
+      }, { rootMargin: '-35% 0px -55% 0px' });
+      spySections.forEach(function (s) { spyObs.observe(s); });
+    }
+  }
+
+  /* ── Copy-to-clipboard (κουμπιά με data-copy) ────────────────── */
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.dataset.copy;
+      var done = function () {
+        var label = btn.querySelector('span');
+        var orig = label ? label.textContent : '';
+        btn.classList.add('is-copied');
+        if (label) label.textContent = 'Αντιγράφηκε ✓';
+        setTimeout(function () {
+          btn.classList.remove('is-copied');
+          if (label) label.textContent = orig;
+        }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (err) {}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  /* ── Αυτόματο έτος στο footer ────────────────────────────────── */
+  var yearEl = document.getElementById('footer-year');
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
 })();

@@ -42,8 +42,9 @@
       bar.style.width = step.dataset.step === 'done' ? '100%' : '0%';
       counter.textContent = '';
     } else {
-      bar.style.width = (((ci + 1) / countable.length) * 100) + '%';
-      counter.textContent = (ci + 1) + ' / ' + countable.length;
+      var pct = Math.round(((ci + 1) / countable.length) * 100);
+      bar.style.width = pct + '%';
+      counter.textContent = (ci + 1) + ' / ' + countable.length + ' · ' + pct + '%';
     }
 
     /* focus στο πρώτο input του βήματος */
@@ -241,6 +242,52 @@
     }
   }
 
+  /* ── Autosave στο localStorage (χωρίς το logo) ─────────────────
+     Αν ο χρήστης φύγει και ξανάρθει, τα πεδία τον περιμένουν. */
+  var BW_KEY = 'bw-draft';
+  var savedFields = ['contact_name', 'business_name', 'business_type',
+    'service_needed', 'current_url', 'email', 'phone', 'city',
+    'address', 'budget', 'timeline', 'vision'];
+
+  function bwSave() {
+    try {
+      var data = {};
+      savedFields.forEach(function (n) {
+        var f = form.elements[n];
+        if (f && f.value) data[n] = f.value;
+      });
+      localStorage.setItem(BW_KEY, JSON.stringify(data));
+    } catch (err) {}
+  }
+
+  (function bwRestore() {
+    try {
+      var raw = localStorage.getItem(BW_KEY);
+      if (!raw) return;
+      var data = JSON.parse(raw);
+      var restored = false;
+      savedFields.forEach(function (n) {
+        if (!data[n]) return;
+        var f = form.elements[n];
+        if (f) { f.value = data[n]; restored = true; }
+      });
+      if (!restored) return;
+      /* Σημάδεψε και τα αντίστοιχα chips ως επιλεγμένα */
+      Array.prototype.slice.call(form.querySelectorAll('.bw-chips')).forEach(function (group) {
+        var val = data[group.dataset.name];
+        if (!val) return;
+        Array.prototype.slice.call(group.children).forEach(function (c) {
+          if (c.textContent.trim() === val) c.classList.add('is-selected');
+        });
+      });
+      var hint = form.querySelector('.bw-hint');
+      if (hint) hint.textContent = 'Βρήκα την πρόοδό σας από πριν — τα πεδία σας περιμένουν συμπληρωμένα.';
+    } catch (err) {}
+  })();
+
+  form.addEventListener('input', bwSave);
+  form.addEventListener('change', bwSave);
+
   /* ── Υποβολή ───────────────────────────────────────────────── */
   var submitBtn = document.getElementById('bw-submit');
   submitBtn.addEventListener('click', function () {
@@ -260,6 +307,7 @@
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
         if (res.ok && res.j.success) {
+          try { localStorage.removeItem(BW_KEY); } catch (err) {}
           show(stepIndexByName('done'));
         } else {
           throw new Error(res.j.error || 'Σφάλμα');

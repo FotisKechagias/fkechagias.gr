@@ -112,4 +112,75 @@
       tstPlay();
     }
   }
+
+  /* ── Hero: εναλλασσόμενη λέξη τίτλου ─────────────────────────── */
+  var heroWord = document.getElementById('hero-word');
+  if (heroWord && !reduced) {
+    var words = ['Εμπειρίες.', 'Ιστοσελίδες.', 'E-shops.', 'Εντυπώσεις.'];
+    var wIdx = 0;
+    setTimeout(function () {
+      setInterval(function () {
+        heroWord.classList.add('is-swapping');
+        setTimeout(function () {
+          wIdx = (wIdx + 1) % words.length;
+          heroWord.textContent = words[wIdx];
+          heroWord.classList.toggle('is-long', words[wIdx].length > 10);
+          heroWord.classList.remove('is-swapping');
+        }, 380);
+      }, 4200);
+    }, 3600);
+  }
+
+  /* ── Hero: ζωντανό ρολόι Ελλάδας ─────────────────────────────── */
+  var heroClock = document.getElementById('hero-clock');
+  if (heroClock) {
+    var tickClock = function () {
+      try {
+        heroClock.textContent = 'GR ' + new Intl.DateTimeFormat('el-GR', {
+          hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Athens'
+        }).format(new Date());
+      } catch (err) { /* παλιοί browsers χωρίς timeZone support */ }
+    };
+    tickClock();
+    setInterval(tickClock, 30000);
+  }
+
+  /* ── Scroll cue: εξαφανίζεται μετά το πρώτο scroll ───────────── */
+  var cue = document.querySelector('.xp-scroll-cue');
+  if (cue) {
+    var cueHide = function () {
+      if ((window.scrollY || 0) > 120) cue.classList.add('is-gone');
+      else cue.classList.remove('is-gone');
+    };
+    window.addEventListener('scroll', cueHide, { passive: true });
+  }
+
+  /* ── About card: διακριτικό 3D tilt (μόνο pointer:fine) ──────── */
+  var aboutCard = document.querySelector('.xp-about-card');
+  if (aboutCard && !reduced && window.matchMedia('(pointer: fine)').matches) {
+    aboutCard.addEventListener('mousemove', function (e) {
+      var r = aboutCard.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      aboutCard.style.transform =
+        'perspective(1100px) rotateY(' + (x * 3.5) + 'deg) rotateX(' + (-y * 2.5) + 'deg)';
+    });
+    aboutCard.addEventListener('mouseleave', function () {
+      aboutCard.style.transform = '';
+    });
+  }
+
+  /* ── Services: stagger ανά στήλη στο reveal ──────────────────── */
+  Array.prototype.slice.call(document.querySelectorAll('.xp-sitem')).forEach(function (item, i) {
+    if (!item.dataset.delay) item.dataset.delay = String(i % 2);
+  });
+
+  /* ── Projects: shimmer μέχρι να φορτώσει η εικόνα ────────────── */
+  projs.forEach(function (p) {
+    var img = p.querySelector('img');
+    if (!img) { p.classList.add('img-loaded'); return; }
+    if (img.complete && img.naturalWidth) { p.classList.add('img-loaded'); return; }
+    img.addEventListener('load', function () { p.classList.add('img-loaded'); });
+    img.addEventListener('error', function () { p.classList.add('img-loaded'); });
+  });
 })();
