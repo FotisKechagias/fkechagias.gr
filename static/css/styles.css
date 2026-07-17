@@ -6,10 +6,10 @@
   /* ── Liquid Glass Design System ──────────────────────────────
      Dark, unsaturated, single-accent. See MEMORY/spec for rules. */
 
-  /* Base surfaces */
-  --bg:              #101012;
-  --bg-elevated:     #17171a;
-  --surface:         #17171a;
+  /* Base surfaces — βαθύ μπλε-μαύρο για περισσότερο depth */
+  --bg:              #0d0e12;
+  --bg-elevated:     #15161c;
+  --surface:         #15161c;
 
   /* Text — always light-on-dark */
   --text:            #f5f5f7;
@@ -21,13 +21,14 @@
   --border:          rgba(255, 255, 255, 0.12);
   --border-soft:     rgba(255, 255, 255, 0.08);
 
-  /* Single muted brand accent (blue) — only on primary CTAs / active states */
-  --accent:          #6e85d6;
-  --accent-hover:    #8098e0;
-  --accent-dim:      #4e5fa0;
+  /* Single brand accent (periwinkle) — πιο ζωντανό, ίδια οικογένεια */
+  --accent:          #7d8ff4;
+  --accent-hover:    #94a4ff;
+  --accent-dim:      #5663b8;
   --accent-ink:      #0b0e17;                 /* dark text on accent */
-  --accent-soft:     rgba(110, 133, 214, 0.14);
-  --accent-soft-border: rgba(110, 133, 214, 0.35);
+  --accent-soft:     rgba(125, 143, 244, 0.16);
+  --accent-soft-border: rgba(125, 143, 244, 0.38);
+  --accent-grad:     linear-gradient(180deg, #93a3ff 0%, #7787ef 100%);
 
   /* Glass recipe — ONE recipe for every card/panel/container, no exceptions */
   --glass-bg:        rgba(255, 255, 255, 0.06);
@@ -56,7 +57,7 @@
   --transition:      0.25s var(--ease);
 
   /* Typography */
-  --font-display:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display:    'Commissioner', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-body:       'Space Mono', 'Courier New', monospace;
 
   /* ── Legacy aliases — DO NOT REMOVE.
@@ -79,8 +80,8 @@
   --c-text-dim:      var(--text-dim);
   --c-white:         var(--text);
   --ease-out:        var(--ease);
-  --glow-blue:       0 12px 48px rgba(110, 133, 214, 0.28);
-  --glow-purple:     0 12px 48px rgba(110, 133, 214, 0.20);
+  --glow-blue:       0 12px 48px rgba(125, 143, 244, 0.28);
+  --glow-purple:     0 12px 48px rgba(125, 143, 244, 0.20);
   --shadow-card:     var(--glass-shadow);
   --shadow-card-hover: 0 20px 60px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
   --grad-accent:     var(--accent);
@@ -336,7 +337,7 @@ body:not(.is-slider) .reveal-up.visible {
   align-items: center;
   gap: 10px;
   background-color: var(--accent);
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 50%), var(--accent-grad);
   color: var(--accent-ink);
   font-family: var(--font-body);
   font-size: 11px;
@@ -348,13 +349,13 @@ body:not(.is-slider) .reveal-up.visible {
   overflow: hidden;
   isolation: isolate;
   box-shadow: var(--rim);
-  transition: transform var(--transition), background-color var(--transition), box-shadow var(--transition);
+  transition: transform var(--transition), filter var(--transition), box-shadow var(--transition);
   margin-top: 40px;
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  background-color: var(--accent-hover);
-  box-shadow: var(--rim), 0 8px 24px rgba(110, 133, 214, 0.35);
+  filter: brightness(1.08);
+  box-shadow: var(--rim), 0 8px 24px rgba(125, 143, 244, 0.4);
 }
 
 /* ── Variant: πεδίο κειμένου + σκούρος κύκλος με βέλος στα δεξιά ──
@@ -483,7 +484,7 @@ body:not(.is-slider) .reveal-up.visible {
 .ab-1 {
   width: 75vmax;
   height: 75vmax;
-  background: #2a3352;
+  background: #2c355e;
   opacity: 0.5;
   top: -25%;
   left: -10%;
@@ -491,7 +492,7 @@ body:not(.is-slider) .reveal-up.visible {
 .ab-2 {
   width: 60vmax;
   height: 60vmax;
-  background: #232841;
+  background: #242a4c;
   opacity: 0.45;
   bottom: -20%;
   right: -10%;
@@ -499,7 +500,7 @@ body:not(.is-slider) .reveal-up.visible {
 .ab-3 {
   width: 45vmax;
   height: 45vmax;
-  background: #262c45;
+  background: #272e54;
   opacity: 0.3;
   top: 30%;
   left: 35%;
@@ -591,18 +592,18 @@ body:not(.is-slider) .reveal-up.visible {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: var(--accent);
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
+  background-color: var(--accent);
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 50%), var(--accent-grad);
   color: var(--accent-ink);
   padding: 9px 20px;
   border-radius: var(--radius-pill);
   box-shadow: var(--rim);
-  transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
+  transition: filter var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 .nav-cta:hover {
-  background-color: var(--accent-hover);
+  filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: var(--rim), 0 8px 24px rgba(110, 133, 214, 0.35);
+  box-shadow: var(--rim), 0 8px 24px rgba(125, 143, 244, 0.4);
 }
 .nav-cta-arrow { display: inline-block; transition: transform var(--transition); }
 .nav-cta:hover .nav-cta-arrow { transform: translate(2px, -2px); }
@@ -686,7 +687,7 @@ body:not(.is-slider) .reveal-up.visible {
   transform: translateX(-50%);
   width: 600px;
   height: 300px;
-  background: radial-gradient(ellipse, rgba(110, 133, 214, 0.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(125, 143, 244, 0.08) 0%, transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
@@ -843,16 +844,16 @@ body:not(.is-slider) .site-footer.story-section {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   background-color: var(--accent);
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) 50%);
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 50%), var(--accent-grad);
   color: var(--accent-ink);
   border: none;
   border-radius: var(--radius-pill);
   box-shadow: var(--rim);
   padding: 8px 18px;
   cursor: pointer;
-  transition: background-color var(--transition);
+  transition: filter var(--transition);
 }
-.cookie-btn-accept:hover { background-color: var(--accent-hover); }
+.cookie-btn-accept:hover { filter: brightness(1.08); }
 .cookie-btn-decline {
   font-family: var(--font-body);
   font-size: 10px;
@@ -1142,7 +1143,7 @@ body:not(.is-slider) .slide-dots { display: none; }
 }
 
 /* ── Misc ───────────────────────────────────────────────────── */
-::selection { background: rgba(110, 133, 214, 0.30); color: var(--text); }
+::selection { background: rgba(125, 143, 244, 0.30); color: var(--text); }
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--c-bg); }
 ::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 3px; }

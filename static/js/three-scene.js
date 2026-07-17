@@ -90,8 +90,8 @@
     '  if (d > 0.5) discard;',
     '  float a = 1.0 - smoothstep(0.1, 0.5, d);',
     /* βαθύ → φωτεινό accent ανάλογα με το ύψος του κύματος */
-    '  vec3 deep  = vec3(0.24, 0.29, 0.45);',
-    '  vec3 crest = vec3(0.55, 0.63, 0.91);',
+    '  vec3 deep  = vec3(0.26, 0.30, 0.52);',
+    '  vec3 crest = vec3(0.58, 0.64, 0.98);',
     '  vec3 col = mix(deep, crest, vMix);',
     /* ομίχλη βάθους: τα μακρινά σημεία σβήνουν απαλά */
     '  float fog = 1.0 - smoothstep(20.0, 60.0, vDepth);',
