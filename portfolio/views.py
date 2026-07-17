@@ -24,7 +24,17 @@ def project_list(request):
 
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
-    return render(request, 'portfolio/project_detail.html', {'project': project})
+    ordered = list(Project.objects.all())
+    idx = next((i for i, p in enumerate(ordered) if p.pk == project.pk), None)
+    prev_project = ordered[idx - 1] if idx is not None and idx > 0 else None
+    next_project = ordered[idx + 1] if idx is not None and idx < len(ordered) - 1 else None
+    related = Project.objects.filter(industry=project.industry).exclude(pk=pk)[:2]
+    return render(request, 'portfolio/project_detail.html', {
+        'project': project,
+        'prev_project': prev_project,
+        'next_project': next_project,
+        'related': related,
+    })
 
 
 def build_together(request):

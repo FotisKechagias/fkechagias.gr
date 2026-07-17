@@ -91,34 +91,34 @@ body:not(.is-slider) #contact::after { content: none; }
 .xp-about {
   background-image:
     linear-gradient(to bottom, rgba(13, 13, 15, 0.78), rgba(13, 13, 15, 0.86)),
-    url('../images/sections/about.jpg');
+    url('../images/sections/about.webp');
 }
 .xp-services {
   background-image:
     linear-gradient(to bottom, rgba(13, 13, 15, 0.80), rgba(13, 13, 15, 0.88)),
-    url('../images/sections/services.jpg');
+    url('../images/sections/services.webp');
 }
 .xp-projects {
   background-image:
     linear-gradient(to bottom, rgba(13, 13, 15, 0.76), rgba(13, 13, 15, 0.86)),
-    url('../images/sections/projects.jpg');
+    url('../images/sections/projects.webp');
 }
 .xp-process {
   background-image:
     linear-gradient(to bottom, rgba(13, 13, 15, 0.80), rgba(13, 13, 15, 0.88)),
-    url('../images/sections/process.jpg');
+    url('../images/sections/process.webp');
 }
 .xp-tst {
   background-image:
     linear-gradient(to bottom, rgba(13, 13, 15, 0.80), rgba(13, 13, 15, 0.88)),
-    url('../images/sections/testimonials.jpg');
+    url('../images/sections/testimonials.webp');
 }
 /* FAQ: σκόπιμα χωρίς φωτογραφία — οπτική ανάσα ανάμεσα στις μπάντες */
 .xp-faq { background: rgba(255, 255, 255, 0.025); }
 .xp-contact {
   background-image:
     linear-gradient(to bottom, rgba(13, 13, 15, 0.74), rgba(13, 13, 15, 0.84)),
-    url('../images/sections/contact.jpg');
+    url('../images/sections/contact.webp');
 }
 
 .xp-label {

@@ -1,0 +1,13 @@
+{
+  "name": "FKECHAGIAS — Premium Web Design & Development",
+  "short_name": "FKECHAGIAS",
+  "description": "Κατασκευή ιστοσελίδων που ξεχωρίζουν.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#101012",
+  "theme_color": "#101012",
+  "icons": [
+    { "src": "/static/images/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/static/images/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

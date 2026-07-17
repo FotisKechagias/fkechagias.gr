@@ -28,6 +28,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'portfolio.middleware.VisitCounterMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -94,4 +95,16 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
     X_FRAME_OPTIONS = 'DENY'
+    SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+    # HSTS: ο browser θυμάται να μιλά ΜΟΝΟ https για 1 χρόνο
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    # Πίσω από τον proxy της cPanel το Django βλέπει http· αυτό το header
+    # του λέει πότε το αρχικό αίτημα ήταν https (απαραίτητο για το redirect)
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    # Ενεργοποίησέ το στο .env (SECURE_SSL_REDIRECT=True) ΑΦΟΥ βεβαιωθείς
+    # ότι δεν δημιουργεί redirect loop με το .htaccess του server
+    SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)

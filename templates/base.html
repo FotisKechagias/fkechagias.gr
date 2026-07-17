@@ -13,6 +13,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%230D1017'/><line x1='11' y1='13' x2='11' y2='51' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='11' y1='13' x2='27' y2='13' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='11' y1='31' x2='23' y2='31' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='34' y1='13' x2='34' y2='51' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='34' y1='31' x2='50' y2='13' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><line x1='34' y1='31' x2='50' y2='51' stroke='%23F8F8FA' stroke-width='2.5' stroke-linecap='round'/><circle cx='54' cy='51' r='3.5' fill='%234D85EE'/></svg>" />
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32.png' %}" />
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}" />
+  <link rel="manifest" href="{% static 'site.webmanifest' %}" />
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website" />
@@ -42,6 +43,9 @@
   {% block extra_head %}{% endblock %}
 </head>
 <body class="dark-mode {% block body_class %}{% endblock %}" id="body">
+
+  <!-- Accessibility: μετάβαση κατευθείαν στο περιεχόμενο -->
+  <a class="skip-link" href="#main-content">Μετάβαση στο περιεχόμενο</a>
 
   <!-- Custom cursor -->
   <div id="cursor-dot"  aria-hidden="true"></div>
@@ -126,7 +130,7 @@
   <!-- Dot navigation (right side) -->
   <nav class="slide-dots" id="slide-dots" aria-label="Πλοήγηση slides"></nav>
 
-  <main class="slides-container">
+  <main class="slides-container" id="main-content">
     {% block content %}{% endblock %}
 
     <!-- Footer -->

@@ -1,5 +1,51 @@
+from io import BytesIO
+
+from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import UploadedFile
 from django.db import models
 from django.urls import reverse
+
+try:
+    from PIL import Image as PILImage
+except ImportError:  # pragma: no cover
+    PILImage = None
+
+
+def _shrink_image_field(field, max_width, quality=82):
+    """Συμπιέζει/μικραίνει ανεβασμένη εικόνα πριν αποθηκευτεί.
+
+    - Resize αν ξεπερνά το max_width (τα full-screen screenshots
+      ανεβαίνουν συχνά 3-4MB και σερβίρονταν αυτούσια).
+    - Με διαφάνεια → βελτιστοποιημένο PNG, αλλιώς progressive JPEG.
+    - Ό,τι δεν ανοίγει με Pillow (πχ. SVG) μένει ως έχει.
+    """
+    if PILImage is None or not field:
+        return
+    try:
+        f = field.file
+        f.seek(0)
+        im = PILImage.open(f)
+        im.load()
+        has_alpha = (
+            im.mode in ('RGBA', 'LA')
+            or (im.mode == 'P' and 'transparency' in im.info)
+        )
+        if im.width > max_width:
+            new_h = round(im.height * max_width / im.width)
+            im = im.resize((max_width, new_h), PILImage.LANCZOS)
+        buf = BytesIO()
+        base = field.name.rsplit('/', 1)[-1].rsplit('.', 1)[0]
+        if has_alpha:
+            im.save(buf, 'PNG', optimize=True)
+            new_name = base + '.png'
+        else:
+            if im.mode != 'RGB':
+                im = im.convert('RGB')
+            im.save(buf, 'JPEG', quality=quality, optimize=True, progressive=True)
+            new_name = base + '.jpg'
+        field.save(new_name, ContentFile(buf.getvalue()), save=False)
+    except Exception:
+        pass
 
 
 class Project(models.Model):
@@ -28,6 +74,12 @@ class Project(models.Model):
 
     def get_technologies_list(self):
         return [t.strip() for t in self.technologies.split(',') if t.strip()]
+
+    def save(self, *args, **kwargs):
+        # Συμπίεση μόνο σε φρέσκο upload — όχι σε κάθε save του μοντέλου
+        if self.image and isinstance(getattr(self.image, 'file', None), UploadedFile):
+            _shrink_image_field(self.image, max_width=1920)
+        super().save(*args, **kwargs)
 
 
 class Testimonial(models.Model):
@@ -73,6 +125,28 @@ class ProjectBrief(models.Model):
 
     def __str__(self):
         return f"{self.business_name} — {self.contact_name} ({self.created_at.strftime('%d/%m/%Y')})"
+
+    def save(self, *args, **kwargs):
+        if self.logo and isinstance(getattr(self.logo, 'file', None), UploadedFile):
+            _shrink_image_field(self.logo, max_width=1000)
+        super().save(*args, **kwargs)
+
+
+class DailyVisit(models.Model):
+    """Απλός μετρητής επισκέψεων ανά σελίδα/ημέρα — χωρίς cookies,
+    χωρίς τρίτους. Ενημερώνεται από το VisitCounterMiddleware."""
+    date = models.DateField(verbose_name="Ημερομηνία")
+    path = models.CharField(max_length=200, verbose_name="Σελίδα")
+    count = models.PositiveIntegerField(default=0, verbose_name="Επισκέψεις")
+
+    class Meta:
+        ordering = ['-date', '-count']
+        unique_together = [('date', 'path')]
+        verbose_name = "Επισκεψιμότητα"
+        verbose_name_plural = "Επισκεψιμότητα"
+
+    def __str__(self):
+        return f"{self.date} {self.path} — {self.count}"
 
 
 class ContactMessage(models.Model):

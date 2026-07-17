@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Project, Testimonial, ContactMessage, ProjectBrief
+from .models import Project, Testimonial, ContactMessage, ProjectBrief, DailyVisit
+
+admin.site.site_header = 'FKECHAGIAS — Διαχείριση'
+admin.site.site_title = 'FKECHAGIAS'
+admin.site.index_title = 'Πίνακας ελέγχου'
 
 
 @admin.register(Project)
@@ -26,6 +30,20 @@ class ProjectBriefAdmin(admin.ModelAdmin):
     search_fields = ('business_name', 'contact_name', 'email', 'phone')
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
+
+
+@admin.register(DailyVisit)
+class DailyVisitAdmin(admin.ModelAdmin):
+    list_display = ('date', 'path', 'count')
+    list_filter = ('date',)
+    search_fields = ('path',)
+    ordering = ('-date', '-count')
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(ContactMessage)

@@ -37,11 +37,20 @@
       <h2>Σχετικά με το Project</h2>
       <p>{{ project.description }}</p>
       {% if project.case_study %}
-      <div class="pd-case-study">{{ project.case_study|linebreaks }}</div>
+      <div class="pd-case-study">
+        <span class="pd-cs-label">Case Study</span>
+        {{ project.case_study|linebreaks }}
+      </div>
       {% endif %}
     </div>
-    
+
     <aside class="pd-sidebar">
+      <div class="pd-sidebar-block reveal-up" data-delay="1">
+        <h4>Πελάτης</h4>
+        <p class="pd-side-text">{{ project.client_name }}</p>
+        <h4 style="margin-top: 18px;">Κλάδος</h4>
+        <p class="pd-side-text">{{ project.industry }}</p>
+      </div>
       <div class="pd-sidebar-block reveal-up" data-delay="1">
         <h4>Τεχνολογίες</h4>
         <div class="project-tags">
@@ -50,9 +59,8 @@
           {% endfor %}
         </div>
       </div>
-      
+
       {% if project.live_url %}
-      <!-- Εφαρμογή του νέου btn-primary -->
       <a href="{{ project.live_url }}" target="_blank" rel="noopener" class="btn-primary reveal-up" style="width: 100%; justify-content: center; margin-top: 16px;" data-delay="2">
         Επισκεφθείτε το Site <span>↗</span>
       </a>
@@ -61,10 +69,47 @@
   </div>
 </section>
 
+{% if related %}
+<section class="pd-related section-pad">
+  <div class="container">
+    <h2 class="pd-related-title reveal-up">Σχετικά <strong>έργα.</strong></h2>
+    <div class="pd-related-grid">
+      {% for r in related %}
+      <a href="{{ r.get_absolute_url }}" class="pd-related-card reveal-up" data-delay="{{ forloop.counter }}">
+        {% if r.image %}<img src="{{ r.image.url }}" alt="{{ r.title }}" loading="lazy" />{% else %}<div class="project-placeholder"></div>{% endif %}
+        <span class="pd-related-info">
+          <strong>{{ r.title }}</strong>
+          <em>{{ r.industry }}</em>
+        </span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Πλοήγηση προηγούμενο/επόμενο έργο -->
+{% if prev_project or next_project %}
+<nav class="pd-nav container" aria-label="Πλοήγηση έργων">
+  {% if prev_project %}
+  <a href="{{ prev_project.get_absolute_url }}" class="pd-nav-link pd-nav-prev">
+    <span class="pd-nav-dir">← Προηγούμενο</span>
+    <span class="pd-nav-name">{{ prev_project.title }}</span>
+  </a>
+  {% else %}<span></span>{% endif %}
+  {% if next_project %}
+  <a href="{{ next_project.get_absolute_url }}" class="pd-nav-link pd-nav-next">
+    <span class="pd-nav-dir">Επόμενο →</span>
+    <span class="pd-nav-name">{{ next_project.title }}</span>
+  </a>
+  {% endif %}
+</nav>
+{% endif %}
+
 <section class="pd-cta section-pad">
   <div class="container pd-cta-inner reveal-up">
     <h2>Έτοιμοι για το δικό σας project;</h2>
-    <a href="/#contact" class="btn-primary">Επικοινωνήστε Μαζί Μου <span>→</span></a>
+    <a href="{% url 'build_together' %}" class="btn-primary">Ας χτίσουμε μαζί <span>→</span></a>
   </div>
 </section>
 {% endblock %}
