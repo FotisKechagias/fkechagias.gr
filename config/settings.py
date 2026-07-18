@@ -81,6 +81,17 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# File-based cache: επιβιώνει από restarts/πολλαπλά processes του
+# Passenger — χρησιμοποιείται για το rate limiting των φορμών.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': BASE_DIR / '.cache',
+        'TIMEOUT': 3600,
+        'OPTIONS': {'MAX_ENTRIES': 500},
+    }
+}
+
 EMAIL_BACKEND  = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST     = config('EMAIL_HOST',     default='localhost')
 EMAIL_PORT     = config('EMAIL_PORT',     default=25, cast=int)

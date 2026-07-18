@@ -33,7 +33,7 @@
           <a href="{% url 'project_detail' project.pk %}" class="pl-card-link">
             <div class="pl-card-image">
               {% if project.image %}
-              <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
+              <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async" width="{{ project.image.width }}" height="{{ project.image.height }}" />
               {% else %}
               <div class="pl-card-placeholder" style="--n:{{ forloop.counter }};"></div>
               {% endif %}

@@ -27,7 +27,7 @@
 
 {% if project.image %}
 <div class="pd-image-full reveal-up">
-  <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
+  <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async" width="{{ project.image.width }}" height="{{ project.image.height }}" />
 </div>
 {% endif %}
 
@@ -76,7 +76,7 @@
     <div class="pd-related-grid">
       {% for r in related %}
       <a href="{{ r.get_absolute_url }}" class="pd-related-card reveal-up" data-delay="{{ forloop.counter }}">
-        {% if r.image %}<img src="{{ r.image.url }}" alt="{{ r.title }}" loading="lazy" />{% else %}<div class="project-placeholder"></div>{% endif %}
+        {% if r.image %}<img src="{{ r.image.url }}" alt="{{ r.title }}" loading="lazy" decoding="async" width="{{ r.image.width }}" height="{{ r.image.height }}" />{% else %}<div class="project-placeholder"></div>{% endif %}
         <span class="pd-related-info">
           <strong>{{ r.title }}</strong>
           <em>{{ r.industry }}</em>

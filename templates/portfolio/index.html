@@ -389,7 +389,7 @@
            class="xp-proj"
            aria-label="{{ project.title }}{% if project.live_url %} — Επίσκεψη στη σελίδα{% endif %}">
           {% if project.image %}
-            <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" />
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async" width="{{ project.image.width }}" height="{{ project.image.height }}" />
           {% else %}
             <div class="project-placeholder"></div>
           {% endif %}

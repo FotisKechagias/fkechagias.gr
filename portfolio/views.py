@@ -2,9 +2,27 @@ import json
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.core.mail import EmailMessage
+from django.core.cache import cache
+from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.conf import settings
 from .models import Project, Testimonial, ContactMessage, ProjectBrief
+
+
+def _client_ip(request):
+    xff = request.META.get('HTTP_X_FORWARDED_FOR', '')
+    return (xff.split(',')[0].strip() if xff else request.META.get('REMOTE_ADDR', '')) or 'unknown'
+
+
+def _rate_limited(request, bucket, limit=5, window=3600):
+    """Απλό όριο υποβολών ανά IP/ώρα — πάνω από το honeypot."""
+    key = f'rl:{bucket}:{_client_ip(request)}'
+    try:
+        if cache.add(key, 1, window):
+            return False
+        return cache.incr(key) > limit
+    except Exception:
+        return False
 
 
 def index(request):
@@ -52,6 +70,11 @@ def build_submit(request):
         # αν έχει τιμή, είναι bot. Απαντάμε "επιτυχία" χωρίς να σώσουμε.
         if d.get('website', '').strip():
             return JsonResponse({'success': True})
+
+        if _rate_limited(request, 'brief'):
+            return JsonResponse(
+                {'success': False, 'error': 'Πολλές προσπάθειες. Δοκιμάστε ξανά σε λίγη ώρα.'},
+                status=429)
 
         contact_name  = d.get('contact_name', '').strip()[:200]
         business_name = d.get('business_name', '').strip()[:200]
@@ -139,12 +162,11 @@ def build_submit(request):
             # επειδή απέτυχε στιγμιαία το SMTP.
             pass
 
-        # Αυτόματη επιβεβαίωση προς τον πελάτη — χτίζει εμπιστοσύνη
-        # και κλειδώνει την προσδοκία των 24 ωρών.
+        # Αυτόματη επιβεβαίωση προς τον πελάτη — branded HTML με
+        # plain-text εναλλακτικό, χτίζει εμπιστοσύνη και κλειδώνει
+        # την προσδοκία των 24 ωρών.
         try:
-            confirm = EmailMessage(
-                subject='Έλαβα το αίτημά σας — FKECHAGIAS',
-                body=f"""Γεια σας {contact_name},
+            text_body = f"""Γεια σας {contact_name},
 
 Ευχαριστώ για τον χρόνο σας! Έλαβα το αίτημα για την επιχείρησή σας
 «{business_name}» και θα το μελετήσω προσεκτικά.
@@ -157,11 +179,19 @@ def build_submit(request):
 Φώτης Κεχαγιάς
 Web Designer & Developer
 https://fkechagias.gr
-""",
+"""
+            html_body = render_to_string('emails/brief_confirm.html', {
+                'contact_name': contact_name,
+                'business_name': business_name,
+            })
+            confirm = EmailMultiAlternatives(
+                subject='Έλαβα το αίτημά σας — FKECHAGIAS',
+                body=text_body,
                 from_email='noreply@fkechagias.gr',
                 to=[email],
                 reply_to=[settings.CONTACT_RECIPIENT_EMAIL],
             )
+            confirm.attach_alternative(html_body, 'text/html')
             confirm.send(fail_silently=True)
         except Exception:
             pass
@@ -180,6 +210,11 @@ def contact_submit(request):
         # Honeypot (βλ. build_submit)
         if data.get('website', '').strip():
             return JsonResponse({'success': True, 'message': 'OK'})
+
+        if _rate_limited(request, 'contact'):
+            return JsonResponse(
+                {'success': False, 'error': 'Πολλές προσπάθειες. Δοκιμάστε ξανά σε λίγη ώρα.'},
+                status=429)
 
         name = data.get('name', '').strip()
         email = data.get('email', '').strip()

@@ -102,6 +102,14 @@ class Testimonial(models.Model):
 
 class ProjectBrief(models.Model):
     """Αναλυτικό αίτημα από τη σελίδα «Ας χτίσουμε μαζί»."""
+    STATUS_CHOICES = [
+        ('new', 'Νέο'),
+        ('answered', 'Απάντησα'),
+        ('won', 'Κλείστηκε ✔'),
+        ('lost', 'Δεν προχώρησε'),
+    ]
+    status = models.CharField(max_length=12, choices=STATUS_CHOICES,
+                              default='new', verbose_name="Κατάσταση")
     contact_name = models.CharField(max_length=200, verbose_name="Όνομα")
     business_name = models.CharField(max_length=200, verbose_name="Επιχείρηση")
     business_type = models.CharField(max_length=120, verbose_name="Τύπος επιχείρησης")
