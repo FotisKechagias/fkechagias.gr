@@ -591,39 +591,99 @@
   <div class="xp-container">
 
     <div class="xp-sec-head reveal-up">
-      <span class="xp-label">Live Demo</span>
+      <span class="xp-label">Mini Builder — Live Demo</span>
       <h2 class="xp-sec-title">Δείτε την ιδέα σας<br /><strong>να ζωντανεύει.</strong></h2>
     </div>
     <p class="xp-demo-sub reveal-up">
-      Περιγράψτε την επιχείρησή σας και πατήστε το κουμπί —
-      μια πρώτη σελίδα θα χτιστεί μπροστά στα μάτια σας.
+      Περιγράψτε την επιχείρησή σας, πατήστε Generate και δείτε μια σελίδα
+      να σχεδιάζεται μπροστά σας — μετά πειράξτε χρώμα, γωνίες, γραμματοσειρά.
     </p>
 
-    <div class="xp-demo-bar reveal-up" data-delay="1">
-      <input type="text" id="demo-input" class="bw-input xp-demo-input"
-             placeholder="π.χ. Καφετέρια Aroma" maxlength="40"
-             aria-label="Περιγράψτε την επιχείρησή σας" />
-      <button type="button" id="demo-btn" class="btn-primary xp-demo-btn">Δημιουργία Demo ✨</button>
-    </div>
-    <div class="xp-demo-chips reveal-up" data-delay="2">
-      <button type="button" class="bw-chip" data-fill="Καφετέρια Aroma">☕ Καφετέρια</button>
-      <button type="button" class="bw-chip" data-fill="Thea Suites Σαντορίνη">🌊 Ξενοδοχείο</button>
-      <button type="button" class="bw-chip" data-fill="Κατάστημα NOVA">🛍️ E-shop</button>
-    </div>
+    <div class="dmb-shell reveal-up" data-delay="1">
 
-    <div class="dm-frame" id="dm-frame" hidden aria-hidden="true">
-      <div class="dm-bar">
-        <span class="dm-dots"><i></i><i></i><i></i></span>
-        <span class="dm-url" id="dm-url">yourbusiness.gr</span>
+      <!-- Αριστερά: prompt + AI console + controls -->
+      <div class="dmb-left">
+        <label class="bw-mini-label dmb-label" for="demo-input">Περιγράψτε το site των ονείρων σας</label>
+        <input type="text" id="demo-input" class="bw-input"
+               placeholder="π.χ. Μεσιτικό γραφείο πολυτελών κατοικιών" maxlength="48" />
+
+        <div class="dmb-suggest" id="dmb-suggest">
+          <button type="button" class="bw-chip" data-fill="Καφετέρια Aroma">☕ Καφετέρια</button>
+          <button type="button" class="bw-chip" data-fill="Εστιατόριο Θάλασσα">🍽️ Εστιατόριο</button>
+          <button type="button" class="bw-chip" data-fill="Thea Luxury Villas">🏛️ Real Estate</button>
+          <button type="button" class="bw-chip" data-fill="Γυμναστήριο Pulse">💪 Γυμναστήριο</button>
+          <button type="button" class="bw-chip" data-fill="Δικηγορικό Γραφείο Νόμος">⚖️ Δικηγορικό</button>
+          <button type="button" class="bw-chip" data-fill="Οδοντιατρείο Smile">🦷 Ιατρείο</button>
+          <button type="button" class="bw-chip" data-fill="Studio Φωτογραφίας Lens">📷 Φωτογράφος</button>
+          <button type="button" class="bw-chip" data-fill="Κατάστημα NOVA">🛍️ E-shop</button>
+        </div>
+
+        <button type="button" id="demo-btn" class="btn-primary dmb-generate">Generate ✨</button>
+
+        <div class="dmb-console" id="dmb-console" hidden aria-live="polite">
+          <div class="dmb-console-lines" id="dmb-lines"></div>
+          <div class="dmb-progress"><i id="dmb-progress-bar"></i></div>
+        </div>
+
+        <div class="dmb-controls" id="dmb-controls" hidden>
+          <span class="bw-mini-label">Χρώμα</span>
+          <div class="dmb-swatches" id="dmb-swatches">
+            <button type="button" data-acc="#7d8ff4" style="--sw:#7d8ff4" aria-label="Μπλε"></button>
+            <button type="button" data-acc="#b07d4a" style="--sw:#b07d4a" aria-label="Καφέ"></button>
+            <button type="button" data-acc="#4ca66b" style="--sw:#4ca66b" aria-label="Πράσινο"></button>
+            <button type="button" data-acc="#c05f4e" style="--sw:#c05f4e" aria-label="Τερακότα"></button>
+            <button type="button" data-acc="#a08b5f" style="--sw:#a08b5f" aria-label="Χρυσό"></button>
+            <button type="button" data-acc="#8d6ae0" style="--sw:#8d6ae0" aria-label="Μωβ"></button>
+          </div>
+
+          <span class="bw-mini-label">Γωνίες</span>
+          <div class="dmb-opts" data-var="rad">
+            <button type="button" class="bw-chip" data-val="2px">Κοφτές</button>
+            <button type="button" class="bw-chip is-selected" data-val="12px">Απαλές</button>
+            <button type="button" class="bw-chip" data-val="22px">Στρογγυλές</button>
+          </div>
+
+          <span class="bw-mini-label">Γραμματοσειρά</span>
+          <div class="dmb-opts" data-var="font">
+            <button type="button" class="bw-chip is-selected" data-val="sans">Μοντέρνα</button>
+            <button type="button" class="bw-chip" data-val="serif">Κλασική</button>
+          </div>
+
+          <span class="bw-mini-label">Θέμα</span>
+          <div class="dmb-opts" data-var="mode">
+            <button type="button" class="bw-chip is-selected" data-val="light">Φωτεινό</button>
+            <button type="button" class="bw-chip" data-val="dark">Σκούρο</button>
+          </div>
+
+          <span class="bw-mini-label">Glass</span>
+          <div class="dmb-opts" data-var="glass">
+            <button type="button" class="bw-chip is-selected" data-val="off">Off</button>
+            <button type="button" class="bw-chip" data-val="on">On</button>
+          </div>
+        </div>
       </div>
-      <div class="dm-page" id="dm-page"></div>
-    </div>
 
-    <div class="xp-demo-after" id="demo-after" hidden>
-      <p>Αυτό ήταν μια πρόχειρη ιδέα 10 δευτερολέπτων — φανταστείτε το πραγματικό.</p>
-      <a href="{% url 'build_together' %}" class="btn-primary">Φτιάξτε το στα αλήθεια →</a>
-    </div>
+      <!-- Δεξιά: live preview -->
+      <div class="dmb-right">
+        <div class="dm-frame" id="dm-frame">
+          <div class="dm-bar">
+            <span class="dm-dots"><i></i><i></i><i></i></span>
+            <span class="dm-url" id="dm-url">yourbusiness.gr</span>
+          </div>
+          <div class="dm-page" id="dm-page">
+            <div class="dm-empty" id="dm-empty">
+              <span aria-hidden="true">✦</span>
+              <p>Το preview σας θα εμφανιστεί εδώ.<br />Γράψτε μια περιγραφή και πατήστε Generate.</p>
+            </div>
+          </div>
+        </div>
+        <div class="xp-demo-after" id="demo-after" hidden>
+          <p>Αυτό ήταν demo 3 δευτερολέπτων — φανταστείτε το πραγματικό.</p>
+          <a href="{% url 'build_together' %}" class="btn-primary">Φτιάξτε το στα αλήθεια →</a>
+        </div>
+      </div>
 
+    </div>
   </div>
 </section>
 
