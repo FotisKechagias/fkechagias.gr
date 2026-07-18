@@ -708,6 +708,20 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 /* Mini CTA κάτω από τις υπηρεσίες */
 .xp-services-cta { margin-top: 22px; min-height: 60px; }
+
+/* Link «Αναλυτικά» σε κάθε κάρτα υπηρεσίας */
+.xp-sitem-more {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text-muted);
+  transition: color var(--transition), transform var(--transition);
+}
+.xp-sitem:hover .xp-sitem-more { color: var(--accent-hover); }
+.xp-sitem-more:hover { transform: translateX(3px); }
 .xp-proj-arrow {
   font-size: 20px;
   color: var(--text-muted);

@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Υπηρεσίες — Κατασκευή Ιστοσελίδων, E-shop, SEO — FKECHAGIAS{% endblock %}
+{% block description %}Όλες οι υπηρεσίες: κατασκευή ιστοσελίδων, e-shop, συστήματα κρατήσεων, SEO, web apps & AI, συντήρηση. Custom δουλειά με διαφανείς τιμές.{% endblock %}
+
+{% block content %}
+<div class="sv-page svl-page">
+
+  <header class="sv-hero">
+    <div class="container">
+      <nav class="sv-crumbs reveal-up" aria-label="Breadcrumb">
+        <a href="/">Αρχική</a><span>/</span>
+        <em>Υπηρεσίες</em>
+      </nav>
+      <span class="sv-kicker reveal-up">Υπηρεσίες</span>
+      <h1 class="sv-title reveal-up" data-delay="1">Ό,τι χρειάζεται η<br />ψηφιακή σας παρουσία.</h1>
+      <p class="sv-intro reveal-up" data-delay="2">
+        Από την πρώτη ιστοσελίδα μέχρι e-shop, κρατήσεις και AI —
+        κάθε υπηρεσία με ξεκάθαρο αντικείμενο και ενδεικτική τιμή εκκίνησης.
+      </p>
+    </div>
+  </header>
+
+  <section class="svl-grid-wrap">
+    <div class="container">
+      <div class="svl-grid">
+        {% for s in services %}
+        <a href="{% url 'service_detail' s.slug %}" class="svl-card reveal-up" data-delay="{{ forloop.counter0|divisibleby:2|yesno:'0,1' }}">
+          <span class="sv-related-kicker">{{ s.kicker }}</span>
+          <strong>{{ s.name }}</strong>
+          <p>{{ s.short|truncatewords:16 }}</p>
+          <span class="svl-card-foot">
+            {% if s.price_from %}<i>από {{ s.price_from }}</i>{% else %}<i>κατόπιν συζήτησης</i>{% endif %}
+            <em>Περισσότερα →</em>
+          </span>
+        </a>
+        {% endfor %}
+      </div>
+
+      <div class="svl-cta reveal-up">
+        <p>Δεν είστε σίγουροι τι χρειάζεστε;</p>
+        <a href="{% url 'digital_check' %}" class="btn-ghost">Δωρεάν έλεγχος 60&Prime;</a>
+        <a href="{% url 'build_together' %}" class="btn-primary">Ας χτίσουμε μαζί →</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  .sv-page { position: relative; z-index: 2; padding-top: 100px; }
+  .sv-hero { padding: 50px 0 40px; }
+  .sv-crumbs {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-body); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 34px;
+  }
+  .sv-crumbs a { transition: color var(--transition); }
+  .sv-crumbs a:hover { color: var(--text); }
+  .sv-crumbs span { opacity: 0.4; }
+  .sv-crumbs em { font-style: normal; color: var(--text-body); }
+  .sv-kicker {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--font-body); font-size: 9px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 20px;
+  }
+  .sv-kicker::before { content: ''; width: 30px; height: 1px; background: var(--border); }
+  .sv-title {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 6vw, 64px);
+    font-weight: 700; letter-spacing: -0.04em; line-height: 1.05;
+    color: var(--text); margin: 0 0 20px;
+  }
+  .sv-intro {
+    font-family: var(--font-display);
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: var(--text-muted); line-height: 1.75;
+    max-width: 560px; margin: 0;
+  }
+
+  .svl-grid-wrap { padding: 20px 0 90px; }
+  .svl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .svl-card {
+    display: flex; flex-direction: column;
+    padding: 26px 26px 22px;
+    background: var(--glass-bg); border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow), var(--rim);
+    transition: transform var(--transition), border-color var(--transition), background var(--transition);
+  }
+  .svl-card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.08); }
+  .sv-related-kicker {
+    font-family: var(--font-body); font-size: 8px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .svl-card strong {
+    font-family: var(--font-display);
+    font-size: clamp(19px, 2.2vw, 24px); font-weight: 700;
+    letter-spacing: -0.02em; color: var(--text);
+    margin: 10px 0 8px;
+  }
+  .svl-card p {
+    font-family: var(--font-display); font-size: 13.5px;
+    color: var(--text-muted); line-height: 1.65; margin: 0 0 18px; flex: 1;
+  }
+  .svl-card-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    border-top: 1px solid var(--border-soft); padding-top: 14px;
+  }
+  .svl-card-foot i {
+    font-style: normal; font-family: var(--font-display);
+    font-size: 13px; font-weight: 700; color: var(--text-body);
+  }
+  .svl-card-foot em {
+    font-style: normal; font-family: var(--font-display);
+    font-size: 13px; font-weight: 600; color: var(--accent-hover);
+  }
+  .svl-cta {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    margin-top: 40px; justify-content: center;
+  }
+  .svl-cta p {
+    font-family: var(--font-display); font-size: 15px;
+    color: var(--text-muted); margin: 0;
+  }
+  .svl-cta .btn-primary, .svl-cta .btn-ghost { margin-top: 0; }
+  @media (max-width: 700px) { .svl-grid { grid-template-columns: 1fr; } }
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ItemList","itemListElement":[
+ {% for s in services %}
+ {"@type":"ListItem","position":{{ forloop.counter }},"name":"{{ s.name|escapejs }}","url":"https://fkechagias.gr{% url 'service_detail' s.slug %}"}{% if not forloop.last %},{% endif %}
+ {% endfor %}
+]}
+</script>
+{% endblock %}

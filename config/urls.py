@@ -5,11 +5,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from portfolio.sitemaps import ProjectSitemap, StaticViewSitemap
+from portfolio.sitemaps import ProjectSitemap, StaticViewSitemap, ServiceSitemap
 
 sitemaps = {
     'static': StaticViewSitemap,
     'projects': ProjectSitemap,
+    'services': ServiceSitemap,
 }
 
 

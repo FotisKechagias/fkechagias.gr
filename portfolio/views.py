@@ -65,6 +65,24 @@ def digital_check(request):
     return render(request, 'portfolio/digital_check.html')
 
 
+def service_list(request):
+    from .services_data import SERVICES
+    return render(request, 'portfolio/service_list.html', {'services': SERVICES})
+
+
+def service_detail(request, slug):
+    from django.http import Http404
+    from .services_data import SERVICES_BY_SLUG
+    service = SERVICES_BY_SLUG.get(slug)
+    if not service:
+        raise Http404
+    related = [SERVICES_BY_SLUG[s] for s in service.get('related', []) if s in SERVICES_BY_SLUG]
+    return render(request, 'portfolio/service_detail.html', {
+        'service': service,
+        'related': related,
+    })
+
+
 @require_POST
 def build_submit(request):
     """Παραλαβή του αναλυτικού brief (multipart λόγω logo) + αναλυτικό email."""

@@ -51,6 +51,7 @@ class ProjectBriefAdmin(admin.ModelAdmin):
 
 @admin.register(DailyVisit)
 class DailyVisitAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/portfolio/dailyvisit/change_list.html'
     list_display = ('date', 'path', 'count')
     list_filter = ('date',)
     search_fields = ('path',)
@@ -61,6 +62,25 @@ class DailyVisitAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return False
+
+    def changelist_view(self, request, extra_context=None):
+        from datetime import date, timedelta
+        from django.db.models import Sum
+        today = date.today()
+        days = [today - timedelta(days=i) for i in range(13, -1, -1)]
+        totals = dict(
+            DailyVisit.objects.filter(date__gte=days[0])
+            .values_list('date')
+            .annotate(total=Sum('count'))
+        )
+        chart = [{'date': d, 'total': totals.get(d, 0)} for d in days]
+        peak = max((c['total'] for c in chart), default=0) or 1
+        for c in chart:
+            c['pct'] = round(c['total'] / peak * 100)
+        extra_context = extra_context or {}
+        extra_context['visit_chart'] = chart
+        extra_context['visit_sum'] = sum(c['total'] for c in chart)
+        return super().changelist_view(request, extra_context=extra_context)
 
 
 @admin.register(ContactMessage)

@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ service.name }} — FKECHAGIAS{% endblock %}
+{% block description %}{{ service.short }}{% endblock %}
+{% block og_title %}{{ service.name }} — FKECHAGIAS{% endblock %}
+
+{% block content %}
+<div class="sv-page">
+
+  <header class="sv-hero">
+    <div class="container">
+      <nav class="sv-crumbs reveal-up" aria-label="Breadcrumb">
+        <a href="/">Αρχική</a><span>/</span>
+        <a href="{% url 'service_list' %}">Υπηρεσίες</a><span>/</span>
+        <em>{{ service.name }}</em>
+      </nav>
+      <span class="sv-kicker reveal-up">{{ service.kicker }}</span>
+      <h1 class="sv-title reveal-up" data-delay="1">{{ service.title }}</h1>
+      <p class="sv-intro reveal-up" data-delay="2">{{ service.intro }}</p>
+      <div class="sv-hero-cta reveal-up" data-delay="3">
+        {% if service.price_from %}
+        <span class="sv-price">από <strong>{{ service.price_from }}</strong></span>
+        {% endif %}
+        <a href="{% url 'build_together' %}" class="btn-primary">Ζητήστε προσφορά →</a>
+        <a href="{% url 'digital_check' %}" class="btn-ghost">Δωρεάν έλεγχος 60&Prime;</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="sv-body">
+    <div class="container sv-grid">
+      <div class="sv-features reveal-up">
+        <h2>Τι περιλαμβάνει</h2>
+        <ul>
+          {% for f in service.features %}
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ f }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <aside class="sv-side reveal-up" data-delay="1">
+        <div class="sv-side-card">
+          <span class="bw-mini-label">Ξεκινήστε σήμερα</span>
+          <p>Περιγράψτε μου την ανάγκη σας βήμα-βήμα και λάβετε συγκεκριμένη πρόταση εντός 24 ωρών.</p>
+          <a href="{% url 'build_together' %}" class="btn-primary">Ας χτίσουμε μαζί →</a>
+          <a href="tel:+306987530306" class="sv-side-phone">ή καλέστε: +30 6987 530 306</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sv-faq">
+    <div class="container">
+      <h2 class="reveal-up">Συχνές ερωτήσεις</h2>
+      <div class="sv-faq-list reveal-up" data-delay="1">
+        {% for q, a in service.faqs %}
+        <details class="sv-faq-item">
+          <summary>{{ q }}<i aria-hidden="true"></i></summary>
+          <div class="sv-faq-a">{{ a }}</div>
+        </details>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  {% if related %}
+  <section class="sv-related">
+    <div class="container">
+      <h2 class="reveal-up">Συνδυάζεται συχνά με</h2>
+      <div class="sv-related-grid">
+        {% for r in related %}
+        <a href="{% url 'service_detail' r.slug %}" class="sv-related-card reveal-up" data-delay="{{ forloop.counter }}">
+          <span class="sv-related-kicker">{{ r.kicker }}</span>
+          <strong>{{ r.name }}</strong>
+          <p>{{ r.short|truncatewords:14 }}</p>
+          <em>Περισσότερα →</em>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Service",
+ "name":"{{ service.name|escapejs }}",
+ "description":"{{ service.short|escapejs }}",
+ "provider":{"@type":"ProfessionalService","name":"FKECHAGIAS — Web Design & Development","url":"https://fkechagias.gr","telephone":"+306987530306"},
+ "areaServed":"GR",
+ "url":"https://fkechagias.gr{{ request.path }}"}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+ {% for q, a in service.faqs %}
+ {"@type":"Question","name":"{{ q|escapejs }}","acceptedAnswer":{"@type":"Answer","text":"{{ a|escapejs }}"}}{% if not forloop.last %},{% endif %}
+ {% endfor %}
+]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+ {"@type":"ListItem","position":1,"name":"Αρχική","item":"https://fkechagias.gr/"},
+ {"@type":"ListItem","position":2,"name":"Υπηρεσίες","item":"https://fkechagias.gr{% url 'service_list' %}"},
+ {"@type":"ListItem","position":3,"name":"{{ service.name|escapejs }}","item":"https://fkechagias.gr{{ request.path }}"}
+]}
+</script>
+
+<style>
+  .sv-page { position: relative; z-index: 2; padding-top: 100px; }
+  .sv-hero { padding: 50px 0 60px; }
+  .sv-crumbs {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-body); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 34px;
+  }
+  .sv-crumbs a { transition: color var(--transition); }
+  .sv-crumbs a:hover { color: var(--text); }
+  .sv-crumbs span { opacity: 0.4; }
+  .sv-crumbs em { font-style: normal; color: var(--text-body); }
+  .sv-kicker {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--font-body); font-size: 9px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 20px;
+  }
+  .sv-kicker::before { content: ''; width: 30px; height: 1px; background: var(--border); }
+  .sv-title {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 6vw, 64px);
+    font-weight: 700; letter-spacing: -0.04em; line-height: 1.05;
+    color: var(--text); margin: 0 0 20px; max-width: 720px;
+  }
+  .sv-intro {
+    font-family: var(--font-display);
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: var(--text-muted); line-height: 1.75;
+    max-width: 620px; margin: 0 0 28px;
+  }
+  .sv-hero-cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .sv-hero-cta .btn-primary, .sv-hero-cta .btn-ghost { margin-top: 0; }
+  .sv-price {
+    font-family: var(--font-display); font-size: 15px; color: var(--text-muted);
+  }
+  .sv-price strong {
+    font-size: 26px; font-weight: 800; letter-spacing: -0.02em;
+    color: var(--text); margin-left: 4px;
+  }
+
+  .sv-body { padding: 10px 0 50px; }
+  .sv-grid {
+    display: grid; grid-template-columns: 1fr minmax(260px, 320px);
+    gap: 32px; align-items: start;
+  }
+  .sv-features h2, .sv-faq h2, .sv-related h2 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700; letter-spacing: -0.03em;
+    color: var(--text); margin: 0 0 22px;
+  }
+  .sv-features ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sv-features li {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 15px 18px;
+    background: var(--glass-bg); border: var(--glass-border);
+    border-radius: var(--radius-md);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--rim);
+    font-family: var(--font-display); font-size: 14px;
+    color: var(--text-body); line-height: 1.55;
+  }
+  .sv-features li svg { flex-shrink: 0; color: var(--accent-hover); margin-top: 3px; }
+
+  .sv-side-card {
+    position: sticky; top: 100px;
+    padding: 26px 24px; text-align: left;
+    background: var(--glass-bg); border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow), var(--rim);
+  }
+  .sv-side-card .bw-mini-label { margin-top: 0; }
+  .sv-side-card p {
+    font-family: var(--font-display); font-size: 14px;
+    color: var(--text-muted); line-height: 1.65; margin: 0 0 18px;
+  }
+  .sv-side-card .btn-primary { margin-top: 0; width: 100%; justify-content: center; }
+  .sv-side-phone {
+    display: block; margin-top: 14px; text-align: center;
+    font-family: var(--font-display); font-size: 13px;
+    color: var(--text-muted); transition: color var(--transition);
+  }
+  .sv-side-phone:hover { color: var(--text); }
+
+  .sv-faq { padding: 30px 0 50px; }
+  .sv-faq-list { max-width: 720px; display: flex; flex-direction: column; gap: 12px; }
+  .sv-faq-item {
+    background: var(--glass-bg); border: var(--glass-border);
+    border-radius: var(--radius-md);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--rim); overflow: hidden;
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .sv-faq-item[open] { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.08); }
+  .sv-faq-item summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    list-style: none; cursor: pointer; padding: 16px 20px;
+    font-family: var(--font-display); font-size: 15px; font-weight: 600;
+    color: var(--text);
+  }
+  .sv-faq-item summary::-webkit-details-marker { display: none; }
+  .sv-faq-item summary i { flex-shrink: 0; width: 20px; height: 20px; position: relative; transition: transform 0.3s var(--ease); }
+  .sv-faq-item summary i::before, .sv-faq-item summary i::after {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    width: 11px; height: 1.5px; background: var(--text-muted);
+    transform: translate(-50%, -50%);
+  }
+  .sv-faq-item summary i::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .sv-faq-item[open] summary i { transform: rotate(135deg); }
+  .sv-faq-a {
+    padding: 0 20px 18px;
+    font-family: var(--font-display); font-size: 14px;
+    color: var(--text-muted); line-height: 1.7;
+  }
+
+  .sv-related { padding: 20px 0 90px; }
+  .sv-related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 780px; }
+  .sv-related-card {
+    display: block; padding: 22px 24px;
+    background: var(--glass-bg); border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--rim);
+    transition: transform var(--transition), border-color var(--transition), background var(--transition);
+  }
+  .sv-related-card:hover { transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.08); }
+  .sv-related-kicker {
+    font-family: var(--font-body); font-size: 8px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .sv-related-card strong {
+    display: block; font-family: var(--font-display);
+    font-size: 18px; font-weight: 700; letter-spacing: -0.02em;
+    color: var(--text); margin: 8px 0 6px;
+  }
+  .sv-related-card p {
+    font-family: var(--font-display); font-size: 13px;
+    color: var(--text-muted); line-height: 1.6; margin: 0 0 12px;
+  }
+  .sv-related-card em {
+    font-style: normal; font-family: var(--font-display);
+    font-size: 13px; font-weight: 600; color: var(--accent-hover);
+  }
+
+  @media (max-width: 860px) {
+    .sv-grid { grid-template-columns: 1fr; }
+    .sv-side-card { position: static; }
+    .sv-features ul { grid-template-columns: 1fr; }
+    .sv-related-grid { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}

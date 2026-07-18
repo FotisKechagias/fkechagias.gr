@@ -9,4 +9,6 @@ urlpatterns = [
     path('xtisoume-mazi/', views.build_together, name='build_together'),
     path('xtisoume-mazi/submit/', views.build_submit, name='build_submit'),
     path('elegxos/', views.digital_check, name='digital_check'),
+    path('ypiresies/', views.service_list, name='service_list'),
+    path('ypiresies/<slug:slug>/', views.service_detail, name='service_detail'),
 ]
