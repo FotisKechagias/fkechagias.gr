@@ -1360,7 +1360,7 @@ body:not(.is-slider) .story-section > .container {
 }
 
 /* Smooth scrolling anchor offset for sections */
-#about, #services, #process, #projects, #testimonials, #faq, #demo, #pricing, #contact {
+#about, #services, #process, #projects, #testimonials, #faq, #demo, #contact {
   scroll-margin-top: 80px;
 }
 

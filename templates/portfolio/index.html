@@ -115,10 +115,15 @@
   <div class="xp-container">
 
     <div class="xp-sec-head reveal-up">
-      <span class="xp-label">Υπηρεσίες</span>
+      <span class="xp-label">Υπηρεσίες &amp; Κόστος</span>
       <h2 class="xp-sec-title">Τι μπορώ να φτιάξω<br /><strong>για εσάς.</strong></h2>
     </div>
+    <p class="xp-demo-sub reveal-up">
+      Πατήστε τις υπηρεσίες που σας ενδιαφέρουν — το πακέτο σας και το
+      ενδεικτικό κόστος χτίζονται ζωντανά δίπλα.
+    </p>
 
+    <div class="xp-svc-wrap">
     <ul class="xp-slist" role="list">
 
       <li class="xp-sitem reveal-up">
@@ -139,7 +144,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Django</span><span>React</span><span>SEO</span><span>Performance</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'kataskevi-istoselidas' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'kataskevi-istoselidas' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">βάση · 390€</span>
+            <span class="pr-switch is-locked" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -160,7 +169,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Django</span><span>React</span><span>OpenAI API</span><span>Python</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'web-apps-ai' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'web-apps-ai' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">κατόπιν συζήτησης</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -180,7 +193,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>UI/UX</span><span>Core Web Vitals</span><span>SEO Audit</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'redesign-veltistopoiisi' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'redesign-veltistopoiisi' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">από 350€</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -201,7 +218,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>E-Commerce</span><span>Stripe</span><span>Inventory</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'eshop' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'eshop' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">+450€</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -221,7 +242,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Maintenance</span><span>Security</span><span>Monitoring</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'sintirisi-ypostirixi' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'sintirisi-ypostirixi' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">30€/μήνα</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -242,7 +267,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Branding</span><span>UI/UX</span><span>Design System</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'branding-logo' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'branding-logo' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">+150€</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -263,7 +292,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Hosting</span><span>DNS</span><span>SSL</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'hosting-texniki-rythmisi' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'hosting-texniki-rythmisi' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">+80€</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -284,7 +317,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>SEO</span><span>Google Business</span><span>Search Console</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'seo-google' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'seo-google' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">+180€</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -305,7 +342,11 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Booking</span><span>Calendar</span><span>Notifications</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'systimata-kratiseon' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'systimata-kratiseon' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">+350€</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
@@ -326,16 +367,26 @@
           <div class="xp-tags" aria-label="Τεχνολογίες">
             <span>Python</span><span>Automation</span><span>APIs</span>
           </div>
-          <a class="xp-sitem-more" href="{% url 'service_detail' 'dashboards-automatismoi' %}">Αναλυτικά →</a>
+          <div class="xp-sitem-foot">
+            <a class="xp-sitem-more" href="{% url 'service_detail' 'dashboards-automatismoi' %}">Αναλυτικά →</a>
+            <span class="xp-sitem-price">κατόπιν συζήτησης</span>
+            <span class="pr-switch" aria-hidden="true"><i></i></span>
+          </div>
         </div>
       </li>
 
     </ul>
 
-    <a href="{% url 'build_together' %}" class="xp-hend magnetic xp-services-cta">
-      <span>Δεν ξέρετε τι χρειάζεστε; Ας το βρούμε μαζί</span>
-      <em aria-hidden="true">→</em>
-    </a>
+    <aside class="pr-total xp-svc-total reveal-up" data-delay="1">
+      <span class="bw-mini-label">Το πακέτο σας</span>
+      <div class="pr-total-num"><span id="pr-amount">390</span>€</div>
+      <div class="pr-total-monthly" id="pr-monthly" hidden>+ <span id="pr-monthly-num">0</span>€/μήνα</div>
+      <div class="pr-total-custom" id="pr-custom" hidden>+ τμήμα κατόπιν συζήτησης</div>
+      <p class="pr-total-note">Ενδεικτική εκτίμηση εκκίνησης — η τελική προσφορά στα μέτρα σας, χωρίς κρυφές χρεώσεις.</p>
+      <a href="{% url 'build_together' %}" class="btn-primary pr-cta">Κλειδώστε προσφορά →</a>
+      <a href="{% url 'digital_check' %}" class="xp-svc-total-alt">Δεν ξέρετε τι χρειάζεστε; Δωρεάν έλεγχος 60&Prime;</a>
+    </aside>
+    </div>
   </div>
 </section>
 
@@ -693,87 +744,6 @@
       </div>
 
     </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════
-     03.9 · PRICING — διαμόρφωσε το πακέτο σου, ζωντανό σύνολο
-     ══════════════════════════════════════════════════ -->
-<section id="pricing" class="xp-pricing" aria-label="Υπολογισμός κόστους">
-  <div class="xp-container">
-
-    <div class="xp-sec-head reveal-up">
-      <span class="xp-label">Διαφάνεια</span>
-      <h2 class="xp-sec-title">Φτιάξτε το πακέτο σας<br /><strong>και δείτε το κόστος.</strong></h2>
-    </div>
-    <p class="xp-demo-sub reveal-up">
-      Ενεργοποιήστε ό,τι χρειάζεστε — το σύνολο ενημερώνεται ζωντανά.
-      Οι τιμές είναι ενδεικτικές· η τελική προσφορά προσαρμόζεται στα μέτρα σας.
-    </p>
-
-    <div class="pr-grid reveal-up" data-delay="1">
-      <div class="pr-list">
-        <label class="pr-row pr-row-base">
-          <span class="pr-info">
-            <strong>Βασική ιστοσελίδα</strong>
-            <em>Custom design, responsive, SEO-ready, φόρμα επικοινωνίας</em>
-          </span>
-          <span class="pr-price">390€</span>
-          <span class="pr-switch is-locked" aria-hidden="true"><i></i></span>
-        </label>
-        <label class="pr-row">
-          <input type="checkbox" data-price="450" />
-          <span class="pr-info"><strong>E-shop</strong><em>Προϊόντα, καλάθι, online πληρωμές</em></span>
-          <span class="pr-price">+450€</span>
-          <span class="pr-switch" aria-hidden="true"><i></i></span>
-        </label>
-        <label class="pr-row">
-          <input type="checkbox" data-price="350" />
-          <span class="pr-info"><strong>Σύστημα κρατήσεων</strong><em>Ημερολόγιο, αυτόματα emails επιβεβαίωσης</em></span>
-          <span class="pr-price">+350€</span>
-          <span class="pr-switch" aria-hidden="true"><i></i></span>
-        </label>
-        <label class="pr-row">
-          <input type="checkbox" data-price="250" />
-          <span class="pr-info"><strong>AI Chatbot</strong><em>Απαντά σε πελάτες 24/7 στη σελίδα σας</em></span>
-          <span class="pr-price">+250€</span>
-          <span class="pr-switch" aria-hidden="true"><i></i></span>
-        </label>
-        <label class="pr-row">
-          <input type="checkbox" data-price="180" />
-          <span class="pr-info"><strong>SEO Boost</strong><em>Τοπικό SEO, Google Business, ταχύτητα</em></span>
-          <span class="pr-price">+180€</span>
-          <span class="pr-switch" aria-hidden="true"><i></i></span>
-        </label>
-        <label class="pr-row">
-          <input type="checkbox" data-price="150" />
-          <span class="pr-info"><strong>Δεύτερη γλώσσα (EN)</strong><em>Πλήρης αγγλική έκδοση για ξένους πελάτες</em></span>
-          <span class="pr-price">+150€</span>
-          <span class="pr-switch" aria-hidden="true"><i></i></span>
-        </label>
-        <label class="pr-row">
-          <input type="checkbox" data-price="120" />
-          <span class="pr-info"><strong>Logo &amp; Branding</strong><em>Λογότυπο, χρώματα, οπτική ταυτότητα</em></span>
-          <span class="pr-price">+120€</span>
-          <span class="pr-switch" aria-hidden="true"><i></i></span>
-        </label>
-        <label class="pr-row">
-          <input type="checkbox" data-monthly="30" />
-          <span class="pr-info"><strong>Συντήρηση &amp; Hosting</strong><em>Φιλοξενία, backups, ενημερώσεις, υποστήριξη</em></span>
-          <span class="pr-price">30€/μήνα</span>
-          <span class="pr-switch" aria-hidden="true"><i></i></span>
-        </label>
-      </div>
-
-      <aside class="pr-total">
-        <span class="bw-mini-label">Εκτίμηση πακέτου</span>
-        <div class="pr-total-num"><span id="pr-amount">390</span>€</div>
-        <div class="pr-total-monthly" id="pr-monthly" hidden>+ <span id="pr-monthly-num">0</span>€/μήνα</div>
-        <p class="pr-total-note">Ενδεικτική τιμή εκκίνησης — χωρίς κρυφές χρεώσεις, με παραστατικό.</p>
-        <a href="{% url 'build_together' %}" class="btn-primary pr-cta">Κλειδώστε προσφορά →</a>
-      </aside>
-    </div>
-
   </div>
 </section>
 

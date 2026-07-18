@@ -184,14 +184,28 @@
     img.addEventListener('error', function () { p.classList.add('img-loaded'); });
   });
 
-  /* ── Pricing: ζωντανό σύνολο με animated μετρητή ─────────────── */
+  /* ── Πακέτο υπηρεσιών: οι κάρτες είναι οι επιλογές ────────────
+     Κάθε κάρτα αναγνωρίζεται από το slug του «Αναλυτικά» link της.
+     Click στην κάρτα = toggle στο πακέτο· το σύνολο ζωντανεύει. */
   var prAmount = document.getElementById('pr-amount');
   if (prAmount) {
     var BASE = 390;
-    var prBoxes = Array.prototype.slice.call(
-      document.querySelectorAll('.pr-row input[type="checkbox"]'));
+    var PLANS = {
+      'kataskevi-istoselidas':   { locked: true },
+      'eshop':                   { price: 450 },
+      'systimata-kratiseon':     { price: 350 },
+      'redesign-veltistopoiisi': { price: 350 },
+      'seo-google':              { price: 180 },
+      'branding-logo':           { price: 150 },
+      'hosting-texniki-rythmisi': { price: 80 },
+      'sintirisi-ypostirixi':    { monthly: 30 },
+      'web-apps-ai':             { custom: true },
+      'dashboards-automatismoi': { custom: true }
+    };
+
     var prMonthlyWrap = document.getElementById('pr-monthly');
     var prMonthlyNum = document.getElementById('pr-monthly-num');
+    var prCustom = document.getElementById('pr-custom');
     var shownTotal = BASE;
     var tweenRaf = null;
 
@@ -211,18 +225,40 @@
       tweenRaf = requestAnimationFrame(frame);
     }
 
+    var svcCards = [];
+    Array.prototype.slice.call(document.querySelectorAll('.xp-sitem')).forEach(function (card) {
+      var link = card.querySelector('.xp-sitem-more');
+      if (!link) return;
+      var parts = link.getAttribute('href').split('/').filter(Boolean);
+      var slug = parts[parts.length - 1];
+      var plan = PLANS[slug];
+      if (!plan) return;
+      svcCards.push({ card: card, plan: plan });
+      if (plan.locked) {
+        card.classList.add('is-locked', 'is-on');
+        return;
+      }
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('.xp-sitem-more')) return; /* το link πλοηγεί */
+        card.classList.toggle('is-on');
+        prUpdate();
+      });
+    });
+
     function prUpdate() {
       var total = BASE;
       var monthly = 0;
-      prBoxes.forEach(function (b) {
-        if (!b.checked) return;
-        if (b.dataset.price) total += parseInt(b.dataset.price, 10);
-        if (b.dataset.monthly) monthly += parseInt(b.dataset.monthly, 10);
+      var custom = false;
+      svcCards.forEach(function (s) {
+        if (s.plan.locked || !s.card.classList.contains('is-on')) return;
+        if (s.plan.price) total += s.plan.price;
+        if (s.plan.monthly) monthly += s.plan.monthly;
+        if (s.plan.custom) custom = true;
       });
       prTween(total);
       prMonthlyWrap.hidden = monthly === 0;
       prMonthlyNum.textContent = monthly;
+      if (prCustom) prCustom.hidden = !custom;
     }
-    prBoxes.forEach(function (b) { b.addEventListener('change', prUpdate); });
   }
 })();
