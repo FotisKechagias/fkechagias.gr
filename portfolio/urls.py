@@ -8,4 +8,5 @@ urlpatterns = [
     path('contact/submit/', views.contact_submit, name='contact_submit'),
     path('xtisoume-mazi/', views.build_together, name='build_together'),
     path('xtisoume-mazi/submit/', views.build_submit, name='build_submit'),
+    path('elegxos/', views.digital_check, name='digital_check'),
 ]

@@ -1,0 +1,369 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Δωρεάν Ψηφιακός Έλεγχος — FKECHAGIAS{% endblock %}
+{% block description %}Απαντήστε σε 5 ερωτήσεις και δείτε την ψηφιακή εικόνα της επιχείρησής σας: SEO score, digital score και προσωπικές συστάσεις.{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/build.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="bw-page">
+  <div class="bw-shell dc-shell">
+
+    <div class="bw-progress" aria-hidden="true"><div class="bw-progress-bar" id="dc-bar"></div></div>
+    <div class="bw-counter" id="dc-counter" aria-hidden="true"></div>
+
+    <!-- Ερωτήσεις -->
+    <div id="dc-quiz">
+      <section class="bw-step is-active" data-q="0">
+        <span class="bw-label">Δωρεάν έλεγχος 60&Prime;</span>
+        <h1 class="bw-title">Πόσο δυνατή είναι η<br /><strong>ψηφιακή σας εικόνα;</strong></h1>
+        <p class="bw-sub">
+          5 γρήγορες ερωτήσεις — και βλέπετε αμέσως μια πρώτη εκτίμηση
+          με πρακτικές συστάσεις για την επιχείρησή σας. Χωρίς email, χωρίς δεσμεύσεις.
+        </p>
+        <div class="bw-actions">
+          <button type="button" class="btn-primary dc-start">Ξεκινάμε →</button>
+        </div>
+      </section>
+
+      <section class="bw-step" data-q="1">
+        <h2 class="bw-q">Τι επιχείρηση έχετε;</h2>
+        <div class="bw-chips" data-key="type">
+          <button type="button" class="bw-chip" data-v="food">Εστίαση / Καφέ</button>
+          <button type="button" class="bw-chip" data-v="tourism">Τουρισμός / Καταλύματα</button>
+          <button type="button" class="bw-chip" data-v="retail">Κατάστημα / Προϊόντα</button>
+          <button type="button" class="bw-chip" data-v="services">Υπηρεσίες / Γραφείο</button>
+          <button type="button" class="bw-chip" data-v="health">Υγεία / Ευεξία</button>
+          <button type="button" class="bw-chip" data-v="other">Άλλο</button>
+        </div>
+      </section>
+
+      <section class="bw-step" data-q="2">
+        <h2 class="bw-q">Έχετε ιστοσελίδα;</h2>
+        <div class="bw-chips" data-key="site">
+          <button type="button" class="bw-chip" data-v="none">Όχι, καμία</button>
+          <button type="button" class="bw-chip" data-v="old">Ναι, αλλά παλιά</button>
+          <button type="button" class="bw-chip" data-v="fresh">Ναι, σύγχρονη</button>
+        </div>
+      </section>
+
+      <section class="bw-step" data-q="3">
+        <h2 class="bw-q">Πώς πάνε τα social media σας;</h2>
+        <div class="bw-chips" data-key="social">
+          <button type="button" class="bw-chip" data-v="none">Δεν έχουμε</button>
+          <button type="button" class="bw-chip" data-v="idle">Έχουμε, αλλά ανενεργά</button>
+          <button type="button" class="bw-chip" data-v="active">Ενεργά, ανεβάζουμε συχνά</button>
+        </div>
+      </section>
+
+      <section class="bw-step" data-q="4">
+        <h2 class="bw-q">Πώς σας βρίσκουν οι περισσότεροι πελάτες;</h2>
+        <div class="bw-chips" data-key="source">
+          <button type="button" class="bw-chip" data-v="word">Από σύσταση / στόμα σε στόμα</button>
+          <button type="button" class="bw-chip" data-v="google">Από την Google</button>
+          <button type="button" class="bw-chip" data-v="social">Από τα social</button>
+          <button type="button" class="bw-chip" data-v="ads">Από πληρωμένες διαφημίσεις</button>
+        </div>
+      </section>
+
+      <section class="bw-step" data-q="5">
+        <h2 class="bw-q">Ποιος είναι ο βασικός σας στόχος;</h2>
+        <div class="bw-chips" data-key="goal">
+          <button type="button" class="bw-chip" data-v="customers">Περισσότεροι πελάτες</button>
+          <button type="button" class="bw-chip" data-v="sales">Online πωλήσεις</button>
+          <button type="button" class="bw-chip" data-v="bookings">Online κρατήσεις</button>
+          <button type="button" class="bw-chip" data-v="image">Καλύτερη εικόνα / brand</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Αποτελέσματα -->
+    <div id="dc-results" hidden>
+      <span class="bw-label">Η εκτίμησή σας</span>
+      <h2 class="bw-title dc-results-title">Ορίστε η εικόνα σας.</h2>
+
+      <div class="dc-scores">
+        <div class="dc-score">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="dc-ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle class="dc-ring" id="dc-ring-digital" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="dc-score-val"><span id="dc-num-digital">0</span></div>
+          <span class="dc-score-label">Digital Score</span>
+        </div>
+        <div class="dc-score">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="dc-ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle class="dc-ring" id="dc-ring-seo" cx="60" cy="60" r="52"></circle>
+          </svg>
+          <div class="dc-score-val"><span id="dc-num-seo">0</span></div>
+          <span class="dc-score-label">SEO Score</span>
+        </div>
+      </div>
+
+      <div class="dc-recs" id="dc-recs"></div>
+
+      <p class="dc-disclaimer">
+        Ενδεικτική εκτίμηση βάσει των απαντήσεών σας — όχι πλήρης τεχνικός έλεγχος.
+        Για αναλυτικό δωρεάν audit της σελίδας σας, στείλτε μου το link.
+      </p>
+
+      <div class="bw-actions dc-actions">
+        <a href="{% url 'build_together' %}" class="btn-primary">Φτιάξτε το πλάνο σας →</a>
+        <button type="button" class="btn-ghost" id="dc-restart">Ξανά από την αρχή</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .dc-shell { max-width: 760px; }
+  .dc-results-title { font-size: clamp(28px, 4.5vw, 44px); }
+  .dc-scores {
+    display: flex;
+    gap: clamp(24px, 5vw, 56px);
+    justify-content: center;
+    margin: 34px 0 8px;
+  }
+  .dc-score { text-align: center; position: relative; }
+  .dc-score svg { width: clamp(110px, 16vw, 150px); height: auto; transform: rotate(-90deg); }
+  .dc-ring-bg, .dc-ring {
+    fill: none;
+    stroke-width: 9;
+    stroke-linecap: round;
+  }
+  .dc-ring-bg { stroke: rgba(255, 255, 255, 0.08); }
+  .dc-ring {
+    stroke: var(--accent);
+    stroke-dasharray: 326.7;
+    stroke-dashoffset: 326.7;
+    transition: stroke-dashoffset 1.4s var(--ease), stroke 0.4s;
+  }
+  .dc-ring.is-low { stroke: #d98a72; }
+  .dc-ring.is-mid { stroke: #e0b45f; }
+  .dc-ring.is-high { stroke: #5fb787; }
+  .dc-score-val {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: clamp(110px, 16vw, 150px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+  .dc-score-label {
+    display: block;
+    margin-top: 10px;
+    font-family: var(--font-body);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .dc-recs { display: flex; flex-direction: column; gap: 12px; margin-top: 26px; }
+  .dc-rec {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px 18px;
+    background: var(--glass-bg);
+    border: var(--glass-border);
+    border-radius: var(--radius-md);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--rim);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .dc-rec.in { opacity: 1; transform: none; }
+  .dc-rec i {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-border);
+    color: var(--accent-hover);
+    font-style: normal;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .dc-rec div strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .dc-rec div span {
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .dc-disclaimer {
+    margin-top: 22px;
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    color: var(--text-muted);
+    opacity: 0.8;
+    line-height: 1.7;
+  }
+  .dc-actions { flex-wrap: wrap; }
+  .dc-actions .btn-ghost { margin-top: 0; }
+  @media (max-width: 560px) { .dc-scores { gap: 20px; } }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var steps = Array.prototype.slice.call(document.querySelectorAll('#dc-quiz .bw-step'));
+  var bar = document.getElementById('dc-bar');
+  var counter = document.getElementById('dc-counter');
+  var quiz = document.getElementById('dc-quiz');
+  var results = document.getElementById('dc-results');
+  var answers = {};
+  var current = 0;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function show(i) {
+    steps[current].classList.remove('is-active');
+    current = i;
+    steps[current].classList.add('is-active');
+    bar.style.width = ((i / (steps.length - 1)) * 100) + '%';
+    counter.textContent = i > 0 ? i + ' / ' + (steps.length - 1) : '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelector('.dc-start').addEventListener('click', function () { show(1); });
+
+  steps.forEach(function (step) {
+    var chips = step.querySelector('.bw-chips');
+    if (!chips) return;
+    chips.addEventListener('click', function (e) {
+      var chip = e.target.closest('.bw-chip');
+      if (!chip) return;
+      Array.prototype.slice.call(chips.children).forEach(function (c) {
+        c.classList.toggle('is-selected', c === chip);
+      });
+      answers[chips.dataset.key] = chip.dataset.v;
+      setTimeout(function () {
+        var next = current + 1;
+        if (next < steps.length) show(next);
+        else finish();
+      }, 260);
+    });
+  });
+
+  /* ── Rule-based αξιολόγηση ─────────────────────────────────── */
+  function score() {
+    var digital = 20;
+    var seo = 15;
+    if (answers.site === 'fresh') { digital += 35; seo += 35; }
+    else if (answers.site === 'old') { digital += 15; seo += 15; }
+    if (answers.social === 'active') digital += 25;
+    else if (answers.social === 'idle') digital += 10;
+    if (answers.source === 'google') seo += 30;
+    else if (answers.source === 'ads') { seo += 10; digital += 10; }
+    else if (answers.source === 'social') digital += 10;
+    return { digital: Math.min(digital, 96), seo: Math.min(seo, 96) };
+  }
+
+  function recs() {
+    var out = [];
+    if (answers.site === 'none') {
+      out.push(['Ξεκινήστε από ιστοσελίδα', 'Χωρίς δική σας σελίδα, κάθε αναζήτηση στη Google καταλήγει σε ανταγωνιστές ή σε πλατφόρμες με προμήθειες. Είναι το πρώτο και πιο αποδοτικό βήμα.']);
+    } else if (answers.site === 'old') {
+      out.push(['Ανανεώστε τη σελίδα σας', 'Μια σελίδα 3+ ετών συνήθως χάνει σε ταχύτητα, κινητό και Google. Ένα redesign με σωστό SEO συχνά διπλασιάζει τις επισκέψεις.']);
+    }
+    if (answers.source !== 'google') {
+      out.push(['Διεκδικήστε την Google', 'Οι πελάτες που ψάχνουν «' + typeWord() + ' κοντά μου» δεν σας βρίσκουν ακόμα. Τοπικό SEO + Google Business Profile φέρνουν πελάτες που ήδη σας ψάχνουν.']);
+    }
+    if (answers.social === 'none' || answers.social === 'idle') {
+      out.push(['Ενεργοποιήστε τα social', 'Δεν χρειάζεται καθημερινό posting — 2-3 ποιοτικές αναρτήσεις την εβδομάδα, συνδεδεμένες με τη σελίδα σας, χτίζουν εμπιστοσύνη.']);
+    }
+    if (answers.goal === 'bookings') {
+      out.push(['Σύστημα online κρατήσεων', 'Κάθε κράτηση που γίνεται μόνη της είναι ένα τηλεφώνημα λιγότερο — και μια κράτηση που δεν χάνεται εκτός ωραρίου.']);
+    } else if (answers.goal === 'sales') {
+      out.push(['E-shop με απλό checkout', 'Οι online πωλήσεις θέλουν 3 πράγματα: γρήγορη σελίδα, εύκολο καλάθι και ασφαλείς πληρωμές. Όλα λύνονται.']);
+    } else if (answers.goal === 'image') {
+      out.push(['Επενδύστε στην πρώτη εντύπωση', 'Ο επισκέπτης κρίνει σε 3 δευτερόλεπτα. Σχεδιασμός υψηλής αισθητικής μεταφράζεται άμεσα σε εμπιστοσύνη — και πωλήσεις.']);
+    }
+    if (answers.type === 'tourism') {
+      out.push(['Αγγλική έκδοση', 'Στον τουρισμό, σελίδα χωρίς αγγλικά σημαίνει χαμένες κρατήσεις από το εξωτερικό — τον μισό σας πελάτη.']);
+    }
+    return out.slice(0, 4);
+  }
+
+  function typeWord() {
+    return { food: 'εστιατόριο', tourism: 'κατάλυμα', retail: 'κατάστημα',
+             services: 'γραφείο', health: 'ιατρείο', other: 'επιχείρηση' }[answers.type] || 'επιχείρηση';
+  }
+
+  function finish() {
+    quiz.hidden = true;
+    bar.style.width = '100%';
+    counter.textContent = '';
+    results.hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    var s = score();
+    animateScore('digital', s.digital);
+    animateScore('seo', s.seo);
+
+    var wrap = document.getElementById('dc-recs');
+    wrap.innerHTML = '';
+    recs().forEach(function (r, i) {
+      var d = document.createElement('div');
+      d.className = 'dc-rec';
+      d.innerHTML = '<i>' + (i + 1) + '</i><div><strong></strong><span></span></div>';
+      d.querySelector('strong').textContent = r[0];
+      d.querySelector('span').textContent = r[1];
+      wrap.appendChild(d);
+      setTimeout(function () { d.classList.add('in'); }, reduced ? 0 : 500 + i * 180);
+    });
+  }
+
+  function animateScore(which, target) {
+    var ring = document.getElementById('dc-ring-' + which);
+    var num = document.getElementById('dc-num-' + which);
+    var C = 326.7;
+    ring.classList.add(target < 40 ? 'is-low' : target < 70 ? 'is-mid' : 'is-high');
+    requestAnimationFrame(function () {
+      ring.style.strokeDashoffset = C - (C * target / 100);
+    });
+    if (reduced) { num.textContent = target; return; }
+    var t0 = null;
+    function frame(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / 1400, 1);
+      num.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  document.getElementById('dc-restart').addEventListener('click', function () {
+    answers = {};
+    results.hidden = true;
+    quiz.hidden = false;
+    document.querySelectorAll('#dc-quiz .bw-chip').forEach(function (c) { c.classList.remove('is-selected'); });
+    show(0);
+  });
+})();
+</script>
+{% endblock %}

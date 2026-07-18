@@ -60,6 +60,11 @@ def build_together(request):
     return render(request, 'portfolio/build_together.html')
 
 
+def digital_check(request):
+    """Δωρεάν ψηφιακός έλεγχος 60'' — rule-based mini αξιολόγηση."""
+    return render(request, 'portfolio/digital_check.html')
+
+
 @require_POST
 def build_submit(request):
     """Παραλαβή του αναλυτικού brief (multipart λόγω logo) + αναλυτικό email."""

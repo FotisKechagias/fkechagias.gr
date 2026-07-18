@@ -308,6 +308,48 @@
 /* Submitting state */
 .bw-submit[disabled] { opacity: 0.6; pointer-events: none; }
 
+/* Roadmap στο success */
+.bw-roadmap {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bw-roadmap li {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 13px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--rim);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
+.bw-roadmap li.in { opacity: 1; transform: none; }
+.bw-roadmap strong {
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-hover);
+  min-width: 96px;
+}
+.bw-roadmap span {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  color: var(--text-body);
+  line-height: 1.55;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bw-roadmap li { opacity: 1; transform: none; transition: none; }
+}
+
 /* Honeypot — εκτός οθόνης, όχι display:none (κάποια bots το ελέγχουν) */
 .bw-hp {
   position: absolute !important;

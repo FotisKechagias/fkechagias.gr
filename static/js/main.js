@@ -519,4 +519,51 @@
   var yearEl = document.getElementById('footer-year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
+  /* ── Easter egg: Konami code ή double-click στο logo ─────────────
+     Έκρηξη σωματιδίων στο accent χρώμα — καθαρή διασκέδαση. */
+  (function () {
+    var seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft',
+               'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    var pos = 0;
+
+    function burst(x, y) {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      for (var i = 0; i < 26; i++) {
+        var p = document.createElement('i');
+        var size = 4 + Math.random() * 6;
+        var hue = Math.random() < 0.7 ? 'var(--accent)' : '#f5f5f7';
+        p.style.cssText = 'position:fixed;left:' + x + 'px;top:' + y + 'px;width:' + size +
+          'px;height:' + size + 'px;border-radius:50%;background:' + hue +
+          ';pointer-events:none;z-index:99999;transition:transform 0.9s cubic-bezier(.16,1,.3,1),opacity 0.9s ease;';
+        document.body.appendChild(p);
+        (function (el) {
+          var ang = Math.random() * Math.PI * 2;
+          var dist = 60 + Math.random() * 140;
+          requestAnimationFrame(function () {
+            el.style.transform = 'translate(' + (Math.cos(ang) * dist) + 'px,' +
+              (Math.sin(ang) * dist - 40) + 'px) scale(0)';
+            el.style.opacity = '0';
+          });
+          setTimeout(function () { el.remove(); }, 950);
+        })(p);
+      }
+    }
+
+    window.addEventListener('keydown', function (e) {
+      pos = (e.key === seq[pos]) ? pos + 1 : (e.key === seq[0] ? 1 : 0);
+      if (pos === seq.length) {
+        pos = 0;
+        burst(window.innerWidth / 2, window.innerHeight / 2);
+      }
+    });
+
+    var logo = document.querySelector('.nav-logo');
+    if (logo) {
+      logo.addEventListener('dblclick', function (e) {
+        e.preventDefault();
+        burst(e.clientX, e.clientY);
+      });
+    }
+  })();
+
 })();

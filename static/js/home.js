@@ -183,4 +183,46 @@
     img.addEventListener('load', function () { p.classList.add('img-loaded'); });
     img.addEventListener('error', function () { p.classList.add('img-loaded'); });
   });
+
+  /* ── Pricing: ζωντανό σύνολο με animated μετρητή ─────────────── */
+  var prAmount = document.getElementById('pr-amount');
+  if (prAmount) {
+    var BASE = 390;
+    var prBoxes = Array.prototype.slice.call(
+      document.querySelectorAll('.pr-row input[type="checkbox"]'));
+    var prMonthlyWrap = document.getElementById('pr-monthly');
+    var prMonthlyNum = document.getElementById('pr-monthly-num');
+    var shownTotal = BASE;
+    var tweenRaf = null;
+
+    function prTween(to) {
+      if (reduced) { shownTotal = to; prAmount.textContent = to; return; }
+      if (tweenRaf) cancelAnimationFrame(tweenRaf);
+      var from = shownTotal;
+      var t0 = null;
+      function frame(ts) {
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / 400, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        shownTotal = Math.round(from + (to - from) * eased);
+        prAmount.textContent = shownTotal;
+        if (p < 1) tweenRaf = requestAnimationFrame(frame);
+      }
+      tweenRaf = requestAnimationFrame(frame);
+    }
+
+    function prUpdate() {
+      var total = BASE;
+      var monthly = 0;
+      prBoxes.forEach(function (b) {
+        if (!b.checked) return;
+        if (b.dataset.price) total += parseInt(b.dataset.price, 10);
+        if (b.dataset.monthly) monthly += parseInt(b.dataset.monthly, 10);
+      });
+      prTween(total);
+      prMonthlyWrap.hidden = monthly === 0;
+      prMonthlyNum.textContent = monthly;
+    }
+    prBoxes.forEach(function (b) { b.addEventListener('change', prUpdate); });
+  }
 })();

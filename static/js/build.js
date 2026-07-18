@@ -287,6 +287,33 @@
   form.addEventListener('input', bwSave);
   form.addEventListener('change', bwSave);
 
+  /* ── Roadmap στο success: προσαρμόζεται στην υπηρεσία ────────── */
+  function buildRoadmap() {
+    var wrap = document.getElementById('bw-roadmap');
+    if (!wrap) return;
+    var service = (form.elements.service_needed && form.elements.service_needed.value) || '';
+    var eshop = service.indexOf('E-shop') !== -1;
+    var booking = service.indexOf('κρατήσεων') !== -1;
+    var weeks = [
+      ['Εβδομάδα 1', 'Πλάνο & περιεχόμενο — οριστικοποιούμε δομή, κείμενα και υλικό.'],
+      ['Εβδομάδα 2', 'Σχεδιασμός — βλέπετε τη σελίδα να παίρνει μορφή σε δοκιμαστικό link.'],
+      ['Εβδομάδα 3', eshop ? 'Ανάπτυξη e-shop — προϊόντα, καλάθι, πληρωμές.'
+                   : booking ? 'Ανάπτυξη κρατήσεων — ημερολόγιο, επιβεβαιώσεις.'
+                   : 'Ανάπτυξη — λειτουργίες, ταχύτητα, κινητό.'],
+      [(eshop || booking) ? 'Εβδομάδα 4-5' : 'Εβδομάδα 4',
+       'Δοκιμές & Launch — SEO, εκπαίδευση στο πάνελ, δημοσίευση.']
+    ];
+    wrap.innerHTML = '';
+    weeks.forEach(function (w, i) {
+      var li = document.createElement('li');
+      li.innerHTML = '<strong></strong><span></span>';
+      li.querySelector('strong').textContent = w[0];
+      li.querySelector('span').textContent = w[1];
+      wrap.appendChild(li);
+      setTimeout(function () { li.classList.add('in'); }, 300 + i * 160);
+    });
+  }
+
   /* ── Υποβολή ───────────────────────────────────────────────── */
   var submitBtn = document.getElementById('bw-submit');
   submitBtn.addEventListener('click', function () {
@@ -307,6 +334,7 @@
       .then(function (res) {
         if (res.ok && res.j.success) {
           try { localStorage.removeItem(BW_KEY); } catch (err) {}
+          buildRoadmap();
           show(stepIndexByName('done'));
         } else {
           throw new Error(res.j.error || 'Σφάλμα');
