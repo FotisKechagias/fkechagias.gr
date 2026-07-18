@@ -202,7 +202,6 @@
     ['Κινητό',          'phone',          'contact'],
     ['Πόλη',            'city',           'contact'],
     ['Διεύθυνση',       'address',        'contact'],
-    ['Budget',          'budget',         'budget'],
     ['Χρόνος',          'timeline',       'budget'],
     ['Όραμα',           'vision',         'vision']
   ];
@@ -247,7 +246,7 @@
   var BW_KEY = 'bw-draft';
   var savedFields = ['contact_name', 'business_name', 'business_type',
     'service_needed', 'current_url', 'email', 'phone', 'city',
-    'address', 'budget', 'timeline', 'vision'];
+    'address', 'timeline', 'vision'];
 
   function bwSave() {
     try {
