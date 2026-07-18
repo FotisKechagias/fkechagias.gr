@@ -1,9 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
    MINI WEBSITE BUILDER — live demo (πλήρως client-side)
-   - Prompt → fake AI generation (console μηνύματα + progress)
-   - 8 θεματικά templates: διαφορετικό layout/χρώμα/τυπογραφία
-   - Morph transition ανάμεσα σε templates (blur + scale swap)
-   - Ζωντανά controls: χρώμα, γωνίες, γραμματοσειρά, dark, glass
+   - Κάθε κατηγορία έχει πραγματική φωτογραφία φόντου· όλο το
+     mini-site είναι glassmorphism πάνω της (nav/κάρτες/footer).
+   - Fake AI generation (console + progress) → staged χτίσιμο.
+   - Morph swap ανάμεσα σε templates, ζωντανά controls.
+   - Καθόλου emojis — μόνο τυπογραφία και γυαλί.
    ═══════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -21,82 +22,85 @@
   if (!input || !btn || !page) return;
 
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var IMG = '/static/images/demo/';
   var building = false;
-  var generated = false;
 
   /* ── Template library ────────────────────────────────────────── */
   var THEMES = [
     { id: 'cafe',
       keys: ['καφ', 'coffee', 'cafe', 'brunch', 'ζαχαρ', 'φούρν', 'φουρν', 'bakery'],
-      acc: '#b07d4a', font: 'sans', layout: 'center', dark: false,
+      acc: '#c99a63', font: 'sans', layout: 'center', dark: true, img: 'cafe.webp',
       kicker: 'CAFÉ & BRUNCH', headline: 'Ο καφές, όπως πρέπει.',
       sub: 'Specialty καφές, φρέσκα brunch plates και ο πιο φιλόξενος χώρος της γειτονιάς.',
       cta: 'Δες το Μενού', nav: ['Μενού', 'Ο χώρος', 'Επικοινωνία'],
-      cards: [['☕', 'Freddo Espresso', '3.20€'], ['🥐', 'Brunch Plate', '9.50€'], ['🍰', 'Cheesecake', '5.80€']] },
+      cards: [['Freddo Espresso', '3.20€'], ['Brunch Plate', '9.50€'], ['Cheesecake', '5.80€']] },
 
     { id: 'restaurant',
       keys: ['εστιατ', 'ταβερν', 'restaurant', 'φαγητ', 'κουζίν', 'κουζιν', 'grill', 'pizza', 'burger', 'μεζ'],
-      acc: '#c05f4e', font: 'serif', layout: 'split', dark: false,
+      acc: '#d98a72', font: 'serif', layout: 'split', dark: true, img: 'restaurant.webp',
       kicker: 'FINE DINING', headline: 'Γεύσεις που θυμάσαι.',
       sub: 'Σύγχρονη ελληνική κουζίνα με πρώτες ύλες από μικρούς παραγωγούς.',
       cta: 'Κράτηση τραπεζιού', nav: ['Μενού', 'Ιστορία', 'Κρατήσεις'],
-      cards: [['🐟', 'Λαβράκι σχάρας', '18€'], ['🥗', 'Χωριάτικη 2.0', '9€'], ['🍷', 'Κρασιά αμπελώνα', 'λίστα']] },
+      cards: [['Λαβράκι σχάρας', '18€'], ['Χωριάτικη 2.0', '9€'], ['Λίστα κρασιών', '45+ ετικέτες']],
+      stats: [['4.9', 'Google rating'], ['12', 'χρόνια ιστορίας'], ['1500+', 'κρατήσεις/μήνα']] },
 
     { id: 'realestate',
       keys: ['μεσιτ', 'ακίνητ', 'ακινητ', 'κατοικ', 'real estate', 'villa', 'βίλ', 'βιλ', 'estate', 'ξενοδοχ', 'σουίτ', 'σουιτ', 'διαμερ', 'καταλ', 'hotel', 'suites', 'airbnb', 'luxury'],
-      acc: '#a08b5f', font: 'serif', layout: 'split', dark: false,
+      acc: '#c9b083', font: 'serif', layout: 'split', dark: true, img: 'realestate.webp',
       kicker: 'LUXURY PROPERTIES', headline: 'Κατοικίες με άποψη.',
-      sub: 'Επιλεγμένα ακίνητα και κατοικίες υψηλής αισθητικής, με προσωπική εξυπηρέτηση.',
+      sub: 'Επιλεγμένα ακίνητα υψηλής αισθητικής, με διακριτική προσωπική εξυπηρέτηση.',
       cta: 'Δείτε τα ακίνητα', nav: ['Ακίνητα', 'Υπηρεσίες', 'Επικοινωνία'],
-      cards: [['🏛️', 'Penthouse Κέντρο', '450.000€'], ['🌊', 'Βίλα με θέα', '780.000€'], ['🌿', 'Μεζονέτα Πανόραμα', '320.000€']] },
+      cards: [['Penthouse Κέντρο', '450.000€'], ['Βίλα με θέα', '780.000€'], ['Μεζονέτα Πανόραμα', '320.000€']],
+      stats: [['120+', 'ακίνητα'], ['15', 'χρόνια εμπειρίας'], ['98%', 'ικανοποίηση']] },
 
     { id: 'gym',
       keys: ['γυμναστ', 'gym', 'fitness', 'crossfit', 'yoga', 'pilates', 'προπον', 'sport'],
-      acc: '#4ca66b', font: 'sans', layout: 'center', dark: true,
+      acc: '#6fc287', font: 'sans', layout: 'center', dark: true, img: 'gym.webp',
       kicker: 'TRAIN HARDER', headline: 'Γίνε η καλύτερη εκδοχή σου.',
       sub: 'Σύγχρονος εξοπλισμός, personal training και ομαδικά προγράμματα κάθε μέρα.',
       cta: 'Δωρεάν δοκιμαστικό', nav: ['Προγράμματα', 'Coaches', 'Συνδρομές'],
-      cards: [['🏋️', 'Personal Training', 'από 25€'], ['🔥', 'HIIT Classes', '10€/είσοδος'], ['🧘', 'Yoga & Mobility', '8€/είσοδος']] },
+      cards: [['Personal Training', 'από 25€'], ['HIIT Classes', '10€ / είσοδος'], ['Yoga & Mobility', '8€ / είσοδος']] },
 
     { id: 'law',
       keys: ['δικηγορ', 'νομικ', 'law', 'legal', 'συμβολαιογρ', 'λογιστ'],
-      acc: '#3f5e8f', font: 'serif', layout: 'left', dark: false,
+      acc: '#8fa9d6', font: 'serif', layout: 'left', dark: true, img: 'law.webp',
       kicker: 'ΔΙΚΗΓΟΡΙΚΟ ΓΡΑΦΕΙΟ', headline: 'Το δίκιο σας, με σχέδιο.',
       sub: 'Εξειδίκευση σε αστικό, εμπορικό και εργατικό δίκαιο — με διαφάνεια σε κάθε βήμα.',
       cta: 'Κλείστε ραντεβού', nav: ['Τομείς', 'Η ομάδα', 'Επικοινωνία'],
-      cards: [['⚖️', 'Αστικό Δίκαιο', ''], ['🏢', 'Εμπορικό Δίκαιο', ''], ['🤝', 'Διαμεσολάβηση', '']] },
+      cards: [['Αστικό Δίκαιο', 'συμβουλευτική'], ['Εμπορικό Δίκαιο', 'εταιρείες'], ['Διαμεσολάβηση', 'εξωδικαστικά']] },
 
     { id: 'medical',
       keys: ['ιατρ', 'οδοντ', 'κλινικ', 'γιατρ', 'dental', 'medical', 'φυσιοθερ', 'φυσικοθερ', 'ψυχολ'],
-      acc: '#47a3b5', font: 'sans', layout: 'center', dark: false,
+      acc: '#7cc4d4', font: 'sans', layout: 'center', dark: true, img: 'medical.webp',
       kicker: 'ΣΥΓΧΡΟΝΗ ΦΡΟΝΤΙΔΑ', headline: 'Το χαμόγελό σας, πρώτα.',
       sub: 'Σύγχρονος εξοπλισμός, ανώδυνες θεραπείες και προσωπικό πλάνο για κάθε ασθενή.',
       cta: 'Κλείστε ραντεβού', nav: ['Υπηρεσίες', 'Η ομάδα', 'Ραντεβού'],
-      cards: [['🦷', 'Λεύκανση', 'από 120€'], ['✨', 'Ορθοδοντική', 'πλάνο'], ['🪥', 'Καθαρισμός', '50€']] },
+      cards: [['Λεύκανση', 'από 120€'], ['Ορθοδοντική', 'πλάνο θεραπείας'], ['Καθαρισμός', '50€']] },
 
     { id: 'photo',
       keys: ['φωτογρ', 'photo', 'studio', 'portfolio', 'βίντεο', 'βιντεο', 'video', 'δημιουργ', 'design studio'],
-      acc: '#d6a2c4', font: 'sans', layout: 'split', dark: true,
+      acc: '#e0b1cf', font: 'sans', layout: 'split', dark: true, img: 'photo.webp',
       kicker: 'VISUAL STORIES', headline: 'Στιγμές που μένουν.',
       sub: 'Φωτογράφιση γάμων, portraits και brands — με κινηματογραφική ματιά.',
       cta: 'Δες το portfolio', nav: ['Portfolio', 'Πακέτα', 'Επικοινωνία'],
-      cards: [['💍', 'Γάμοι', 'από 900€'], ['👤', 'Portraits', 'από 150€'], ['🏷️', 'Brands', 'custom']] },
+      cards: [['Γάμοι', 'από 900€'], ['Portraits', 'από 150€'], ['Brands', 'custom πακέτο']],
+      stats: [['300+', 'events'], ['10', 'χρόνια πίσω από τον φακό'], ['48h', 'πρώτα δείγματα']] },
 
     { id: 'shop',
       keys: ['κατάστη', 'καταστη', 'shop', 'store', 'eshop', 'e-shop', 'ρούχ', 'ρουχ', 'παπού', 'παπου', 'κοσμή', 'κοσμη', 'boutique', 'προϊό', 'προιο'],
-      acc: '#8d6ae0', font: 'sans', layout: 'center', dark: false,
+      acc: '#b79aec', font: 'sans', layout: 'center', dark: true, img: 'shop.webp',
       kicker: 'ONLINE STORE', headline: 'Νέα collection, κάθε εβδομάδα.',
       sub: 'Επιλεγμένα κομμάτια, γρήγορη αποστολή σε όλη την Ελλάδα και εύκολες επιστροφές.',
       cta: 'Δες τα προϊόντα', nav: ['Προϊόντα', 'Προσφορές', 'Καλάθι'],
-      cards: [['👗', 'Midi Dress', '49€'], ['👟', 'Urban Sneakers', '79€'], ['👜', 'Leather Bag', '95€']] },
+      cards: [['Midi Dress', '49€'], ['Urban Sneakers', '79€'], ['Leather Bag', '95€']] },
 
     { id: 'startup',
       keys: [],
-      acc: '#6f80ea', font: 'sans', layout: 'center', dark: false,
-      kicker: 'DIGITAL PRODUCT', headline: 'Παρουσία που εμπνέει εμπιστοσύνη.',
+      acc: '#94a4ff', font: 'sans', layout: 'center', dark: true, img: 'startup.webp',
+      kicker: 'DIGITAL PRESENCE', headline: 'Παρουσία που εμπνέει εμπιστοσύνη.',
       sub: 'Σύγχρονη εικόνα, ξεκάθαρες υπηρεσίες και εύκολη επικοινωνία για τους πελάτες σας.',
       cta: 'Ζητήστε προσφορά', nav: ['Υπηρεσίες', 'Έργα', 'Επικοινωνία'],
-      cards: [['💼', 'Υπηρεσίες', ''], ['⭐', 'Αξιολογήσεις', ''], ['📞', 'Επικοινωνία', '']] }
+      cards: [['Υπηρεσίες', 'ξεκάθαρα πακέτα'], ['Αξιολογήσεις', '5.0 στην Google'], ['Επικοινωνία', 'απάντηση σε 24h']] }
   ];
 
   function pickTheme(text) {
@@ -138,9 +142,19 @@
     return d;
   }
 
+  /* Προφόρτωση εικόνων στο πρώτο interaction — μηδενική αναμονή μετά */
+  var preloaded = false;
+  function preloadAll() {
+    if (preloaded) return;
+    preloaded = true;
+    THEMES.forEach(function (t) { (new Image()).src = IMG + t.img; });
+  }
+  input.addEventListener('focus', preloadAll, { once: true });
+
   /* ── Rendering ───────────────────────────────────────────────── */
   function renderTemplate(theme, brand) {
     page.style.setProperty('--dm-acc', theme.acc);
+    page.style.setProperty('--dm-img', 'url(' + IMG + theme.img + ')');
     page.classList.toggle('dm-serif', theme.font === 'serif');
     page.classList.toggle('dm-dark', !!theme.dark);
     syncControls(theme);
@@ -156,10 +170,12 @@
       '<p class="dm-p">' + esc(theme.sub) + '</p>' +
       '<span class="dm-btn">' + esc(theme.cta) + '</span>';
     var hero;
-    if (theme.layout === 'split') {
+    if (theme.layout === 'split' && theme.stats) {
       hero = el('dm-hero dm-hero-split',
         '<div class="dm-hero-copy">' + heroInner + '</div>' +
-        '<div class="dm-visual" aria-hidden="true"><span>✦</span></div>');
+        '<div class="dm-stats">' + theme.stats.map(function (s) {
+          return '<div class="dm-stat"><strong>' + esc(s[0]) + '</strong><span>' + esc(s[1]) + '</span></div>';
+        }).join('') + '</div>');
     } else if (theme.layout === 'left') {
       hero = el('dm-hero dm-hero-left', heroInner);
     } else {
@@ -167,9 +183,9 @@
     }
 
     var cards = el('dm-cards', theme.cards.map(function (c) {
-      return '<div class="dm-card"><span class="dm-card-ico">' + c[0] + '</span>' +
-             '<span class="dm-card-name">' + esc(c[1]) + '</span>' +
-             (c[2] ? '<span class="dm-card-price">' + esc(c[2]) + '</span>' : '') + '</div>';
+      return '<div class="dm-card"><i class="dm-card-mark"></i>' +
+             '<span class="dm-card-name">' + esc(c[0]) + '</span>' +
+             (c[1] ? '<span class="dm-card-price">' + esc(c[1]) + '</span>' : '') + '</div>';
     }).join(''));
 
     var foot = el('dm-foot', '© ' + esc(brand) + ' — φτιαγμένο με <strong>fkechagias.gr</strong>');
@@ -186,10 +202,10 @@
              headline: theme.headline };
   }
 
-  /* Συγχρονισμός των controls με το τρέχον template */
   function syncControls(theme) {
-    var sw = document.querySelectorAll('#dmb-swatches button');
-    sw.forEach(function (b) { b.classList.toggle('is-on', b.dataset.acc === theme.acc); });
+    document.querySelectorAll('#dmb-swatches button').forEach(function (b) {
+      b.classList.toggle('is-on', b.dataset.acc === theme.acc);
+    });
     setOpt('font', theme.font === 'serif' ? 'serif' : 'sans');
     setOpt('mode', theme.dark ? 'dark' : 'light');
   }
@@ -204,10 +220,10 @@
   /* ── Fake AI console ─────────────────────────────────────────── */
   var AI_STEPS = [
     'Κατανοώ την επιχείρηση…',
+    'Διαλέγω φωτογραφίες…',
     'Σχεδιάζω το layout…',
-    'Διαλέγω τυπογραφία & χρώματα…',
+    'Επιλέγω τυπογραφία & χρώματα…',
     'Χτίζω τα sections…',
-    'Βελτιστοποιώ για κινητά…',
     'Έτοιμο ✓'
   ];
 
@@ -238,6 +254,7 @@
   function build() {
     if (building) return;
     building = true;
+    preloadAll();
     btn.disabled = true;
     btn.textContent = 'Χτίζεται…';
     after.hidden = true;
@@ -252,10 +269,10 @@
       reveal(parts);
     };
 
-    /* Morph out το προηγούμενο template */
-    var hasContent = page.querySelector('.dm-nav');
     if (reduced) {
       urlEl.textContent = slug(brand) + '.gr';
+      var empty0 = document.getElementById('dm-empty');
+      if (empty0) empty0.remove();
       var parts = renderTemplate(theme, brand);
       [parts.nav, parts.hero, parts.cards, parts.foot].forEach(function (b) { b.classList.add('on'); });
       parts.typeTarget.textContent = parts.headline;
@@ -264,6 +281,7 @@
       return;
     }
 
+    var hasContent = page.querySelector('.dm-nav');
     runConsole(function () {
       setTimeout(function () { consoleBox.hidden = true; }, 550);
       if (hasContent) {
@@ -279,8 +297,7 @@
       }
     });
 
-    /* Φέρε το preview στο κάδρο σε κινητά */
-    if (window.innerWidth < 900) {
+    if (window.innerWidth < 960) {
       setTimeout(function () {
         if (window.__lenis) window.__lenis.scrollTo(frame, { offset: -100, duration: 0.9 });
         else frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -311,9 +328,8 @@
     after.hidden = false;
     controls.hidden = false;
     btn.disabled = false;
-    btn.textContent = 'Generate ξανά ↻';
+    btn.textContent = 'Generate ξανά';
     building = false;
-    generated = true;
   }
 
   /* ── Controls ────────────────────────────────────────────────── */
@@ -335,10 +351,9 @@
       });
       var v = chip.dataset.val;
       switch (group.dataset.var) {
-        case 'rad':   page.style.setProperty('--dm-rad', v); break;
-        case 'font':  page.classList.toggle('dm-serif', v === 'serif'); break;
-        case 'mode':  page.classList.toggle('dm-dark', v === 'dark'); break;
-        case 'glass': page.classList.toggle('dm-glass', v === 'on'); break;
+        case 'rad':  page.style.setProperty('--dm-rad', v); break;
+        case 'font': page.classList.toggle('dm-serif', v === 'serif'); break;
+        case 'mode': page.classList.toggle('dm-dark', v === 'dark'); break;
       }
     });
   });

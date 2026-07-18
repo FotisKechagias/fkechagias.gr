@@ -1015,10 +1015,17 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 16px;
   text-align: center;
 }
-.dm-empty span { font-size: 30px; color: var(--dm-acc); opacity: 0.6; }
+.dm-empty-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dm-acc);
+  box-shadow: 0 0 18px var(--dm-acc);
+  animation: dmb-pulse 1.4s ease-in-out infinite;
+}
 .dm-empty p {
   font-family: var(--font-display);
   font-size: 14px;
@@ -1055,28 +1062,38 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   padding: 4px 12px;
 }
 
-/* Το "site" μέσα στο mockup: θεματικά vars --dm-acc / --dm-rad
-   + variants: .dm-serif, .dm-dark, .dm-glass, morph .dm-swap */
+/* Το "site" μέσα στο mockup: φωτογραφία κατηγορίας σε ΟΛΗ τη σελίδα
+   (--dm-img) + glassmorphism σε nav/κάρτες/footer by default.
+   Vars: --dm-acc χρώμα, --dm-rad γωνίες. Variants: .dm-serif, .dm-dark. */
 .dm-page {
-  --dm-acc: #6f80ea;
+  --dm-acc: #94a4ff;
   --dm-rad: 12px;
-  --dm-pg: #fafafa;
-  --dm-card: #ffffff;
-  --dm-ink: #1c1d22;
-  --dm-mut: #5c5d64;
-  --dm-line: rgba(0, 0, 0, 0.07);
-  background: var(--dm-pg);
+  --dm-img: none;
+  /* Light mode: αχνό φωτεινό πέπλο πάνω στη φωτογραφία, σκούρο κείμενο */
+  --dm-ov1: rgba(248, 248, 250, 0.62);
+  --dm-ov2: rgba(248, 248, 250, 0.78);
+  --dm-ink: #17181d;
+  --dm-mut: #45464e;
+  --dm-glassbg: rgba(255, 255, 255, 0.5);
+  --dm-line: rgba(255, 255, 255, 0.55);
+  --dm-shadow: rgba(0, 0, 0, 0.12);
+  background-image: linear-gradient(to bottom, var(--dm-ov1), var(--dm-ov2)), var(--dm-img);
+  background-size: cover;
+  background-position: center;
+  background-color: #121318;
   color: var(--dm-ink);
   min-height: 380px;
-  transition: background-color 0.45s var(--ease), color 0.45s var(--ease),
-              opacity 0.35s var(--ease), transform 0.35s var(--ease), filter 0.35s var(--ease);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), filter 0.35s var(--ease);
 }
+/* Dark mode: σκούρο πέπλο, φωτεινό κείμενο, σκούρο γυαλί */
 .dm-page.dm-dark {
-  --dm-pg: #121318;
-  --dm-card: #1b1d24;
-  --dm-ink: #f0f0f3;
-  --dm-mut: #9a9ba3;
-  --dm-line: rgba(255, 255, 255, 0.09);
+  --dm-ov1: rgba(10, 11, 15, 0.45);
+  --dm-ov2: rgba(10, 11, 15, 0.72);
+  --dm-ink: #f4f4f7;
+  --dm-mut: #cfd0d6;
+  --dm-glassbg: rgba(18, 20, 26, 0.42);
+  --dm-line: rgba(255, 255, 255, 0.16);
+  --dm-shadow: rgba(0, 0, 0, 0.35);
 }
 .dm-page.dm-serif .dm-h,
 .dm-page.dm-serif .dm-logo { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.015em; }
@@ -1087,16 +1104,29 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
 }
 .dm-el.on { opacity: 1; transform: none; }
+/* Κοινή glass συνταγή των στοιχείων του demo site */
+.dm-glassy {
+  background: var(--dm-glassbg);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--dm-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 24px var(--dm-shadow);
+}
 
 .dm-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 14px 26px;
-  background: var(--dm-card);
-  border-bottom: 1px solid var(--dm-line);
-  transition: background-color 0.45s var(--ease);
+  margin: 14px 16px 0;
+  padding: 11px 18px;
+  border-radius: var(--dm-rad);
+  background: var(--dm-glassbg);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--dm-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 24px var(--dm-shadow);
+  transition: border-radius 0.35s var(--ease);
 }
 .dm-logo {
   font-family: var(--font-display);
@@ -1128,30 +1158,48 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
 }
 
 .dm-hero {
-  padding: clamp(30px, 5vw, 56px) 26px;
+  padding: clamp(34px, 5vw, 60px) 26px;
   text-align: center;
-  background: radial-gradient(ellipse 80% 90% at 50% -20%, color-mix(in srgb, var(--dm-acc) 16%, transparent), transparent);
 }
-/* Split layout: κείμενο + visual placeholder */
+/* Split layout: κείμενο + glass stats panel */
 .dm-hero-split {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: 1.2fr 0.8fr;
   gap: 22px;
   align-items: center;
   text-align: left;
 }
 .dm-hero-split .dm-p { margin-left: 0; }
-.dm-visual {
-  aspect-ratio: 4 / 3;
-  border-radius: var(--dm-rad);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--dm-acc) 55%, #888), color-mix(in srgb, var(--dm-acc) 25%, #333));
+.dm-stats {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 26px;
-  transition: border-radius 0.35s var(--ease), background 0.45s var(--ease);
+  flex-direction: column;
+  gap: 10px;
+  border-radius: var(--dm-rad);
+  padding: 18px 20px;
+  background: var(--dm-glassbg);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--dm-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 24px var(--dm-shadow);
+  transition: border-radius 0.35s var(--ease);
+}
+.dm-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.dm-stat strong {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--dm-acc);
+  min-width: 52px;
+}
+.dm-stat span {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--dm-mut);
 }
 /* Left layout: αριστερή στοίχιση (πιο "εταιρικό") */
 .dm-hero-left { text-align: left; }
@@ -1173,6 +1221,8 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   margin: 0 0 12px;
   min-height: 1.2em;
 }
+.dm-page.dm-dark .dm-h { text-shadow: 0 2px 20px rgba(0, 0, 0, 0.55); }
+.dm-page.dm-dark .dm-p { text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45); }
 .dm-caret {
   display: inline-block;
   width: 3px;
@@ -1212,47 +1262,59 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   padding: 8px 26px 26px;
 }
 .dm-card {
-  background: var(--dm-card);
-  border: 1px solid var(--dm-line);
   border-radius: var(--dm-rad);
-  padding: 18px 14px;
-  text-align: center;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.45s var(--ease), border-radius 0.35s var(--ease),
-              transform var(--transition), box-shadow var(--transition);
+  padding: 18px 16px;
+  text-align: left;
+  background: var(--dm-glassbg);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--dm-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 24px var(--dm-shadow);
+  transition: border-radius 0.35s var(--ease), transform var(--transition), box-shadow var(--transition);
 }
-.dm-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1); }
-/* Glass mode: οι κάρτες γίνονται ημιδιαφανείς με blur */
-.dm-page.dm-glass .dm-card,
-.dm-page.dm-glass .dm-nav {
-  background: color-mix(in srgb, var(--dm-card) 55%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+.dm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 14px 32px var(--dm-shadow);
 }
-.dm-card-ico { display: block; font-size: 26px; margin-bottom: 8px; }
+.dm-card-mark {
+  display: block;
+  width: 26px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--dm-acc);
+  margin-bottom: 12px;
+  transition: background-color 0.45s var(--ease);
+}
 .dm-card-name {
   display: block;
   font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 650;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--dm-ink);
 }
 .dm-card-price {
   display: block;
   font-family: var(--font-display);
   font-size: 12px;
-  color: var(--dm-acc);
-  font-weight: 700;
+  color: var(--dm-mut);
+  font-weight: 500;
   margin-top: 3px;
 }
 .dm-foot {
-  padding: 14px 26px;
-  border-top: 1px solid var(--dm-line);
-  background: var(--dm-card);
+  margin: 0 16px 16px;
+  padding: 12px 18px;
+  border-radius: var(--dm-rad);
+  background: var(--dm-glassbg);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--dm-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 24px var(--dm-shadow);
   font-family: var(--font-display);
   font-size: 11.5px;
   color: var(--dm-mut);
   text-align: center;
-  transition: background-color 0.45s var(--ease);
+  transition: border-radius 0.35s var(--ease);
 }
 .dm-foot strong { color: var(--dm-acc); }
 
@@ -1278,7 +1340,6 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   .dm-links { display: none; }
   .dm-cards { grid-template-columns: 1fr; }
   .dm-hero-split { grid-template-columns: 1fr; }
-  .dm-visual { max-height: 120px; }
   .dmb-generate { width: 100%; }
 }
 

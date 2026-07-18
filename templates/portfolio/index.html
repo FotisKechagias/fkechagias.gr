@@ -608,17 +608,17 @@
                placeholder="π.χ. Μεσιτικό γραφείο πολυτελών κατοικιών" maxlength="48" />
 
         <div class="dmb-suggest" id="dmb-suggest">
-          <button type="button" class="bw-chip" data-fill="Καφετέρια Aroma">☕ Καφετέρια</button>
-          <button type="button" class="bw-chip" data-fill="Εστιατόριο Θάλασσα">🍽️ Εστιατόριο</button>
-          <button type="button" class="bw-chip" data-fill="Thea Luxury Villas">🏛️ Real Estate</button>
-          <button type="button" class="bw-chip" data-fill="Γυμναστήριο Pulse">💪 Γυμναστήριο</button>
-          <button type="button" class="bw-chip" data-fill="Δικηγορικό Γραφείο Νόμος">⚖️ Δικηγορικό</button>
-          <button type="button" class="bw-chip" data-fill="Οδοντιατρείο Smile">🦷 Ιατρείο</button>
-          <button type="button" class="bw-chip" data-fill="Studio Φωτογραφίας Lens">📷 Φωτογράφος</button>
-          <button type="button" class="bw-chip" data-fill="Κατάστημα NOVA">🛍️ E-shop</button>
+          <button type="button" class="bw-chip" data-fill="Καφετέρια Aroma">Καφετέρια</button>
+          <button type="button" class="bw-chip" data-fill="Εστιατόριο Θάλασσα">Εστιατόριο</button>
+          <button type="button" class="bw-chip" data-fill="Thea Luxury Villas">Real Estate</button>
+          <button type="button" class="bw-chip" data-fill="Γυμναστήριο Pulse">Γυμναστήριο</button>
+          <button type="button" class="bw-chip" data-fill="Δικηγορικό Γραφείο Νόμος">Δικηγορικό</button>
+          <button type="button" class="bw-chip" data-fill="Οδοντιατρείο Smile">Ιατρείο</button>
+          <button type="button" class="bw-chip" data-fill="Studio Φωτογραφίας Lens">Φωτογράφος</button>
+          <button type="button" class="bw-chip" data-fill="Κατάστημα NOVA">E-shop</button>
         </div>
 
-        <button type="button" id="demo-btn" class="btn-primary dmb-generate">Generate ✨</button>
+        <button type="button" id="demo-btn" class="btn-primary dmb-generate">Generate</button>
 
         <div class="dmb-console" id="dmb-console" hidden aria-live="polite">
           <div class="dmb-console-lines" id="dmb-lines"></div>
@@ -651,14 +651,8 @@
 
           <span class="bw-mini-label">Θέμα</span>
           <div class="dmb-opts" data-var="mode">
-            <button type="button" class="bw-chip is-selected" data-val="light">Φωτεινό</button>
-            <button type="button" class="bw-chip" data-val="dark">Σκούρο</button>
-          </div>
-
-          <span class="bw-mini-label">Glass</span>
-          <div class="dmb-opts" data-var="glass">
-            <button type="button" class="bw-chip is-selected" data-val="off">Off</button>
-            <button type="button" class="bw-chip" data-val="on">On</button>
+            <button type="button" class="bw-chip" data-val="light">Φωτεινό</button>
+            <button type="button" class="bw-chip is-selected" data-val="dark">Σκούρο</button>
           </div>
         </div>
       </div>
@@ -672,7 +666,7 @@
           </div>
           <div class="dm-page" id="dm-page">
             <div class="dm-empty" id="dm-empty">
-              <span aria-hidden="true">✦</span>
+              <i class="dm-empty-dot" aria-hidden="true"></i>
               <p>Το preview σας θα εμφανιστεί εδώ.<br />Γράψτε μια περιγραφή και πατήστε Generate.</p>
             </div>
           </div>
