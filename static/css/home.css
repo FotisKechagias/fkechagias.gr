@@ -929,6 +929,7 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   box-shadow: var(--glass-shadow), var(--rim);
   padding: clamp(20px, 3vw, 36px);
 }
+.dmb-left, .dmb-right { min-width: 0; }
 .dmb-label { margin-top: 0; }
 .dmb-suggest { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
 .dmb-suggest .bw-chip { padding: 8px 13px; font-size: 12.5px; }

@@ -1399,6 +1399,15 @@ body:not(.is-slider) .story-section > .container {
 }
 
 /* ── Shared form components (wizard + demo builder) ──────────── */
+.bw-mini-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 18px 0 10px;
+}
 .bw-input {
   width: 100%;
   background: rgba(255, 255, 255, 0.07);

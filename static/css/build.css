@@ -120,15 +120,7 @@
   color: var(--text-muted);
   opacity: 0.7;
 }
-.bw-mini-label {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin: 18px 0 10px;
-}
+/* Το .bw-mini-label ορίζεται στο styles.css (κοινό με το demo builder) */
 
 /* Τα .bw-input / .bw-textarea / .bw-chip ορίζονται πλέον στο
    styles.css (κοινά με το demo builder της αρχικής). */
