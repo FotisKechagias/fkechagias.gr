@@ -1467,12 +1467,20 @@ body.xp-loaded .xp-fade { opacity: 1; transform: translateY(0); }
   color: var(--text);
   line-height: 1;
 }
-.pr-total-monthly {
+.pr-total-num em {
+  font-style: normal;
+  font-size: 0.4em;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0;
+  margin-right: 4px;
+}
+.pr-total-count {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--accent-hover);
-  margin-top: 6px;
+  margin-top: 8px;
 }
 .pr-total-note {
   font-family: var(--font-display);

@@ -185,56 +185,20 @@
   });
 
   /* ── Πακέτο υπηρεσιών: οι κάρτες είναι οι επιλογές ────────────
-     Κάθε κάρτα αναγνωρίζεται από το slug του «Αναλυτικά» link της.
-     Click στην κάρτα = toggle στο πακέτο· το σύνολο ζωντανεύει. */
-  var prAmount = document.getElementById('pr-amount');
-  if (prAmount) {
-    var BASE = 390;
-    var PLANS = {
-      'kataskevi-istoselidas':   { locked: true },
-      'eshop':                   { price: 450 },
-      'systimata-kratiseon':     { price: 350 },
-      'redesign-veltistopoiisi': { price: 350 },
-      'seo-google':              { price: 180 },
-      'branding-logo':           { price: 150 },
-      'hosting-texniki-rythmisi': { price: 80 },
-      'sintirisi-ypostirixi':    { monthly: 30 },
-      'web-apps-ai':             { custom: true },
-      'dashboards-automatismoi': { custom: true }
-    };
-
-    var prMonthlyWrap = document.getElementById('pr-monthly');
-    var prMonthlyNum = document.getElementById('pr-monthly-num');
-    var prCustom = document.getElementById('pr-custom');
-    var shownTotal = BASE;
-    var tweenRaf = null;
-
-    function prTween(to) {
-      if (reduced) { shownTotal = to; prAmount.textContent = to; return; }
-      if (tweenRaf) cancelAnimationFrame(tweenRaf);
-      var from = shownTotal;
-      var t0 = null;
-      function frame(ts) {
-        if (!t0) t0 = ts;
-        var p = Math.min((ts - t0) / 400, 1);
-        var eased = 1 - Math.pow(1 - p, 3);
-        shownTotal = Math.round(from + (to - from) * eased);
-        prAmount.textContent = shownTotal;
-        if (p < 1) tweenRaf = requestAnimationFrame(frame);
-      }
-      tweenRaf = requestAnimationFrame(frame);
-    }
-
+     Χωρίς τιμές ανά υπηρεσία — μόνο «από 350€» στη βάση. Το πάνελ
+     μετράει πόσες υπηρεσίες διάλεξε ο επισκέπτης. */
+  var prCount = document.getElementById('pr-count');
+  if (prCount) {
+    var LOCKED_SLUG = 'kataskevi-istoselidas';
     var svcCards = [];
+
     Array.prototype.slice.call(document.querySelectorAll('.xp-sitem')).forEach(function (card) {
       var link = card.querySelector('.xp-sitem-more');
       if (!link) return;
       var parts = link.getAttribute('href').split('/').filter(Boolean);
       var slug = parts[parts.length - 1];
-      var plan = PLANS[slug];
-      if (!plan) return;
-      svcCards.push({ card: card, plan: plan });
-      if (plan.locked) {
+      svcCards.push(card);
+      if (slug === LOCKED_SLUG) {
         card.classList.add('is-locked', 'is-on');
         return;
       }
@@ -246,19 +210,10 @@
     });
 
     function prUpdate() {
-      var total = BASE;
-      var monthly = 0;
-      var custom = false;
-      svcCards.forEach(function (s) {
-        if (s.plan.locked || !s.card.classList.contains('is-on')) return;
-        if (s.plan.price) total += s.plan.price;
-        if (s.plan.monthly) monthly += s.plan.monthly;
-        if (s.plan.custom) custom = true;
-      });
-      prTween(total);
-      prMonthlyWrap.hidden = monthly === 0;
-      prMonthlyNum.textContent = monthly;
-      if (prCustom) prCustom.hidden = !custom;
+      var n = svcCards.filter(function (c) { return c.classList.contains('is-on'); }).length;
+      prCount.textContent = n === 1
+        ? '1 υπηρεσία επιλεγμένη'
+        : n + ' υπηρεσίες επιλεγμένες';
     }
   }
 })();
